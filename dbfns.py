@@ -123,6 +123,8 @@ class DBFns:
                 mydb.close()
             return status
 
+    def addProductToReceipt(self, srNo, title, each_price, qty, total_price):
+
 
 if __name__ == "__main__":
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
