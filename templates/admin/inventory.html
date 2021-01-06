@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='shared.css') }}"> -->
+    <link rel="stylesheet" href="../../static/shared.css">
     <title>Admin - Inventory</title>
 </head>
+
 <body>
-    <h1>Inventory</h1>
+    <div class="container">
+        <div class="navbar">
+            <!-- id added for event listeners in js -->
+            <button class="add-product" id='addProduct'>Add Product</button>
+            <a href="#">Account</a>
+        </div>
+        <div class="sidebar">
+            <div class="shopname"> <h2>My Shop</h2> </div>
+            <div class="navigation">
+                <ul>
+                    <li><a href='/dashboard'>Dashboard</a></li>
+                    <li><a href='/inventory'>Inventory</a></li>
+                    <li><a href='/inventory'>Receipts</a></li>
+                    <li><a href='/inventory'>Customers</a></li>
+                    <li><a href='/inventory'>Reports</a></li>
+                    <li><a href='/inventory'>Employees</a></li>
+                    <li><a href='/inventory'>Settings</a></li>
+                </ul> 
+            </div>
+        </div>
+        <div class="main-container">
+                <div class="main-section" id='main-article'>
+                    <div class="section-title"> <h2>Inventory</h2> </div>
+                    <div class="section-controls">
+                        <input type="text" placeholder="Search">
+                        <button class="add-product" id='addProduct'>Add Product</button>
+
+                    </div>
+                    
+               
+        </div>
+        <div id="nothing">Nothing to see here --- yet</div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='inventory.js') }}"> </script>
 </body>
 </html>
