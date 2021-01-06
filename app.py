@@ -6,6 +6,13 @@ app = Flask(__name__)
 app.secret_key = 's@#*je09el%^&'
 
 
+@app.route('/incInventory')
+def incInventory():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    myinventory = obj.getAllProducts()
+    return jsonify(myinventory)
+
+
 @app.route('/')
 @app.route('/login')
 def form():
