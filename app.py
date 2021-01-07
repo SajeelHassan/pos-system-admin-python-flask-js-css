@@ -59,6 +59,39 @@ def incUpdateproduct():
         return message
 
 
+@app.route('/incDeleteproduct', methods=['POST'])
+def incDeleteproduct():
+    response = request.get_json(silent=True)
+    message = 'Database/Server Error!'
+    try:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        # response['id'] = (response['id'])[5:]
+        print('incDeleteproduct', response)
+        if obj.deleteProduct(response['id']):
+            message = 'true'
+    except Exception as e:
+        print(str(e))
+        message = 'Database Error!'
+    finally:
+        return message
+
+
+@app.route('/incGetDelproduct', methods=['POST'])
+def incGetDelproduct():
+    data = request.get_json(silent=True)
+    print((data['prod_id'])[5:])
+    data['prod_id'] = (data['prod_id'])[5:]
+    reqProd = []
+    try:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        reqProd = obj.getProduct(data['prod_id'])
+    except Exception as e:
+        print(str(e))
+        return 'Database Error!'
+    finally:
+        return jsonify(reqProd)
+
+
 @ app.route('/')
 @ app.route('/login')
 def form():

@@ -217,10 +217,10 @@ function updateModal(event) {
     upmodal.style.display = "block";
     // Get the modal
 
-    var prod_id = event.target.parentElement.id;
+    let prod_id = event.target.parentElement.id;
     // Get the <span> element that closes the modal
     getProdData(prod_id);
-    var editSubmit = document.getElementById('edit-submit'); editSubmit.addEventListener('click', updateProdSubmit);
+    let editSubmit = document.getElementById('edit-submit'); editSubmit.addEventListener('click', updateProdSubmit);
     // When the user clicks on the button, open the modal
 
     let closeModal = document.getElementById('update-modal-close');
@@ -281,7 +281,6 @@ function putDataInForm(theProd) {
     stock.value = theProd[5];
     low.value = theProd[6];
 }
-
 function updateProdSubmit(e) {
     console.log('In updateProdSubmit');
     if (isEmpty([title.value, sku.value, cost.value, price.value, stock.value, low.value]) != true) {
@@ -355,9 +354,47 @@ function updateProdSubmit(e) {
     }
     e.preventDefault();
 }
+var titleDis = document.getElementById('delete-title');
+var skuDis = document.getElementById('delete-sku');
+var costDis = document.getElementById('delete-cost');
+var priceDis = document.getElementById('delete-price');
+var stockDis = document.getElementById('delete-stock');
+var lowDis = document.getElementById('delete-low');
+var hiddenidDis = document.getElementById('delete-hiddenprodid');
 
+function getDelProdData(id) {
+    console.log('getDelProdData');
+    let getDelProdXmlObj = new XMLHttpRequest();
+    getDelProdXmlObj.open('post', 'incGetDelproduct', true);
+    let theId = {
+        "prod_id": `${id}`
+    };
+    getDelProdXmlObj.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status === 200) {
+            let prodData = JSON.parse(this.responseText);
+            getDelProdXmlObj.abort();
+            console.trace(prodData);
+            if (prodData.length) {
+                putDeleteDataInForm(prodData);
+            }
+            getDelProdXmlObj.abort();
 
+        }
+    };
+    let idJsonString = JSON.stringify(theId);
+    getDelProdXmlObj.setRequestHeader("content-Type", "application/json");
+    getDelProdXmlObj.send(idJsonString);
+}
 
+function putDeleteDataInForm(theProd) {
+    hiddenidDis.value = theProd[0];
+    titleDis.value = theProd[1];
+    skuDis.value = theProd[2];
+    costDis.value = theProd[3];
+    priceDis.value = theProd[4];
+    stockDis.value = theProd[5];
+    lowDis.value = theProd[6];
+}
 
 function deleteModal(event) {
     //Delete Product Modal
@@ -365,11 +402,14 @@ function deleteModal(event) {
     // Get the modal
     var delmodal = document.getElementById("myModal-delete");
     delmodal.style.display = "block";
-
+    let prod_id = event.target.parentElement.id;
     let closeModal = document.getElementById('delete-modal-close');
 
     closeModal.addEventListener('click', deletemodalNone);
-    // When the user clicks on <span> (x), close the modal
+
+    getDelProdData(prod_id);
+    let deleteConfirm = document.getElementById('delete-confirm'); deleteConfirm.addEventListener('click', confirmDelete);
+
     function deletemodalNone() {
         delmodal.style.display = "none";
     }
@@ -385,7 +425,52 @@ function deleteModal(event) {
     event.preventDefault();
 }
 
+function confirmDelete(e) {
+    var data = {
+        "id": `${hiddenidDis.value}`
+    }
+    console.log('Sending to incdeleteproduct ..', data);
+    let deletejsonString = JSON.stringify(data);
+    let xmlObjdelete = new XMLHttpRequest();
+    xmlObjdelete.open('post', 'incDeleteproduct', true);
+    console.log('sending...to incDeleteproduct');
+    xmlObjdelete.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status === 200) {
+            if (this.responseText != 'true') {
+                let msgBlock = document.getElementById('page-alert');
+                let msgBlock2 = document.getElementById('page-alert-error');
+                msgBlock.style.display = 'block';
+                msgBlock2.style.display = 'block';
+                msgBlock2.innerHTML = `<div><h2>${this.responseText}</h2> </div>`;
+                setTimeout(function () {
+                    msgBlock.style.display = 'none';
+                    msgBlock2.style.display = 'none';
+                }, 3000);
+            }
+            else {
+                let msgBlock = document.getElementById('page-alert');
+                let msgBlock2 = document.getElementById('page-alert-success');
+                msgBlock.style.display = 'block';
+                msgBlock2.style.display = 'block';
+                msgBlock2.innerHTML = `<div><h2>Product deleted!</h2> </div>`;
+                setTimeout(function () {
+                    msgBlock.style.display = 'none';
+                    msgBlock2.style.display = 'none';
+                    location.reload();
+                }, 3000);
+            }
 
+        }
+    }
+
+    xmlObjdelete.setRequestHeader("content-Type", "application/json");
+    console.log('sending deletejsonString');
+    xmlObjdelete.send(deletejsonString);
+
+    document.getElementById('myModal-delete').style.display = "none";
+    // location.reload();
+    e.preventDefault();
+}
 
 
 

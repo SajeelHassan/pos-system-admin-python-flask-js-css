@@ -137,16 +137,17 @@ class DBFns:
             else:
                 return status
 
-    def deleteProduct(self, prodid, sku):
+    def deleteProduct(self, prodid):
+        prodid = int(prodid)
         mydb = None
         status = False
         try:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "Delete FROM products WHERE prod_id=%s AND sku=%s"
+            sql = "Delete FROM products WHERE prod_id=%s"
             # lUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            args = (prodid, sku)
+            args = (prodid)
             mydbCursor.execute(sql, args)
             mydb.commit()
             status = True
