@@ -472,8 +472,6 @@ function confirmDelete(e) {
     e.preventDefault();
 }
 
-
-
 function isEmpty(data) {
     if (data[0] == "" || data[1] == '' || data[2] == '' || data[3] == '' || data[4] == '' || data[5] == '') {
         return false
@@ -486,5 +484,84 @@ function isValid(data) {
     }
     else {
         return true
+    }
+}
+
+
+
+//Search Functioning - Inventory
+
+
+//Search input Event Listener               //search-proto
+var searchElement = document.getElementById("inventory-search");
+searchElement.addEventListener("input", searchNow);
+var foundObjs = [];
+var title, sku, cost, price, stock, low, status, created_on, lupdate, key;
+var searchData = []
+function searchNow(e) {
+    key = searchElement.value;
+    foundProducts = [];
+    if (key != "") {
+        key = key.toLowerCase();
+        theInventory.forEach(product => {
+            for (let j = 1; j < 10; j++) {
+                searchData.push(product[j].toLowerCase());
+            }
+            for (let j = 1; j < 10; j++) {
+                if (product[j].indexOf(key) != -1) {
+                    foundProducts.push(objArray[i]);
+                    break;
+                }
+
+            }
+
+        });
+    }
+    createInventoryResultTable(foundProducts);
+}
+
+
+function createInventoryResultTable(foundArray) {
+    if (foundArray.length >= 1) {
+        removeInventoryResultTable();
+        let resultTabElement = document.createElement('table');
+        resultTabElement.id = 'InventoryresultTable';
+        document.getElementById('main-article').insertBefore(resultTabElement, document.getElementById('inventoryTable'));
+        var row;
+        const InventoryresultTable = document.getElementById('InventoryresultTable');
+        //Inserting New Row
+        for (let i = 0; i < foundArray.length; i++) {
+            row = InventoryresultTable.insertRow();
+            for (let j = 0; j < 12; j++)
+                row.insertCell();
+
+        }
+
+        //creating table head 
+        var tablehead = InventoryresultTable.createTHead();
+        row = tablehead.insertRow();
+        for (let i = 0; i < 12; i++)
+            row.append(document.createElement('th'));
+        tablehead.rows[0].cells[0].innerText = "Title";
+        tablehead.rows[0].cells[1].innerText = "Content";
+        tablehead.rows[0].cells[2].innerText = "Author";
+        tablehead.rows[0].cells[3].innerText = "DATE";
+
+        var data = [];
+        // populating the table
+        for (let i = 0; i < foundArray.length; i++) {
+            data = [foundArray[i].title, foundArray[i].content, foundArray[i].author, foundArray[i].date];
+            for (let j = 0; j < 4; j++)
+                InventoryresultTable.rows[i + 1].cells[j].innerHTML = data[j];
+            data = [];
+        }
+    }
+    else {
+        removeInventoryResultTable();
+    }
+}
+function removeInventoryResultTable() {
+    if (document.getElementById('InventoryresultTable')) {
+        document.getElementById('InventoryresultTable').remove();
     }
 }
