@@ -35,10 +35,28 @@ def incAddproduct():
 @app.route('/incGetproduct', methods=['POST'])
 def incGetproduct():
     data = request.get_json(silent=True)
-    print(data['prod_id'])
+    print((data['prod_id'])[5:])
+    data['prod_id'] = (data['prod_id'])[5:]
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     reqProd = obj.getProduct(data['prod_id'])
     return jsonify(reqProd)
+
+
+@app.route('/incUpdateproduct', methods=['POST'])
+def incUpdateproduct():
+    response = request.get_json(silent=True)
+    message = 'Database/Server Error!'
+    try:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        # response['id'] = (response['id'])[5:]
+        if obj.updateProduct(response['title'], response['sku'], response['cost'],
+                             response['price'], response['stock'], response['low'], response['id']):
+            message = 'true'
+    except Exception as e:
+        print(str(e))
+        message = 'Database Error!'
+    finally:
+        return message
 
 
 @ app.route('/')

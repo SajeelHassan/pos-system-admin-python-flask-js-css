@@ -34,6 +34,8 @@ class DBFns:
     # update the product
 
     def setStatus(self, stock, low):
+        stock = int(stock)
+        low = int(low)
         if stock >= low:
             return 'In Stock'
         elif stock == 0:
@@ -44,6 +46,7 @@ class DBFns:
             return 'Low Stock'
 
     def updateProduct(self, title, sku, cost, price, stock, low, prodid):
+        prodid = int(prodid)
         mydb = None
         status = False
         try:
@@ -87,6 +90,7 @@ class DBFns:
             return status
 
     def getProduct(self, prodid):
+        prodid = int(prodid)
         mydb = None
         status = False
         try:
@@ -99,7 +103,6 @@ class DBFns:
             myresult = mydbCursor.fetchone()
             if myresult != None:
                 if myresult[0] == prodid:
-                    # print(myresult[8].strftime("%c"))
                     status = True
         except Exception as e:
             print(str(e))
