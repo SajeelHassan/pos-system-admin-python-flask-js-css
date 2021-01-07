@@ -86,9 +86,10 @@
                     <div id="myModal-editUpdate" class="modal">
                         <!-- Modal content -->
                         <div class="modal-content">
-                            <span class="close" id='close-modal'>&times;</span>
+                            <span class="close" id='update-modal-close'>&times;</span>
                             <div class="modal-form">
                                 <form>
+                                    <input type="text" id='hiddenprodid' style='position:absolute; visibility:hidden;'>
                                     <label for="title">Name:</label>
                                     <input type="text" id="edit-title" name="title"><br><br>
                                     <label for="sku">SKU:</label>
@@ -107,7 +108,7 @@
 
                                 </form>
                             </div>
-                            <div class="error form-error" id='form-alert-error'>
+                            <div class="error form-error" id='update-form-alert-error'>
                             </div>
                         </div>
                     </div>
@@ -115,10 +116,15 @@
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span class="close" id='delete-modal-close'>&times;</span>
-                            <h2>Deleting.....?</h2>
-                            <p>Data.............</p><br><br>
-                            <button>Confirm</button>
-                            <button>Cancel</button>
+                            <div class="modal-form">
+                                <form>
+                                    <h2>Deleting.....?</h2>
+                                    <p>Data.............</p><br><br>
+                                    <button id='delete-confirm'>Confirm</button>
+                                    <button>Cancel</button>
+                                </form>
+                            </div>
+
 
                             <div class="error form-error" id='form-alert-error'>
                             </div>

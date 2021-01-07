@@ -124,20 +124,17 @@ window.onclick = function (event) {
 
 // Add product
 var submitAddprod = document.getElementById('prod-submit');
-
-
-
 submitAddprod.addEventListener('click', prodSubmit);
 
-var title = document.getElementById('prod-title');
-var sku = document.getElementById('prod-sku');
-var cost = document.getElementById('prod-cost');
-var price = document.getElementById('prod-price');
-var stock = document.getElementById('prod-stock');
-var low = document.getElementById('prod-low');
-function prodSubmit(e) {
 
-    if (isEmpty() != true) {
+function prodSubmit(e) {
+    let title = document.getElementById('prod-title');
+    let sku = document.getElementById('prod-sku');
+    let cost = document.getElementById('prod-cost');
+    let price = document.getElementById('prod-price');
+    let stock = document.getElementById('prod-stock');
+    let low = document.getElementById('prod-low');
+    if (isEmpty([title.value, sku.value, cost.value, price.value, stock.value, low.value]) != true) {
         let msgBlock = document.getElementById('form-alert-error');
         msgBlock.style.display = 'block';
         msgBlock.innerHTML = "<div><h2>Empty Field/Feilds!</h2> </div>;"
@@ -145,7 +142,7 @@ function prodSubmit(e) {
             msgBlock.style.display = 'none';
         }, 3000);
     }
-    else if (isValid() != true) {
+    else if (isValid([cost.value, price.value, stock.value, low.value]) != true) {
         let msgBlock = document.getElementById('form-alert-error');
         msgBlock.style.display = 'block';
         msgBlock.innerHTML = "<div><h2>Invalid Numbers</h2> </div>;"
@@ -164,9 +161,9 @@ function prodSubmit(e) {
         }
         var jsonString = JSON.stringify(data);
         var xmlObj2 = new XMLHttpRequest();
-        xmlObj2.open('post', 'incAddproduct');
-        xmlObj2.onload = function () {
-            if (this.status === 200) {
+        xmlObj2.open('post', 'incAddproduct', true);
+        xmlObj2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status === 200) {
                 if (this.responseText != 'true') {
                     let msgBlock = document.getElementById('page-alert');
                     let msgBlock2 = document.getElementById('page-alert-error');
@@ -213,41 +210,24 @@ function prodSubmit(e) {
     e.preventDefault();
 }
 
-function isEmpty() {
-    if (title.value == "" || sku.value == '' || cost.value == '' || price.value == '' || stock.value == '' || low.value == '') {
-        return false
-    }
-    return true
-}
-function isValid() {
-    if (parseFloat(cost.value) < 0 || parseFloat(price.value) < 0 || parseFloat(stock.value) < 0 || parseFloat(low.value) < 0) {
-        return false;
-    }
-    else {
-        return true
-    }
-}
 
 function updateModal(event) {
     //Update Product Modal
-
-    // Get the modal
     let upmodal = document.getElementById("myModal-editUpdate");
-    let prod_id = event.target.parentElement.id;
+    upmodal.style.display = "block";
+    // Get the modal
+
+    var prod_id = event.target.parentElement.id;
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    showmodal();
     getProdData(prod_id);
+    var editSubmit = document.getElementById('edit-submit'); editSubmit.addEventListener('click', updateProdSubmit);
     // When the user clicks on the button, open the modal
-    function showmodal() {
-        upmodal.style.display = "block";
 
-    }
-    let closeModal = document.getElementById('close-modal');
+    let closeModal = document.getElementById('update-modal-close');
 
-    closeModal.addEventListener('click', modalNone);
+    closeModal.addEventListener('click', updatemodalNone);
     // When the user clicks on <span> (x), close the modal
-    function modalNone() {
+    function updatemodalNone() {
         upmodal.style.display = "none";
     }
 
@@ -264,78 +244,133 @@ function updateModal(event) {
 
 function getProdData(id) {
     console.log('getProdData');
-    let xmlObj = new XMLHttpRequest();
-    xmlObj.open('post', 'incGetproduct', true);
+    let getProdXmlObj = new XMLHttpRequest();
+    getProdXmlObj.open('post', 'incGetproduct', true);
     let theId = {
         "prod_id": `${id}`
     };
-
-    xmlObj.onload = function () {
-        if (this.status === 200) {
+    getProdXmlObj.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status === 200) {
             let prodData = JSON.parse(this.responseText);
-            xmlObj.abort();
+            getProdXmlObj.abort();
             console.trace(prodData);
             if (prodData.length) {
                 putDataInForm(prodData);
             }
+            getProdXmlObj.abort();
 
         }
-    }
+    };
     let idJsonString = JSON.stringify(theId);
-    xmlObj.setRequestHeader("content-Type", "application/json");
-    xmlObj.send(idJsonString);
-
-
+    getProdXmlObj.setRequestHeader("content-Type", "application/json");
+    getProdXmlObj.send(idJsonString);
 }
+var title = document.getElementById('edit-title');
+var sku = document.getElementById('edit-sku');
+var cost = document.getElementById('edit-cost');
+var price = document.getElementById('edit-price');
+var stock = document.getElementById('edit-stock');
+var low = document.getElementById('edit-low');
+var hiddenid = document.getElementById('hiddenprodid');
 function putDataInForm(theProd) {
-    let title = document.getElementById('edit-title');
-    let sku = document.getElementById('edit-sku');
-    let cost = document.getElementById('edit-cost');
-    let price = document.getElementById('edit-price');
-    let stock = document.getElementById('edit-stock');
-    let low = document.getElementById('edit-low');
+    hiddenid.value = theProd[0];
     title.value = theProd[1];
     sku.value = theProd[2];
     cost.value = theProd[3];
-    price.value = theProd1[4];
-    stock.value = thePrd[5];
+    price.value = theProd[4];
+    stock.value = theProd[5];
     low.value = theProd[6];
 }
-// Add product
-// var submitAddprod = document.getElementById('prod-submit');
 
+function updateProdSubmit(e) {
+    console.log('In updateProdSubmit');
+    if (isEmpty([title.value, sku.value, cost.value, price.value, stock.value, low.value]) != true) {
+        let msgBlock = document.getElementById('update-form-alert-error');
+        msgBlock.style.display = 'block';
+        msgBlock.innerHTML = "<div><h2>Empty Field/Feilds!</h2> </div>;"
+        setTimeout(function () {
+            msgBlock.style.display = 'none';
+        }, 3000);
+    }
+    else if (isValid([cost.value, price.value, stock.value, low.value]) != true) {
+        let msgBlock = document.getElementById('update-form-alert-error');
+        msgBlock.style.display = 'block';
+        msgBlock.innerHTML = "<div><h2>Invalid Numbers</h2> </div>;"
+        setTimeout(function () {
+            msgBlock.style.display = 'none';
+        }, 3000);
+    }
+    else {
+        var data = {
+            "title": `${title.value}`,
+            "sku": `${sku.value}`,
+            "cost": `${cost.value}`,
+            "price": `${price.value}`,
+            "stock": `${stock.value}`,
+            "low": `${low.value}`,
+            "id": `${hiddenid.value}`
+        }
+        console.log('Sending to incUpdateproduct ..', data);
+        let updatejsonString = JSON.stringify(data);
+        let xmlObjupdate = new XMLHttpRequest();
+        xmlObjupdate.open('post', 'incUpdateproduct', true);
+        console.log('sending...to incUpdateproduct');
+        xmlObjupdate.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status === 200) {
+                if (this.responseText != 'true') {
+                    let msgBlock = document.getElementById('page-alert');
+                    let msgBlock2 = document.getElementById('page-alert-error');
+                    msgBlock.style.display = 'block';
+                    msgBlock2.style.display = 'block';
+                    msgBlock2.innerHTML = `<div><h2>${this.responseText}</h2> </div>`;
+                    setTimeout(function () {
+                        msgBlock.style.display = 'none';
+                        msgBlock2.style.display = 'none';
+                    }, 3000);
+                }
+                else {
+                    let msgBlock = document.getElementById('page-alert');
+                    let msgBlock2 = document.getElementById('page-alert-success');
+                    msgBlock.style.display = 'block';
+                    msgBlock2.style.display = 'block';
+                    msgBlock2.innerHTML = `<div><h2>Product Updated!</h2> </div>`;
+                    setTimeout(function () {
+                        msgBlock.style.display = 'none';
+                        msgBlock2.style.display = 'none';
+                        location.reload();
+                    }, 3000);
+                }
 
+            }
+        }
 
-// submitAddprod.addEventListener('click', prodSubmit);
+        xmlObjupdate.setRequestHeader("content-Type", "application/json");
+        console.log('sending updatejsonString');
+        xmlObjupdate.send(updatejsonString);
 
-// var title = document.getElementById('prod-title');
-// var sku = document.getElementById('prod-sku');
-// var cost = document.getElementById('prod-cost');
-// var price = document.getElementById('prod-price');
-// var stock = document.getElementById('prod-stock');
-// var low = document.getElementById('prod-low');
-// function prodSubmit(e) {
-// }
+        document.getElementById('myModal-editUpdate').style.display = "none";
+        // location.reload();
+        // e.preventDefault();
+
+    }
+    e.preventDefault();
+}
+
 
 
 
 function deleteModal(event) {
-    //Update Product Modal
+    //Delete Product Modal
 
     // Get the modal
     var delmodal = document.getElementById("myModal-delete");
+    delmodal.style.display = "block";
 
-    showmodal();
-    // When the user clicks on the button, open the modal
-    function showmodal() {
-        delmodal.style.display = "block";
-
-    }
     let closeModal = document.getElementById('delete-modal-close');
 
-    closeModal.addEventListener('click', modalNone);
+    closeModal.addEventListener('click', deletemodalNone);
     // When the user clicks on <span> (x), close the modal
-    function modalNone() {
+    function deletemodalNone() {
         delmodal.style.display = "none";
     }
 
@@ -346,6 +381,25 @@ function deleteModal(event) {
         }
     }
 
-    console.log('in update Modal ', event.target);
+    console.log('in del Modal ', event.target);
     event.preventDefault();
+}
+
+
+
+
+
+function isEmpty(data) {
+    if (data[0] == "" || data[1] == '' || data[2] == '' || data[3] == '' || data[4] == '' || data[5] == '') {
+        return false
+    }
+    return true
+}
+function isValid(data) {
+    if (parseFloat(data[0]) < 0 || parseFloat(data[1]) < 0 || parseFloat(data[2]) < 0 || parseFloat(data[3]) < 0) {
+        return false;
+    }
+    else {
+        return true
+    }
 }
