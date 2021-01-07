@@ -10,7 +10,7 @@ class DBFns:
         self.database = database
     # add the product
 
-    def addProduct(self, title, sku, cost, price, stock, low, currstatus):
+    def addProduct(self, title, sku, cost, price, stock, low):
         mydb = None
         status = False
         try:
@@ -18,7 +18,7 @@ class DBFns:
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
             sql = "INSERT INTO products (title,sku,cost,price,stock,low,curr_status,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-
+            currstatus = self.setStatus(stock, low)
             createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, createdOn)
@@ -33,7 +33,17 @@ class DBFns:
             return status
     # update the product
 
-    def updateProduct(self, title, sku, cost, price, stock, low, currstatus, prodid):
+    def setStatus(self, stock, low):
+        if stock >= low:
+            return 'In Stock'
+        elif stock == 0:
+            return 'Out of Stock'
+        elif stock < 15:
+            return 'Soon out of Stock'
+        elif stock < low:
+            return 'Low Stock'
+
+    def updateProduct(self, title, sku, cost, price, stock, low, prodid):
         mydb = None
         status = False
         try:
@@ -41,6 +51,7 @@ class DBFns:
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
             sql = "UPDATE products SET title=%s,sku=%s,cost=%s,price=%s,stock=%s,low=%s,curr_status=%s,last_updated=%s WHERE prod_id=%s"
+            currstatus = self.setStatus(stock, low)
             lUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, lUpdated, prodid)
@@ -55,19 +66,39 @@ class DBFns:
             return status
     # // get single product using prod id and its sku
 
-    def getProduct(self, prodid, sku):
+    def isSkuExists(self, sku):
         mydb = None
         status = False
         try:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "Select * from products WHERE prod_id =%s AND sku =%s"
-            args = (prodid, sku)
+            sql = "Select * from products WHERE sku =%s"
+            mydbCursor.execute(sql, sku)
+            myresult = mydbCursor.fetchone()
+            if myresult != None:
+                if myresult[2] == sku:
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            return status
+
+    def getProduct(self, prodid):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select * from products WHERE prod_id =%s"
+            args = (prodid)
             mydbCursor.execute(sql, args)
             myresult = mydbCursor.fetchone()
             if myresult != None:
-                if myresult[0] == prodid and myresult[2] == sku:
+                if myresult[0] == prodid:
                     # print(myresult[8].strftime("%c"))
                     status = True
         except Exception as e:
@@ -87,7 +118,7 @@ class DBFns:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "Select * from products"
+            sql = "Select * from products ORDER BY created_on DESC"
             mydbCursor.execute(sql)
             myresult = mydbCursor.fetchall()
             if myresult != None:
@@ -350,16 +381,48 @@ class DBFns:
 if __name__ == "__main__":
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     result = obj
-    # result = obj.addProduct('finalizinfggg', '098098', 222,
-    #                         333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
+    # result = obj.addProduct('finalizinfggg', '098098',
+    #                         222, 333, 900, 300, 'new status')
     # result = obj.updateProduct(
     #     'finalizinfggg', '098098', 222, 333, 299, 300, 'Low stock', 22)
     # result = obj.getProduct(22, '098098')
     # result = obj.getAllProducts()
     # result = obj.deleteProduct(22, '098098')
     # result = obj.getStock(12)
-    result = obj.updateStock(12, 100)
-    print('Stock update: ', result)
+    # result = obj.updateStock(12, 100)
+    # print('Stock update: ', result)
+    # result = obj.deleteProduct(12, '78B90')
 
-    result = obj.getStock(12)
-    print(result)
+    # result = obj.deleteProduct(19, '098098')
+    # result = obj.deleteProduct(20, '098098')
+    # result = obj.deleteProduct(21, '098098')
+    # result = obj.getStock(12)
+    # print(result)
