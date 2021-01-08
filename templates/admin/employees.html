@@ -1,11 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Employees</title>
-</head>
-<body>
-    <h1>Employees</h1>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../static/styles/shared.css">
+        <title>Admin - Employees</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <!-- id added for event listeners in js -->
+                <button class="add-product" id='addproduct'>Add Product</button>
+                <a href="#">Account</a>
+            </div>
+            <!-- Sidebar content -->
+            <div class="sidebar">
+                <div class="shopname">
+                    <h2>My Shop</h2>
+                </div>
+                <div class="navigation">
+                    <ul id=sidebar>
+                        <li id='sidebar-dashboard'><a href='/dashboard'>Dashboard</a></li>
+                        <li id='sidebar-inventory'><a href='./inventory'>Inventory</a></li>
+                        <li id='sidebar-receipts'><a href='/receipts'>Receipts</a></li>
+                        <li id='sidebar-customers'><a href='/customers'>Customers</a></li>
+                        <li id='sidebar-reports'><a href='/reports'>Reports</a></li>
+                        <li id='sidebar-employees'><a href='/employees'>Employees</a></li>
+                        <li id='sidebar-settings'><a href='/settings'>Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- page[admin - inventory] content -->
+            <div class="main-container">
+                <div class="main-section" id='main-article-employees'>
+                    <div class="alert-message" id='page-alert-employees'>
+                        <div class="success" id='page-alert-success-employees'></div>
+                        <div class="error" id='page-alert-error-employees'></div>
+                    </div>
+                    <div class="section-title">
+                        <h2>Employees</h2>
+                    </div>
+                    <div class="section-controls">
+                        <div class="search-area">
+                            <input type="text" placeholder="Search" id='search-employees'>
+                        </div>
+                        <button class="add-employees" id='btn-add-employees'>Add Employee</button>
+                    </div>
+                    <!-- commented -->
+
+                    <!-- commentend -->
+                    <!-- Add product Modal content -->
+                    <div id="myModal-addform-employees" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="modal-form">
+                                <form>
+                                    <label for="title">First Name:</label>
+                                    <input type="text" id="prod-title" name="title"><br><br>
+                                    <label for="sku">SKU:</label>
+                                    <input type="text" id="prod-sku" name="sku"><br><br>
+                                    <label for="cost">Cost:</label>
+                                    <input type="number" id="prod-cost" name="cost" min='1'><br><br>
+
+                                    <label for="price">Price:</label>
+                                    <input type="number" id="prod-price" name="price" min='1'><br><br>
+                                    <label for="stock">Stock:</label>
+                                    <input type="number" id="prod-stock" name="stock" min='1'><br><br>
+                                    <label for="low">Low:</label>
+                                    <input type="number" id="prod-low" name="low" min='1'><br><br>
+
+                                    <input type="submit" value="Add Product" id='prod-submit'>
+
+                                </form>
+                            </div>
+                            <div class="error form-error" id='form-alert-error-employees'>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- // Actions Modals -->
+                    <div id="myModal-editUpdate-employees" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close" id='update-modal-close-employees'>&times;</span>
+                            <div class="modal-form">
+                                <form>
+                                    <input type="text" id='hiddenprodid' style='position:absolute; visibility:hidden;'>
+                                    <label for="title">Name:</label>
+                                    <input type="text" id="edit-title" name="title"><br><br>
+                                    <label for="sku">SKU:</label>
+                                    <input type="text" id="edit-sku" name="sku"><br><br>
+                                    <label for="cost">Cost:</label>
+                                    <input type="number" id="edit-cost" name="cost" min='1'><br><br>
+
+                                    <label for="price">Price:</label>
+                                    <input type="number" id="edit-price" name="price" min='1'><br><br>
+                                    <label for="stock">Stock:</label>
+                                    <input type="number" id="edit-stock" name="stock" min='1'><br><br>
+                                    <label for="low">Low:</label>
+                                    <input type="number" id="edit-low" name="low" min='1'><br><br>
+
+                                    <input type="submit" value="Update Product" id='edit-submit'>
+
+                                </form>
+                            </div>
+                            <div class="error form-error" id='update-form-alert-error-employees'>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="myModal-delete-employees" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close" id='delete-modal-close-employees'>&times;</span>
+                            <div class="modal-form">
+                                <form>
+
+                                    <h2>Deleting?</h2>
+                                    <input type="text" id='delete-hiddenprodid'
+                                        style='position:absolute; visibility:hidden;'>
+                                    <label for="title">Name:</label>
+                                    <input type="text" id="delete-title" disabled><br><br>
+                                    <label for="sku">SKU:</label>
+                                    <input type="text" id="delete-sku" disabled><br><br>
+                                    <label for="cost">Cost:</label>
+                                    <input type="text" id="delete-cost" disabled><br><br>
+
+                                    <label for="price">Price:</label>
+                                    <input type="text" id="delete-price" disabled><br><br>
+                                    <label for="stock">Stock:</label>
+                                    <input type="text" id="delete-stock" disabled><br><br>
+                                    <label for="low">Low:</label>
+                                    <input type="text" id="delete-low" disabled><br><br>
+
+                                    <button id='delete-confirm'>Confirm</button>
+                                    <button id='delete-cancel'>Cancel</button>
+                                </form>
+                            </div>
+
+
+                            <div class="error form-error" id='delete-form-alert-error-employees'>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="nothing-employees">
+                        <h1>Nothing to see here --- yet</h1>
+                    </div>
+                </div>
+
+                <script src="{{ url_for('static', filename='scripts/employees.js') }}"> </script>
+            </div>
+        </div>
+    </body>
+
 </html>
