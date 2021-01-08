@@ -264,16 +264,18 @@ class DBFns:
                 mydb.close()
             return status
 
-    def addEmployee(self, firstname, lastname, email, phone):
+    def addEmployee(self, firstname, lastname, username, email, phone):
         mydb = None
         status = False
         try:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "INSERT INTO employee (firstname, lastname, joined_on, email, phone) VALUES (%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO employee (firstname, lastname,username, joined_on, email, phone,total_orders) VALUES (%s,%s,%s,%s,%s,%s,%s)"
             joinedOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            args = (firstname, lastname, joinedOn, email, phone)
+            total_orders = 0
+            args = (firstname, lastname, username,
+                    joinedOn, email, phone, total_orders)
             mydbCursor.execute(sql, args)
             mydb.commit()
             status = True
@@ -330,9 +332,10 @@ class DBFns:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "INSERT INTO customer (firstname, lastname, created_on, email, phone) VALUES (%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO customer (firstname, lastname, created_on, email, phone,total_orders) VALUES (%s,%s,%s,%s,%s,%s)"
             createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            args = (firstname, lastname, createdOn, email, phone)
+            total_orders = 0
+            args = (firstname, lastname, createdOn, email, phone, total_orders)
             mydbCursor.execute(sql, args)
             mydb.commit()
             status = True
