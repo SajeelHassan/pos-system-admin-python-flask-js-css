@@ -5,49 +5,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- <link rel="stylesheet" href="{{ url_for('static', filename='shared.css') }}"> -->
-        <link rel="stylesheet" href="../../static/shared.css">
+        <link rel="stylesheet" href="../../static/styles/shared.css">
         <title>Admin - Inventory</title>
     </head>
 
     <body>
         <div class="container">
-
-            <div id="myModal-addproductform" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <div class="modal-form">
-                        <form>
-                            <label for="title">Name:</label>
-                            <input type="text" id="prod-title" name="title"><br><br>
-                            <label for="sku">SKU:</label>
-                            <input type="text" id="prod-sku" name="sku"><br><br>
-                            <label for="cost">Cost:</label>
-                            <input type="number" id="prod-cost" name="cost" min='1'><br><br>
-
-                            <label for="price">Price:</label>
-                            <input type="number" id="prod-price" name="price" min='1'><br><br>
-                            <label for="stock">Stock:</label>
-                            <input type="number" id="prod-stock" name="stock" min='1'><br><br>
-                            <label for="low">Low:</label>
-                            <input type="number" id="prod-low" name="low" min='1'><br><br>
-
-                            <input type="submit" value="Add Product" id='prod-submit'>
-
-                        </form>
-                    </div>
-                    <div class="error form-error" id='form-alert-error'>
-                    </div>
-                </div>
-
-            </div>
-
             <div class="navbar">
                 <!-- id added for event listeners in js -->
                 <button class="add-product" id='addproduct'>Add Product</button>
                 <a href="#">Account</a>
             </div>
+            <!-- Sidebar content -->
             <div class="sidebar">
                 <div class="shopname">
                     <h2>My Shop</h2>
@@ -55,23 +24,22 @@
                 <div class="navigation">
                     <ul>
                         <li><a href='/dashboard'>Dashboard</a></li>
-                        <li><a href='/inventory'>Inventory</a></li>
-                        <li><a href='/inventory'>Receipts</a></li>
-                        <li><a href='/inventory'>Customers</a></li>
-                        <li><a href='/inventory'>Reports</a></li>
-                        <li><a href='/inventory'>Employees</a></li>
-                        <li><a href='/inventory'>Settings</a></li>
+                        <li><a href='./inventory'>Inventory</a></li>
+                        <li><a href='/receipts'>Receipts</a></li>
+                        <li><a href='/customers'>Customers</a></li>
+                        <li><a href='/reports'>Reports</a></li>
+                        <li><a href='/employees'>Employees</a></li>
+                        <li><a href='/settings'>Settings</a></li>
                     </ul>
                 </div>
             </div>
-
+            <!-- page[admin - inventory] content -->
             <div class="main-container">
                 <div class="main-section" id='main-article'>
                     <div class="alert-message" id='page-alert'>
                         <div class="success" id='page-alert-success'></div>
                         <div class="error" id='page-alert-error'></div>
                     </div>
-
                     <div class="section-title">
                         <h2>Inventory</h2>
                     </div>
@@ -84,6 +52,34 @@
                     <!-- commented -->
 
                     <!-- commentend -->
+                    <!-- Add product Modal content -->
+                    <div id="myModal-addproductform" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="modal-form">
+                                <form>
+                                    <label for="title">Name:</label>
+                                    <input type="text" id="prod-title" name="title"><br><br>
+                                    <label for="sku">SKU:</label>
+                                    <input type="text" id="prod-sku" name="sku"><br><br>
+                                    <label for="cost">Cost:</label>
+                                    <input type="number" id="prod-cost" name="cost" min='1'><br><br>
+
+                                    <label for="price">Price:</label>
+                                    <input type="number" id="prod-price" name="price" min='1'><br><br>
+                                    <label for="stock">Stock:</label>
+                                    <input type="number" id="prod-stock" name="stock" min='1'><br><br>
+                                    <label for="low">Low:</label>
+                                    <input type="number" id="prod-low" name="low" min='1'><br><br>
+
+                                    <input type="submit" value="Add Product" id='prod-submit'>
+
+                                </form>
+                            </div>
+                            <div class="error form-error" id='form-alert-error'>
+                            </div>
+                        </div>
+                    </div>
                     <!-- // Actions Modals -->
                     <div id="myModal-editUpdate" class="modal">
                         <!-- Modal content -->
@@ -153,7 +149,9 @@
                     </div>
                 </div>
 
-                <script src="{{ url_for('static', filename='inventory.js') }}"> </script>
+                <script src="{{ url_for('static', filename='scripts/inventory.js') }}"> </script>
+            </div>
+        </div>
     </body>
 
 </html>

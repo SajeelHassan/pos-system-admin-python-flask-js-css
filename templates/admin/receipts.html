@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Receipts</title>
-</head>
-<body>
-    <h1>Receipts</h1>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../static/styles/shared.css">
+        <link rel="stylesheet" href="../../static/styles/receipt.css">
+        <title>Admin - Receipts</title>
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <!-- id added for event listeners in js -->
+                <button class="add-product" id='addproduct'>Add Product</button>
+                <a href="#">Account</a>
+            </div>
+            <!-- Sidebar content -->
+            <div class="sidebar">
+                <div class="shopname">
+                    <h2>My Shop</h2>
+                </div>
+                <div class="navigation">
+                    <ul>
+                        <li><a href='/dashboard'>Dashboard</a></li>
+                        <li><a href='./inventory'>Inventory</a></li>
+                        <li><a href='/receipts'>Receipts</a></li>
+                        <li><a href='/customers'>Customers</a></li>
+                        <li><a href='/reports'>Reports</a></li>
+                        <li><a href='/employees'>Employees</a></li>
+                        <li><a href='/settings'>Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- page[admin - inventory] content -->
+            <div class="main-container">
+                <div class="main-section" id='main-article'>
+                    <div class="alert-message" id='page-alert'>
+                        <div class="success" id='page-alert-success'></div>
+                        <div class="error" id='page-alert-error'></div>
+                    </div>
+                    <div class="section-title">
+                        <h2>Receipts</h2>
+                    </div>
+                    <div class="section-controls">
+                        <div class="search-area">
+                            <input type="text" placeholder="Search" id='receipt-search'>
+                        </div>
+
+                    </div>
+                    <div id="nothing">
+                        <h1>Nothing to see here --- yet</h1>
+                    </div>
+                </div>
+
+                <script src="{{ url_for('static', filename='scripts/receipts.js') }}"> </script>
+            </div>
+        </div>
+    </body>
+
 </html>

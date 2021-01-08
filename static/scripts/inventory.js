@@ -25,7 +25,10 @@ xmlObj.onload = function () {
     }
 }
 
+//sidebar Requesting
+var sidebar = document.getElementById
 
+//sidebar Requested
 
 //Table creation
 
