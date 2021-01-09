@@ -272,7 +272,7 @@ class DBFns:
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
             sql = "INSERT INTO employee (firstname, lastname,username, joined_on, email, phone,total_orders) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-            joinedOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            joinedOn = datetime.datetime.now().strftime("%Y-%m-%d")
             total_orders = 0
             args = (firstname, lastname, username,
                     joinedOn, email, phone, total_orders)
@@ -312,8 +312,7 @@ class DBFns:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "UPDATE products SET firstname=%s,lastname=%s,email=%s,phone=%s WHERE emp_id=%s"
-
+            sql = "UPDATE employee SET firstname=%s,lastname=%s,email=%s,phone=%s WHERE emp_id=%s"
             args = (firstname, lastname,  email, phone, empid)
             mydbCursor.execute(sql, args)
             mydb.commit()
@@ -324,6 +323,28 @@ class DBFns:
             if mydb != None:
                 mydb.close()
             return status
+
+    def getAllEmployees(self):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select * from employee ORDER BY joined_on ASC"
+            mydbCursor.execute(sql)
+            myresult = mydbCursor.fetchall()
+            if myresult != None:
+                status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult
+            else:
+                return status
 
     def addCustomer(self, firstname, lastname, email, phone):
         mydb = None
@@ -384,10 +405,40 @@ class DBFns:
                 mydb.close()
             return status
 
+    def getAllCustomers(self):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select * from customer ORDER BY created_on ASC"
+            mydbCursor.execute(sql)
+            myresult = mydbCursor.fetchall()
+            if myresult != None:
+                status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult
+            else:
+                return status
+
 
 if __name__ == "__main__":
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     result = obj
+    # result = obj.addEmployee(
+    #     'sajeel', 'hassan', 'sajeel01', 'hsajeel786@gmail.com', '03491774641')
+    # result = obj.updateEmployee(
+    #     'Bint e', 'Abdullah', 'bitf18m033@pucit.edu.pk', '0309--90-090', 6)
+    result = obj.addCustomer(
+        'Jameel', 'Khan', 'hsajeel786@gmail.com', '03491774641')
+
+    print(result)
     # result = obj.addProduct('finalizinfggg', '098098',
     #                         222, 333, 900, 300, 'new status')
     # result = obj.addProduct('finalizinfggg', '098098',

@@ -6,6 +6,20 @@ app = Flask(__name__)
 app.secret_key = 's@#*je09el%^&'
 
 
+@app.route('/incCustomers')
+def incCustomers():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    allCustomers = obj.getAllCustomers()
+    return jsonify(allCustomers)
+
+
+@app.route('/incEmployees')
+def incEmployees():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    allEmployees = obj.getAllEmployees()
+    return jsonify(allEmployees)
+
+
 @app.route('/incInventory')
 def incInventory():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')

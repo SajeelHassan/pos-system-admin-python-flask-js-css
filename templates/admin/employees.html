@@ -57,21 +57,20 @@
                             <span class="close">&times;</span>
                             <div class="modal-form">
                                 <form>
-                                    <label for="title">First Name:</label>
-                                    <input type="text" id="prod-title" name="title"><br><br>
-                                    <label for="sku">SKU:</label>
-                                    <input type="text" id="prod-sku" name="sku"><br><br>
-                                    <label for="cost">Cost:</label>
-                                    <input type="number" id="prod-cost" name="cost" min='1'><br><br>
+                                    <label for="fname">firstname:</label>
+                                    <input type="text" id="emp-fname" name='fname'><br><br>
+                                    <label for="lname">Lastname:</label>
+                                    <input type="text" id="emp-lname" name="lname"><br><br>
+                                    <label for="uname">Username:</label>
+                                    <input type="text" id="emp-uname" name="uname"
+                                        placeholder="for signup/login"><br><br>
 
-                                    <label for="price">Price:</label>
-                                    <input type="number" id="prod-price" name="price" min='1'><br><br>
-                                    <label for="stock">Stock:</label>
-                                    <input type="number" id="prod-stock" name="stock" min='1'><br><br>
-                                    <label for="low">Low:</label>
-                                    <input type="number" id="prod-low" name="low" min='1'><br><br>
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="emp-email" name="email"><br><br>
+                                    <label for="phone">Phone:</label>
+                                    <input type="text" id="emp-phone" name="phone"><br><br>
 
-                                    <input type="submit" value="Add Product" id='prod-submit'>
+                                    <input type="submit" value="Add Employee" id='emp-submit'>
 
                                 </form>
                             </div>
@@ -80,29 +79,23 @@
                         </div>
                     </div>
                     <!-- // Actions Modals -->
+                    <!-- edit modal -->
                     <div id="myModal-editUpdate-employees" class="modal">
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span class="close" id='update-modal-close-employees'>&times;</span>
                             <div class="modal-form">
                                 <form>
-                                    <input type="text" id='hiddenprodid' style='position:absolute; visibility:hidden;'>
-                                    <label for="title">Name:</label>
-                                    <input type="text" id="edit-title" name="title"><br><br>
-                                    <label for="sku">SKU:</label>
-                                    <input type="text" id="edit-sku" name="sku"><br><br>
-                                    <label for="cost">Cost:</label>
-                                    <input type="number" id="edit-cost" name="cost" min='1'><br><br>
-
-                                    <label for="price">Price:</label>
-                                    <input type="number" id="edit-price" name="price" min='1'><br><br>
-                                    <label for="stock">Stock:</label>
-                                    <input type="number" id="edit-stock" name="stock" min='1'><br><br>
-                                    <label for="low">Low:</label>
-                                    <input type="number" id="edit-low" name="low" min='1'><br><br>
-
-                                    <input type="submit" value="Update Product" id='edit-submit'>
-
+                                    <input type="text" id='hiddenid-emp' style='position:absolute; visibility:hidden;'>
+                                    <label for="fname">firstname:</label>
+                                    <input type="text" id="edit-emp-fname" name='fname'><br><br>
+                                    <label for="lname">Lastname:</label>
+                                    <input type="text" id="edit-emp-lname" name="lname"><br><br>
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="edit-emp-email" name="email"><br><br>
+                                    <label for="phone">Phone:</label>
+                                    <input type="text" id="edit-emp-phone" name="phone"><br><br>
+                                    <input type="submit" value="Update Employee" id='edit-emp-submit'>
                                 </form>
                             </div>
                             <div class="error form-error" id='update-form-alert-error-employees'>
@@ -117,24 +110,22 @@
                                 <form>
 
                                     <h2>Deleting?</h2>
-                                    <input type="text" id='delete-hiddenprodid'
+                                    <input type="text" id='delete-hiddenid-emp'
                                         style='position:absolute; visibility:hidden;'>
-                                    <label for="title">Name:</label>
-                                    <input type="text" id="delete-title" disabled><br><br>
-                                    <label for="sku">SKU:</label>
-                                    <input type="text" id="delete-sku" disabled><br><br>
-                                    <label for="cost">Cost:</label>
-                                    <input type="text" id="delete-cost" disabled><br><br>
+                                    <label>firstname:</label>
+                                    <input type="text" id="del-emp-fname" disabled><br><br>
+                                    <label>Lastname:</label>
+                                    <input type="text" id="del-emp-lname" disabled><br><br>
+                                    <label>Username:</label>
+                                    <input type="text" id="del-emp-uname" disabled><br><br>
 
-                                    <label for="price">Price:</label>
-                                    <input type="text" id="delete-price" disabled><br><br>
-                                    <label for="stock">Stock:</label>
-                                    <input type="text" id="delete-stock" disabled><br><br>
-                                    <label for="low">Low:</label>
-                                    <input type="text" id="delete-low" disabled><br><br>
+                                    <label>Email:</label>
+                                    <input type="email" id="del-emp-email" disabled><br><br>
+                                    <label>Phone:</label>
+                                    <input type="text" id="del-emp-phone" disabled><br><br>
 
-                                    <button id='delete-confirm'>Confirm</button>
-                                    <button id='delete-cancel'>Cancel</button>
+                                    <button id='delete-confirm-employee'>Confirm</button>
+                                    <button id='delete-cancel-employee'>Cancel</button>
                                 </form>
                             </div>
 
@@ -148,7 +139,9 @@
                     </div>
                 </div>
 
+                <script src="{{ url_for('static', filename='scripts/shared.js') }}"> </script>
                 <script src="{{ url_for('static', filename='scripts/employees.js') }}"> </script>
+
             </div>
         </div>
     </body>

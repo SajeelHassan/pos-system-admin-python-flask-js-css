@@ -1,20 +1,14 @@
-
-
-//Event Listners
-
+//grabbing elements
 var nothing = document.getElementById('nothing');
-
-
 //GET AJAX REQUEST (ALl Inventory data) for inventory
 //Load Inventory
-
 var theInventory;
 
 var xmlObj = new XMLHttpRequest();
 xmlObj.open('get', 'incInventory', true);
 xmlObj.send();
-xmlObj.onload = function () {
-    if (this.status === 200) {
+xmlObj.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status === 200) {
         theInventory = JSON.parse(this.responseText);
         xmlObj.abort();
         // console.trace(theInventory);
@@ -26,7 +20,7 @@ xmlObj.onload = function () {
 }
 
 //sidebar Requesting
-var sidebar = document.getElementById
+
 
 //sidebar Requested
 
