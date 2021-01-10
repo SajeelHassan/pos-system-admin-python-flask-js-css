@@ -51,7 +51,7 @@ function createDataTable(arraysOfArrays) {
         // data[0] = `<input type="checkbox" >`;
         // newTable.rows[i + 1].cells[0].innerHTML = data[0];
         data[t_cols - 2] = `<a href="#" id="cust-detail-${data[0]}">View</a>`;
-        data[t_cols - 1] = `<div class="manage" id="cust-manage-${data[0]}"><span class='update-btn' onclick="updateModal(event)">&#9998;</span><span class='delete-btn' onclick="deleteModal(event)">&#10008;</span></div>`;
+        data[t_cols - 1] = `<div class="actions manage" id="cust-manage-${data[0]}"><span class='update-btn' onclick="updateModal(event)">&#9998;</span><span class='delete-btn' onclick="deleteModal(event)">&#10008;</span></div>`;
         data[0] = i + 1;
         for (let j = 0; j < t_cols; j++)
             newTable.rows[i + 1].cells[j].innerHTML = data[j];
