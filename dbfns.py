@@ -158,19 +158,19 @@ class DBFns:
                 mydb.close()
             return status
 
-    def addProdToReceipt(self, prod_id, sr_no, qty, total_price):
+    def addProdToReceipt(self,rcpt_id, prod_id, qty, total_price):
         mydb = None
         status = False
         try:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "INSERT INTO receiptproducts (prod_id,sr_no, qty, total_price) VALUES (%s,%s,%s,%s)"
-            args = (prod_id, sr_no, qty, total_price)
+            sql = "INSERT INTO receiptproducts (rcpt_id, prod_id, qty, total_price) VALUES (%s,%s,%s,%s)"
+            args = (rcpt_id, prod_id, qty, total_price)
             mydbCursor.execute(sql, args)
             mydb.commit()
             status = True
-            # self.updateStock(prod_id,qty)
+            self.updateStock(prod_id, qty)
         except Exception as e:
             print(str(e))
         finally:
@@ -224,17 +224,19 @@ class DBFns:
                 mydb.close()
             return status
 
-    def newReceipt(self, total_prod, total_rcpt_price, sold_by, cust_name, pay_status):
+    def saveReceipt(self, cust_id, emp_id, total_prod, total_rcpt_price, pay_status):
         mydb = None
         status = False
         try:
             mydb = pymysql.connect(
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
-            sql = "INSERT INTO receipt (total_prod,total_rcpt_price,sold_by,cust_name,pay_status,date_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO receipt (cust_id,emp_id, total_prod, total_rcpt_price, sold_by, cust_name, pay_status,date_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            args = (total_prod, total_rcpt_price, sold_by,
-                    cust_name, pay_status, createdOn)
+            sold_by = self.getEmpName(emp_id)
+            cust_name = self.getCustName(cust_id)
+            args = (cust_id, emp_id, total_prod, total_rcpt_price,
+                    sold_by, cust_name, pay_status, createdOn)
             mydbCursor.execute(sql, args)
             mydb.commit()
             status = True
@@ -244,6 +246,118 @@ class DBFns:
             if mydb != None:
                 mydb.close()
             return status
+
+    def getEmpName(self, id):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select emp_id,firstname,lastname from employee WHERE emp_id =%s"
+            args = (id)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            # print(myresult)
+            if myresult != None:
+                if myresult[0] == id:
+                    # print(myresult[8].strftime("%c"))
+                    # print(myresult[1])
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult[1]+' '+myresult[2]
+            else:
+                return status
+
+    def getCustName(self, id):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select cust_id,firstname,lastname from customer WHERE cust_id =%s"
+            args = (id)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            # print(myresult)
+            if myresult != None:
+                if myresult[0] == id:
+                    # print(myresult[8].strftime("%c"))
+                    # print(myresult[1])
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult[1]+' '+myresult[2]
+            else:
+                return status
+
+    def getlastReceiptIdEmp(self, id):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select rcpt_id,emp_id from receipt WHERE emp_id =%s ORDER BY rcpt_id DESC LIMIT 1"
+            args = (id)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            # print(myresult)
+            print(myresult[0])
+            if myresult != None:
+                if myresult[1] == id:
+                    print(myresult)
+                    # print(myresult[8].strftime("%c"))
+                    # print(myresult[1])
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult[0]
+            else:
+                return status
+
+    def getLastReceiptsEmp(self, id):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select * from receipt WHERE emp_id =%s ORDER BY rcpt_id DESC LIMIT 10"
+            args = (id)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchall()
+            # print(myresult)
+            print(myresult[0])
+            if myresult != None:
+                if myresult[0][2] == id:
+                    print(myresult)
+                    # print(myresult[8].strftime("%c"))
+                    # print(myresult[1])
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult
+            else:
+                return status
 
     def deleteReceipt(self, ordid):
         mydb = None

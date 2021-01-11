@@ -46,3 +46,14 @@ tbody {
     height:550px;   
    
 }
+.calculationDivs{
+    display: inline-flex;
+    flex-direction: column;
+
+}
+.subtotal-div .add-discount-div .total-div .status-of-payment-div{
+    display: flex;
+}
+.current-prod-qty{
+    width:50px;
+}

@@ -70,9 +70,12 @@ th{
   border-bottom:2px solid grey;
 } */
 .scrollableDiv{
-  height:500px; 
+  height:400px; 
   overflow-y:auto;
-   overflow-x:hidden;
+   overflow-x:visible;
+}
+.scrollableDiv600{
+  height: 600px;
 }
 
 .section-controls{

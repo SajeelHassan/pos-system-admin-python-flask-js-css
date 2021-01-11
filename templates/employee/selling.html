@@ -15,9 +15,9 @@
                 <a href="dropdown-logout-emp" class="account-emp">Ali Asad</a>
             </div>
         </div>
-        <div id="message-block-emp" class='error-notify-block'>
-            <div id="error-container-emp" class='error-info-container'>
-                <p id='errorMsg-emp' class='error-info'></p>
+        <div id="message-block-selling" class='error-notify-block'>
+            <div id="error-container-selling" class='error-info-container'>
+                <p id='errorMsg-selling' class='error-info'></p>
             </div>
         </div>
         <div class="section-main-title">My Shop</div>
@@ -36,35 +36,46 @@
                 <div id="nothing-search">
                     <h1>Nothing to see here --- yet</h1>
                     <h3>Search for an item</h3>
+                    <h2>Most Sellings Prods will be here</h2>
                 </div>
-                <div id="theFoundTableDiv" class='scrollableDiv'>
+                <div id="theFoundTableDiv" class='scrollableDiv scrollableDiv600'>
                 </div>
 
             </div>
             <div class="current-order-box">
                 <div class="section-title">Current Order</div>
                 <label for="select-customer">Select Customer</label>
-                <select name="select-customer" id="select-existing-customers" class='select-input'
-                    onchange="customerSelected(event)">
+                <select name="select-customer" id="select-existing-customers" class='select-input'>
                     <option id='order-cust-0000'>None/Walk-in</option>
                 </select>
-                OR
-                <button class="add-customer">Add New Customer</button>
+
                 <div id="theCartTable" class='scrollableDiv'>
                 </div>
                 <br>
-                <h2>Subtotal: <span id='subTotal-text'></span></h2>
-                <label for='add-discount'>Add Discount</label>
-                <input type="number" name="add-discount" id="current-order-add-discount" min="0">
-                <h2>Total: <span id='order-total-text'></span></h2>
-                <div id="status-of-payment">
-                    <button onclick="paidORunpaid(event)">Order Status</button>
-                    <div id="status-text" style='display:inline-block;'>
-                        <h3>Unpaid</h3>
+
+                <div class="calculationDivs">
+                    <div class="subtotal-div">
+                        <p>Subtotal:</p>
+                        <p id='subTotal-text'></p>
+                    </div>
+                    <div class="add-discount-div">
+                        <label for='add-discount'>Add Discount</label>
+                        <input type="number" value='0' name="add-discount" id="current-order-add-discount" min="0"
+                            disabled><span>Rupees </span>
+                    </div>
+                    <div class="total-div">
+                        <h3>Total bill:</h3>
+                        <p id='order-total-text'></p>
+                    </div>
+                    <div class="status-of-payment-div">
+                        <button onclick="paidORunpaid(event)">Order Status</button>
+                        <div id="status-text" style='display:inline-block;'>
+                            <h3 class='paid-status-text'>Unpaid</h3>
+                        </div>
                     </div>
                 </div>
                 <br>
-                <button id='proceed-to-pay-btn'>Proceed to Pay</button>
+                <button id='save-print-btn' disabled>Save & Print Receipt</button>
             </div>
 
         </div>

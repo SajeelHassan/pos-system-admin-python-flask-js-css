@@ -37,10 +37,15 @@ function loadCustomers() {
     }
 
 }
+var selectCustomer = document.getElementById('select-existing-customers');
+var selected_cust_id = 0;
+selectCustomer.addEventListener('change', customerSelected);
 function customerSelected(e) {
     let order_cust_id = (e.target.options[e.target.selectedIndex].id).substring(11);
+    console.log('customerSelected(e)=>> ', e.target);
+    console.log('customerSelected(e)=>> ', order_cust_id);
     order_cust_id = Number(order_cust_id);
-    console.log(typeof (order_cust_id));
+    selected_cust_id = order_cust_id;
     e.preventDefault();
 }
 
@@ -187,7 +192,7 @@ function updateRunningStock(cart_prod_id, event_target_id) {
 
 function updateQty(id) {
     for (let i = 0; i < currentOrderProds.length; i++) {
-        if (currentOrderProds[i].current_prod_id == id) {
+        if (currentOrderProds[i].current_prod_id === id) {
             currentOrderProds[i].prod_qty += 1;
             currentOrderProds[i].prod_priceXqty = currentOrderProds[i].prod_qty * currentOrderProds[i].prod_price;
             return true;
@@ -195,9 +200,15 @@ function updateQty(id) {
     }
     return false;
 }
+var saveNprntbtn = document.getElementById('save-print-btn');
+var disocuntInput = document.getElementById('current-order-add-discount');
 function createCartTable(currentOrderProds) {
     if (currentOrderProds.length >= 1) {
         // nothing.style.display = 'none';
+        saveNprntbtn.disabled = false;
+        saveNprntbtn.addEventListener('click', saveNPrint);
+        disocuntInput.disabled = false;
+        disocuntInput.addEventListener('input', updateTotalBill);
         var tableElement_cart = document.createElement('table');
         tableElement_cart.id = 'current-order-box-table';
         document.getElementById('theCartTable').appendChild(tableElement_cart);
@@ -208,7 +219,6 @@ function createCartTable(currentOrderProds) {
             row_cart = resultTabElement_cart.insertRow();
             for (let j = 0; j < 6; j++)
                 row_cart.insertCell();
-
         }
         //creating table head 
         var tablehead_cart = resultTabElement_cart.createTHead();
@@ -226,14 +236,17 @@ function createCartTable(currentOrderProds) {
         // populating the table
         for (let i = 0; i < currentOrderProds.length; i++) {
             //Change this section
-            let delAction = `<button id = 'cart-${currentOrderProds[i].cart_prod_id}' onclick = 'removeCart(event)'>Remove</button>`
-            data_cart = [i + 1, currentOrderProds[i].prod_title, currentOrderProds[i].prod_price, currentOrderProds[i].prod_qty, currentOrderProds[i].prod_priceXqty, delAction];
+            let delAction = `<button id = 'cart-${currentOrderProds[i].current_prod_id}' onclick = 'removeCartProd(event)'>Remove</button>`
+            let qty = `<input type="number" value='${currentOrderProds[i].prod_qty}' name="qty" id="qty-${currentOrderProds[i].current_prod_id}" class='current-prod-qty'
+            min="0" oninput='currentProdQty(event)'>`;
+            data_cart = [i + 1, currentOrderProds[i].prod_title, 'Rs. ' + currentOrderProds[i].prod_price, qty, 'Rs. ' + currentOrderProds[i].prod_priceXqty, delAction];
             // data_cart = [0, 1, 2, 3, 4, 5];
 
             for (let j = 0; j < 6; j++)
                 resultTabElement_cart.rows[i + 1].cells[j].innerHTML = data_cart[j];
             data_cart = [];
         }
+        calculateTotals(currentOrderProds);
 
     }
 }
@@ -241,21 +254,164 @@ function removeCartTable() {
 
     if (document.getElementById('current-order-box-table')) {
         document.getElementById('current-order-box-table').remove();
+        clearTotals();
+        saveNprntbtn.disabled = true;
+        saveNprntbtn.removeEventListener('click', saveNPrint);
+        disocuntInput.disabled = true;
+        disocuntInput.removeEventListener('input', updateTotalBill);
         // nothing.style.display = 'block';
     }
 }
+function removeCartProd(event) {
+    let id = event.target.id;
+    id = id.substring(5);
+    id = Number(id);
+    var index;
+    for (let i = 0; i < currentOrderProds.length; i++) {
+        if (currentOrderProds[i].current_prod_id == id) {
+            index = currentOrderProds.indexOf(currentOrderProds[i]);
+            if (index > -1) {
+                for (let j = 0; j < foundProducts.length; j++) {
+                    if (id == foundProducts[j][0]) {
+                        if (foundProducts[j][2] == 0) {
+                            let xmlString = foundProducts[j][4];
+                            let doc = new DOMParser().parseFromString(xmlString, "text/xml");
+                            document.getElementById(doc.firstChild.id).disabled = false;
+                        }
+                        foundProducts[j][2] = foundProducts[j][2] + currentOrderProds[i].prod_qty;
+                        let resultTable = document.getElementById('resultTable');
+                        resultTable.rows[j + 1].cells[1].innerHTML = foundProducts[j][2];
+
+                    }
+                }
+                currentOrderProds.splice(index, 1);
+                removeCartTable();
+                createCartTable(currentOrderProds);
+            }
+        }
+
+    }
 
 
-function updateTotals(currentOrderProds) {
+    event.preventDefault();
+}
+
+
+var subtotal, discount, total;
+function calculateTotals(currentOrderProds) {
+    let subtotal_text = document.getElementById('subTotal-text');
+    let discount_text = document.getElementById('current-order-add-discount');
+    let totalbill_text = document.getElementById('order-total-text');
+    // let status_text = document.getElementById('status-text');
+
+    subtotal = 0, discount = 0, total = 0;
+    for (let i = 0; i < currentOrderProds.length; i++)
+        subtotal += currentOrderProds[i].prod_priceXqty;
+    discount = Number(getDiscount());
+    console.log(discount, 'The discount');
+    total = subtotal - discount;
+    console.log(total, 'The total after discount');
+    subtotal_text.innerText = subtotal + ' Rs.';
+    totalbill_text.innerText = total + ' Rupees';
 
 }
 
+function clearTotals() {
+
+    let subtotal_text = document.getElementById('subTotal-text');
+    let totalbill_text = document.getElementById('order-total-text');
+    let discount_text = document.getElementById('current-order-add-discount');
+    subtotal_text.innerText = '';
+    discount_text.value = 0;
+    totalbill_text.innerText = '';
+}
+
+function getDiscount() {
+    let discount_text = document.getElementById('current-order-add-discount');
+    console.log('getDiscount FN : ', discount_text);
+    return discount_text.value;
+}
+function updateTotalBill(e) {
+    let subtotal_text = document.getElementById('subTotal-text');
+    let totalbill_update = document.getElementById('order-total-text');
+    let discount_text = document.getElementById('current-order-add-discount');
+    totalbill_update.innerText = subtotal + ' Rupees';
+    totalbill_update.innerText = subtotal - e.target.value;
+    totalbill_update.innerText += ' Rupees';
+    discount_text.value = e.target.value;
+    e.preventDefault();
+}
+function currentProdQty(event) {
+    let qty_prod_id = event.target.id;
+    console.log(event.target.value);
+    qty_prod_id = qty_prod_id.substring(4);
+    qty_prod_id = Number(qty_prod_id);
+    for (let i = 0; i < currentOrderProds.length; i++) {
+        if (currentOrderProds[i].current_prod_id === qty_prod_id) {
+            currentOrderProds[i].prod_qty = Number(event.target.value);
+            currentOrderProds[i].prod_priceXqty = currentOrderProds[i].prod_qty * currentOrderProds[i].prod_price;
+            removeCartTable();
+            createCartTable(currentOrderProds);
+        }
+    }
+
+    event.preventDefault();
+}
 function paidORunpaid(event) {
     var x = document.getElementById("status-text");
-    if (x.innerHTML === "<h3>Unpaid</h3>") {
-        x.innerHTML = "<h3>Paid</h3>";
+    if (x.innerText === "Unpaid") {
+        x.innerHTML = "<h3 class='paid-status-text' >Paid</h3>";
     } else {
-        x.innerHTML = "<h3>Unpaid</h3>";
+        x.innerHTML = "<h3 class='paid-status-text' >Unpaid</h3>";
     }
     event.preventDefault();
+}
+
+function saveNPrint(e) {
+
+    let saveNPrintXML = new XMLHttpRequest();
+    saveNPrintXML.open('post', '/incSavereceiptdata', true);
+    let custid = selected_cust_id;
+    let statuss = document.getElementById("status-text").innerText;
+    let disc = getDiscount();
+    let data = {
+        'orderProducts': currentOrderProds,
+        'cust_id': custid,
+        'subtotal': subtotal,
+        'discount': disc,
+        'total': subtotal - disc,
+        'status': statuss
+    };
+    saveNPrintXML.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText != 'VALID') {
+                let msgP = document.getElementById('errorMsg-selling');
+                msgP.innerText = 'Error! Server Problem';
+                let msgBlock = document.getElementById('message-block-selling');
+                msgBlock.style.display = 'block';
+                setTimeout(function () {
+                    msgBlock.style.display = 'none';
+                }, 3000);
+            }
+            else {
+                saveNprntbtn.disabled = true;
+                saveNprntbtn.removeEventListener('click', saveNPrint);
+                let msgP = document.getElementById('errorMsg-selling');
+                msgP.innerText = 'Success! Order Completed';
+                let msgBlock = document.getElementById('message-block-selling');
+                msgBlock.style.display = 'block';
+                setTimeout(function () {
+                    msgBlock.style.display = 'none';
+                    window.open('/printReceipt', '_Blank');
+                    location.reload();
+                }, 3000);
+            }
+        }
+    };
+    saveNPrintXML.setRequestHeader("content-Type", "application/json");
+    data = JSON.stringify(data);
+    saveNPrintXML.send(data);
+
+
+    e.preventDefault();
 }

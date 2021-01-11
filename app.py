@@ -195,5 +195,35 @@ def incAvailableCustomer():
     return jsonify(myavailableCustomers)
 
 
+# inc Selling Routes
+
+
+@app.route('/incSavereceiptdata', methods=['GET', 'POST'])
+def incSavereceiptdata():
+    data = request.get_json(silent=True)
+    cust_id = data['cust_id']
+    emp_id = 3  # From session Session
+    total_prod = len(data['orderProducts'])
+    total_rcpt_price = data['total']
+    pay_status = data['status']
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    if obj.saveReceipt(cust_id, emp_id, total_prod, total_rcpt_price, pay_status):
+        rcpId = obj.getlastReceiptIdEmp(3)
+        for prod in data['orderProducts']:
+            obj.addProdToReceipt(
+                rcpId, prod['current_prod_id'], prod['prod_qty'], prod['prod_price'])
+        return 'VALID'
+    #     if obj.addReceiptProducts(data['orderProducts']):
+    #         return 'VALID'
+    #     else:
+    #         obj.deleteReceipt()
+    return 'INVALID'
+
+
+@app.route('/printReceipt')
+def printReceipt():
+    return 'Receipt with Print Button will be here'
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
