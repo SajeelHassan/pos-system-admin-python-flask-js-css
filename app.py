@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template, session, jsonify, redirect, url_for
 from dbfns import DBFns
-import re
 
 app = Flask(__name__)
 app.secret_key = 's@#*je09el%^&'
+
+# s
 
 
 @app.route('/incCustomers')
@@ -150,6 +151,48 @@ def menuSupport():
 @ app.route('/settings')
 def adminSettings():
     return render_template('./admin/settings.html')
+
+# Selling Routes and Things
+
+
+@app.route('/selling')
+def selling():
+    return render_template('./employee/login.html')
+
+
+@app.route('/selling/')
+@app.route('/selling/<subselling>')
+def subselling(subselling='hello'):
+    return render_template('./employee/login.html', sellingvar=subselling)
+
+
+@app.route('/sales/<lempid>/sell')
+def empidDashboard(lempid):
+    return render_template('./employee/selling.html')
+
+
+# inc Employee routes
+
+@app.route('/incEmpLogin', methods=['GET', 'POST'])
+def incEmpLogin():
+    loginInfo = request.get_json(silent=True)
+    return 'VALID'
+
+
+@app.route('/incAvailableInventory')
+def incAvailableInventory():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    myavailableInventory = obj.getsellingProducts()
+    # print(myavailableInventory)
+    return jsonify(myavailableInventory)
+
+
+@app.route('/incAvailableCustomer')
+def incAvailableCustomer():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    myavailableCustomers = obj.getAllCustomers()
+    # print(myavailableInventory)
+    return jsonify(myavailableCustomers)
 
 
 if __name__ == "__main__":

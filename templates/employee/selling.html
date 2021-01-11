@@ -1,11 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - Selling</title>
-</head>
-<body>
-    <h1>Selling</h1>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../static/styles/shared.css">
+        <link rel="stylesheet" href="../../static/styles/selling.css">
+        <title>Selling Point</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <a href="dropdown-logout-emp" class="account-emp">Ali Asad</a>
+            </div>
+        </div>
+        <div id="message-block-emp" class='error-notify-block'>
+            <div id="error-container-emp" class='error-info-container'>
+                <p id='errorMsg-emp' class='error-info'></p>
+            </div>
+        </div>
+        <div class="section-main-title">My Shop</div>
+        <div class="main">
+            <div class="last-transactions-container">
+                <div class="section-title">Recent Orders/Receipts</div>
+                <div class="last-transactions">
+
+                </div>
+            </div>
+            <div class="search-area-emp" id='search-available-products'>
+                <div class="section-title">Search Products</div>
+                <span id='search-sell-inventory-logo' for='search-products'>&#128269</span><input type="text"
+                    name="search-products" id="search-sell-inventory" placeholder='Search for an item'>
+                <div>
+                    <div id="nothing-search">
+                        <h1>Nothing to see here --- yet</h1>
+                        <h3>Search for an item</h3>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="current-order-box">
+                <div class="section-title">Current Order</div>
+                <label for="select-customer">Select Customer</label>
+                <select name="select-customer" id="select-existing-customers" class='select-input'
+                    onchange="customerSelected(event)">
+                    <option id='order-cust-0000'>None/Walk-in</option>
+                </select>
+                OR
+                <button class="add-customer">Add New Customer</button>
+                <table id='current-order-box-table' class='current-order-table'>
+
+                </table> <br>
+                <h2>Subtotal: <span>800 Rs</span></h2>
+                <label for='add-discount'>Add Discount</label>
+                <input type="number" name="add-discount" id="current-order-add-discount">
+                <h2>Total: <span>800 Rs</span></h2>
+                <button id='proceed-to-pay'>Proceed to Pay</button>
+            </div>
+
+        </div>
+        <!-- <script src="{{ url_for('static', filename='scripts/shared.js') }}"> </script> -->
+        <script src="{{ url_for('static', filename='scripts/selling.js') }}"> </script>
+    </body>
+
 </html>

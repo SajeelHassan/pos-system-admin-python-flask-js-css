@@ -427,6 +427,28 @@ class DBFns:
             else:
                 return status
 
+    def getsellingProducts(self):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select prod_id,title,stock,price from products ORDER BY created_on DESC"
+            mydbCursor.execute(sql)
+            myresult = mydbCursor.fetchall()
+            if myresult != None:
+                status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult
+            else:
+                return status
+
 
 if __name__ == "__main__":
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')

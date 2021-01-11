@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
 *{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Source Sans Pro','Segoe UI',sans-serif;
     box-sizing: border-box;
     margin:0;
 }
@@ -9,7 +10,7 @@ body{
 }
 
 .container{
-    width:75%;
+    width:1500px;
     margin:0 auto;
     background-color:#eeee;
 }
@@ -45,31 +46,32 @@ body{
     float:left;
     width:100%;
 }
-table,
-th,
-td {
-  border: 1px solid black;
-  
-}
 
-th {
-  display: table-cell;
-  vertical-align: inherit;
-  font-weight: bold;
-  text-align: -internal-center;
-}
-tr,
-table {
-  border-collapse: separate;
-  border-spacing: 2px;
- 
-  width: 100%;
-}
-tbody{
-    overflow:scroll;
-}
 table {
   margin-top: 15px;
+  border-collapse: collapse;
+  width: 100%;
+}
+td,th{
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  text-align: left;
+  background-color: #F5F6FA;
+  color: #A3A6B4;
+  font-weight: bold;
+}
+/* tr:nth-child(even){background-color: #f2f2f2;} */
+/* tr{
+  border-bottom:2px solid grey;
+} */
+tbody{
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .section-controls{
     margin-top:10px;
@@ -169,3 +171,29 @@ table {
   .delete-btn{
     color:red;
   }
+
+  /* error Block */
+  .error-notify-block {
+    display: none;
+    position: absolute;
+    background-color: white;
+    left: 275px;
+    top: 20px;
+    width: 290px;
+    height: 70px;
+    border-radius: 6px;
+    box-shadow: 0px 10px 14px 0px rgba(173, 171, 173, 0.57);
+}
+
+.error-info-container p {
+    text-align: center;
+    position: relative;
+    margin: 25px auto;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* .error-notify-block {
+    display: none;
+} */
