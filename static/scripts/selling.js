@@ -73,7 +73,7 @@ function createResultTable(foundArray) {
         nothing.style.display = 'none';
         let resultTabElement = document.createElement('table');
         resultTabElement.id = 'resultTable';
-        document.getElementById('search-available-products').append(resultTabElement);
+        document.getElementById('theFoundTableDiv').appendChild(resultTabElement);
         let row;
         let resultTable = document.getElementById('resultTable');
         //Inserting New Row
@@ -124,27 +124,138 @@ function removeResultTable() {
 
 
 // Add to current order
+var currentOrderProds = [];
+var currentOrderSingleProd = {
+    current_prod_id: 89,
+    prod_title: "Biscuit",
+    prod_price: 200,
+    prod_qty: 1,
+    prod_priceXqty: 200
+};
 
 function addToOrder(event) {
     let cart_prod_id = event.target.id;
     cart_prod_id = cart_prod_id.substring(4);
     cart_prod_id = Number(cart_prod_id);
+    updateRunningStock(cart_prod_id, event.target.id);
+    // for (let i = 0; i < foundProducts.length; i++) {
+    //     if (cart_prod_id == foundProducts[i][0]) {
+    //         foundProducts[i][2] = foundProducts[i][2] - 1;
+    //         let resultTable = document.getElementById('resultTable');
+    //         resultTable.rows[i + 1].cells[1].innerHTML = foundProducts[i][2];
+    //         if (foundProducts[i][2] == 0) {
+    //             document.getElementById(event.target.id).disabled = true;
+    //         }
+    //         updateQty(cart_prod_id);
+    //         creatCartTable(currentOrderProds);
+    //         break;
+    //     }
+    // }
+
+    // console.log(resultTable);
+    event.preventDefault();
+}
+function updateRunningStock(cart_prod_id, event_target_id) {
+    // console.log('its worrking');
     for (let i = 0; i < foundProducts.length; i++) {
         if (cart_prod_id == foundProducts[i][0]) {
             foundProducts[i][2] = foundProducts[i][2] - 1;
             let resultTable = document.getElementById('resultTable');
             resultTable.rows[i + 1].cells[1].innerHTML = foundProducts[i][2];
             if (foundProducts[i][2] == 0) {
-                document.getElementById(event.target.id).disabled = true;
+                document.getElementById(event_target_id).disabled = true;
+            }
+            if (updateQty(cart_prod_id) == false) {
+                currentOrderSingleProd = {
+                    current_prod_id: cart_prod_id,
+                    prod_title: foundProducts[i][1],
+                    prod_price: foundProducts[i][3],
+                    prod_qty: 1,
+                    prod_priceXqty: foundProducts[i][3]
+                };
+                currentOrderProds.push(currentOrderSingleProd);
+                currentOrderSingleProd = {};
 
             }
+
+            removeCartTable();
+            createCartTable(currentOrderProds);
             break;
         }
     }
-
-    console.log(resultTable);
-    event.preventDefault();
 }
-function updateRunningStock() {
 
+function updateQty(id) {
+    for (let i = 0; i < currentOrderProds.length; i++) {
+        if (currentOrderProds[i].current_prod_id == id) {
+            currentOrderProds[i].prod_qty += 1;
+            currentOrderProds[i].prod_priceXqty = currentOrderProds[i].prod_qty * currentOrderProds[i].prod_price;
+            return true;
+        }
+    }
+    return false;
+}
+function createCartTable(currentOrderProds) {
+    if (currentOrderProds.length >= 1) {
+        // nothing.style.display = 'none';
+        var tableElement_cart = document.createElement('table');
+        tableElement_cart.id = 'current-order-box-table';
+        document.getElementById('theCartTable').appendChild(tableElement_cart);
+        var row_cart;
+        var resultTabElement_cart = document.getElementById('current-order-box-table');
+        //Inserting New Row
+        for (let i = 0; i < currentOrderProds.length; i++) {
+            row_cart = resultTabElement_cart.insertRow();
+            for (let j = 0; j < 6; j++)
+                row_cart.insertCell();
+
+        }
+        //creating table head 
+        var tablehead_cart = resultTabElement_cart.createTHead();
+        row_cart = tablehead_cart.insertRow();
+        for (let i = 0; i < 6; i++)
+            row_cart.append(document.createElement('th'));
+        tablehead_cart.rows[0].cells[0].innerText = "#";
+        tablehead_cart.rows[0].cells[1].innerText = "Name";
+        tablehead_cart.rows[0].cells[2].innerText = "Price";
+        tablehead_cart.rows[0].cells[3].innerText = "Qty";
+        tablehead_cart.rows[0].cells[4].innerText = "Total";
+        tablehead_cart.rows[0].cells[5].innerText = "Remove";
+
+        let data_cart = [];
+        // populating the table
+        for (let i = 0; i < currentOrderProds.length; i++) {
+            //Change this section
+            let delAction = `<button id = 'cart-${currentOrderProds[i].cart_prod_id}' onclick = 'removeCart(event)'>Remove</button>`
+            data_cart = [i + 1, currentOrderProds[i].prod_title, currentOrderProds[i].prod_price, currentOrderProds[i].prod_qty, currentOrderProds[i].prod_priceXqty, delAction];
+            // data_cart = [0, 1, 2, 3, 4, 5];
+
+            for (let j = 0; j < 6; j++)
+                resultTabElement_cart.rows[i + 1].cells[j].innerHTML = data_cart[j];
+            data_cart = [];
+        }
+
+    }
+}
+function removeCartTable() {
+
+    if (document.getElementById('current-order-box-table')) {
+        document.getElementById('current-order-box-table').remove();
+        // nothing.style.display = 'block';
+    }
+}
+
+
+function updateTotals(currentOrderProds) {
+
+}
+
+function paidORunpaid(event) {
+    var x = document.getElementById("status-text");
+    if (x.innerHTML === "<h3>Unpaid</h3>") {
+        x.innerHTML = "<h3>Paid</h3>";
+    } else {
+        x.innerHTML = "<h3>Unpaid</h3>";
+    }
+    event.preventDefault();
 }

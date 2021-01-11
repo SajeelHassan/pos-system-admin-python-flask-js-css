@@ -69,10 +69,12 @@ th{
 /* tr{
   border-bottom:2px solid grey;
 } */
-tbody{
-  overflow-x: hidden;
-  overflow-y: scroll;
+.scrollableDiv{
+  height:500px; 
+  overflow-y:auto;
+   overflow-x:hidden;
 }
+
 .section-controls{
     margin-top:10px;
     display: flex;

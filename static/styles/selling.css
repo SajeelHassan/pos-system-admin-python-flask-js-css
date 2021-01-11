@@ -32,18 +32,17 @@
     margin-left: 20px;
 }
 .current-order-table{
-    height:450px;
+
     background-color: green;
 }
-.select-input{
-    overflow-y: auto;
-}
+
 table{
     width:95%;
 }
-thead, tbody {  }
+thead th{
+    position: sticky;
+}
 tbody {
     height:550px;   
    
-    overflow:scroll;
 }

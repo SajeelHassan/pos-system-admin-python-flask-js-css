@@ -32,12 +32,12 @@
                 <div class="section-title">Search Products</div>
                 <span id='search-sell-inventory-logo' for='search-products'>&#128269</span><input type="text"
                     name="search-products" id="search-sell-inventory" placeholder='Search for an item'>
-                <div>
-                    <div id="nothing-search">
-                        <h1>Nothing to see here --- yet</h1>
-                        <h3>Search for an item</h3>
-                    </div>
 
+                <div id="nothing-search">
+                    <h1>Nothing to see here --- yet</h1>
+                    <h3>Search for an item</h3>
+                </div>
+                <div id="theFoundTableDiv" class='scrollableDiv'>
                 </div>
 
             </div>
@@ -50,14 +50,21 @@
                 </select>
                 OR
                 <button class="add-customer">Add New Customer</button>
-                <table id='current-order-box-table' class='current-order-table'>
-
-                </table> <br>
-                <h2>Subtotal: <span>800 Rs</span></h2>
+                <div id="theCartTable" class='scrollableDiv'>
+                </div>
+                <br>
+                <h2>Subtotal: <span id='subTotal-text'></span></h2>
                 <label for='add-discount'>Add Discount</label>
-                <input type="number" name="add-discount" id="current-order-add-discount">
-                <h2>Total: <span>800 Rs</span></h2>
-                <button id='proceed-to-pay'>Proceed to Pay</button>
+                <input type="number" name="add-discount" id="current-order-add-discount" min="0">
+                <h2>Total: <span id='order-total-text'></span></h2>
+                <div id="status-of-payment">
+                    <button onclick="paidORunpaid(event)">Order Status</button>
+                    <div id="status-text" style='display:inline-block;'>
+                        <h3>Unpaid</h3>
+                    </div>
+                </div>
+                <br>
+                <button id='proceed-to-pay-btn'>Proceed to Pay</button>
             </div>
 
         </div>
