@@ -52,88 +52,17 @@
                     <!-- commented -->
 
                     <!-- commentend -->
-                    <!-- Add Receipt Modal content -->
-                    <!-- <div id="myModal-addform-receipts" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <div class="modal-form">
-                                <form>
-                                    <label for="fname">firstname:</label>
-                                    <input type="text" id="cust-fname" name='fname'><br><br>
-                                    <label for="lname">Lastname:</label>
-                                    <input type="text" id="cust-lname" name="lname"><br><br>
-                                    <label for="email">Email:</label>
-                                    <input type="email" id="cust-email" name="email"><br><br>
-                                    <label for="phone">Phone:</label>
-                                    <input type="text" id="cust-phone" name="phone"><br><br>
-                                    <input type="submit" value="Add Customer" id='cust-submit'>
 
-                                </form>
-                            </div>
-                            <div class="error form-error" id='form-alert-error-receipts'>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- // Actions Modals -->
-                    <div id="myModal-editUpdate-receipts" class="modal">
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close" id='update-modal-close-receipts'>&times;</span>
-                            <div class="modal-form">
-                                <form>
-                                    <input type="text" id='hiddenprodid' style='position:absolute; visibility:hidden;'>
-                                    <label for="fname">firstname:</label>
-                                    <input type="text" id="edit-cust-fname" name='fname'><br><br>
-                                    <label for="lname">Lastname:</label>
-                                    <input type="text" id="edit-cust-lname" name="lname"><br><br>
-                                    <label for="email">Email:</label>
-                                    <input type="email" id="edit-cust-email" name="email"><br><br>
-                                    <label for="phone">Phone:</label>
-                                    <input type="text" id="edit-cust-phone" name="phone"><br><br>
-                                    <input type="submit" value="Update Customer" id='edit-cust-submit'>
 
-                                </form>
-                            </div>
-                            <div class="error form-error" id='update-form-alert-error-receipts'>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="myModal-delete-receipts" class="modal">
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close" id='delete-modal-close-receipts'>&times;</span>
-                            <div class="modal-form">
-                                <form>
-                                    <h2>Deleting?</h2>
-                                    <input type="text" id='delete-hiddenid-cust'
-                                        style='position:absolute; visibility:hidden;'>
-                                    <label>firstname:</label>
-                                    <input type="text" id="del-cust-fname" disabled><br><br>
-                                    <label>Lastname:</label>
-                                    <input type="text" id="del-cust-lname" disabled><br><br>
-                                    <label>Username:</label>
-                                    <input type="text" id="del-cust-uname" disabled><br><br>
-
-                                    <label>Email:</label>
-                                    <input type="email" id="del-cust-email" disabled><br><br>
-                                    <label>Phone:</label>
-                                    <input type="text" id="del-cust-phone" disabled><br><br>
-
-                                    <button id='delete-confirm-customer'>Confirm</button>
-                                    <button id='delete-cancel-customer'>Cancel</button>
-                                </form>
-                            </div>
-                            <div class="error form-error" id='delete-form-alert-error-receipts'>
-                            </div>
-                        </div>
-                    </div>
                     <div id="nothing-receipts">
                         <h1>Nothing to see here --- yet</h1>
+                    </div>
+                    <div id="receipts-table-div" class='receipts-table scrollableDiv h-page'>
                     </div>
                 </div>
 
                 <script src="{{ url_for('static', filename='scripts/shared.js') }}"> </script>
-                <script src="{{ url_for('static', filename='scripts/receipt.js') }}"> </script>
+                <script src="{{ url_for('static', filename='scripts/receipts.js') }}"> </script>
             </div>
         </div>
     </body>

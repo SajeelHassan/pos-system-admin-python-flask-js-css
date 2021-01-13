@@ -465,6 +465,28 @@ class DBFns:
                 mydb.close()
             return status
 
+    def getAllReceipts(self):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select * from receipt ORDER BY date_time DESC"
+            mydbCursor.execute(sql)
+            myresult = mydbCursor.fetchall()
+            if myresult != None:
+                status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult
+            else:
+                return status
+
     def deleteReceipt(self, ordid):
         mydb = None
         status = False
@@ -692,6 +714,52 @@ class DBFns:
             else:
                 return status
 
+    def empSignUpVerify(self, username):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select emp_id,username from emplogin WHERE username=%s"
+            args = (username)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            print('empSignUpVerify', myresult)
+            if myresult != None:
+                if myresult[1] == username:
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+
+            return status
+
+    def getEmpPassword(self, username):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select emp_id,username,password from emplogin WHERE username=%s"
+            mydbCursor.execute(sql, username)
+            myresult = mydbCursor.fetchone()
+            if myresult != None:
+                if myresult[1] == username:
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult[2]
+            else:
+                return status
+
     def emploginVerify(self, username, password):
         mydb = None
         status = False
@@ -706,6 +774,71 @@ class DBFns:
             print('emploginVerify', myresult)
             if myresult != None:
                 if myresult[1] == username:
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+
+            return status
+
+    def isUnameRegistered(self, username):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select emp_id,username from employee WHERE username=%s"
+            args = (username)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            print('empRegistered', myresult)
+            if myresult != None:
+                if myresult[1] == username:
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+
+            return status
+
+    def signupEmployee(self, empid, username, password):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "INSERT INTO emplogin (emp_id, username, password) VALUES (%s,%s,%s)"
+            args = (empid, username, password)
+            mydbCursor.execute(sql, args)
+            mydb.commit()
+            status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            return status
+
+    def adminLogin(self, username, password):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select username,password from adminlogin WHERE username=%s AND password=%s"
+            args = (username, password)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            print('emploginVerify', myresult)
+            if myresult != None:
+                if myresult[0] == username and myresult[1] == password:
                     status = True
         except Exception as e:
             print(str(e))

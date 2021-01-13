@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
-</head>
-<body>
-    <h1>Admin Login</h1>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Login</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div id="message-block" class='error-notify-block'>
+                <div id="error-container" class='error-info-container'>
+                    <p id='errorMsg-emp' class='error-info'></p>
+                </div>
+            </div>
+            <div id="message-block-success" class='success-notify-block'>
+                <div id="success-container" class='success-info-container'>
+                    <p id='successMsg' class='success-info'></p>
+                </div>
+            </div>
+            <div class="login-form-container" id='login-form'>
+                <h2>Login</h2>
+                <p>Use credentials provided by sofware team</p> <br>
+                <form class="login-form">
+                    <label for="uname">Username</label><br>
+                    <input type="text" name='username' placeholder='Enter Username' id='login-uname'> <br>
+                    <br>
+                    <label for="pwd">Password</label> <br>
+                    <input type="password" name='pwd' placeholder='Enter Password' id='login-pwd'><br><br><br>
+                    <button type="submit" id='login-submit'>Login</button><br><br>
+                </form>
+            </div>
+
+
+            <script src="{{ url_for('static', filename='scripts/adminlogin.js') }}"> </script>
+    </body>
+
 </html>

@@ -1,8 +1,16 @@
 from flask import Flask, request, render_template, session, jsonify, redirect, url_for
 from dbfns import DBFns
-
+from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 app.secret_key = 's@#*je/%//0$$/l%^&'
+bcrypt = Bcrypt(app)
+
+
+@app.route('/incReceipts')
+def incReceipts():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    allReceipts = obj.getAllReceipts()
+    return jsonify(allReceipts)
 
 
 @app.route('/incCustomers')
@@ -186,6 +194,32 @@ def empidDashboard(lempid):
 
 # inc Employee routes
 
+@app.route('/incEmpSignup', methods=["GET", "POST"])
+def incEmpSignup():
+    if request.method == "POST":
+        signupInfo = request.get_json(silent=True)
+        response = False
+        try:
+            obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+            if obj.isUnameRegistered(signupInfo['username']):
+                empId = obj.getEmpId(signupInfo['username'])
+                print(empId)
+                print(type(empId))
+                if empId:
+                    # hashed_pwd = bcrypt.generate_password_hash(
+                    #     signupInfo['password']).decode('utf-8')
+                    if obj.signupEmployee(empId, signupInfo['username'], signupInfo['password']):
+                        response = True
+        except Exception as e:
+            print(str(e))
+            response = False
+        if response:
+            return jsonify(empId)
+        else:
+            return 'INVALID'
+    else:
+        return redirect(url_for("sellLoginSignup"))
+
 
 @app.route('/incEmpLogin', methods=['GET', 'POST'])
 def incEmpLogin():
@@ -198,12 +232,21 @@ def incEmpLogin():
             # print('logged in id: ', empID)
             if empID:
                 if obj.emploginVerify(loginInfo['username'], loginInfo['password']):
-                    # print('getEmpIDforSession ', empID)
+                    # checkingPwd = obj.getEmpPassword(loginInfo['username'])
+                    # print(loginInfo['password'])
+                    # print(checkingPwd)
+                    # if bcrypt.check_password_hash(checkingPwd, loginInfo['password']):
                     session["loggedInEmpId"] = empID
                     print('logged in id: ', empID)
                     print('logged in Session id: ', empID)
                     response = True
-        except Exception:
+                    # else:
+                    #     print(bcrypt.generate_password_hash(
+                    #         '11').decode('utf-8'))
+                    #     print(checkingPwd)
+                    #     print('not matched pwd')
+        except Exception as e:
+            print(str(e))
             response = False
         finally:
             if response:
@@ -270,6 +313,27 @@ def incSavereceiptdata():
         return redirect(url_for("sellLoginSignup"))
 
 
+@app.route('/viewReceipt/<int:ordid>')
+def viewReceipt(ordid):
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    data = obj.getTheReceipt(ordid)
+    if data:
+        return render_template('finalReceipt.html', data=data)
+    return render_template('finalReceipt.html', message='NO Order Exists')
+
+    # if "loggedInEmpId" in session:
+    #    try:
+    #        empid = session["loggedInEmpId"]  # from session of employee
+    #        print(empid)
+    #        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    #        data = obj.getTheReceipt(ordid)
+    #        if data:
+    #             return render_template('finalReceipt.html', data=data)
+    #         return render_template('finalReceipt.html', message='NO Order Exists')
+    # else:
+    #     return redirect(url_for("sellLoginSignup"))
+
+
 @app.route('/printReceipt/<int:ordid>')
 def printReceipt(ordid):
     if "loggedInEmpId" in session:
@@ -283,6 +347,29 @@ def printReceipt(ordid):
         return render_template('finalReceipt.html', message='Only Admin can View that Receipt')
     else:
         return redirect(url_for("sellLoginSignup"))
+
+# admin
+
+
+@app.route('/admin')
+def adminlogin():
+    if "adminLoggedIn" in session:
+        return redirect(url_for('home'))
+    return render_template('./admin/login.html')
+
+
+@app.route('/incAdminLogin', methods=['GET', 'POST'])
+def adminloginverify():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        if obj.adminLogin(data['username'], data['password']):
+            session['adminLoggedIn'] = True
+            return 'VALID'
+        else:
+            return 'INVALID'
+    else:
+        return redirect(url_for("adminlogin"))
 
 
 if __name__ == "__main__":

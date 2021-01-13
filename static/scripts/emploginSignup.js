@@ -1,6 +1,6 @@
 //Grabbing Btns
 var loginBtn = document.getElementById('login-submit-emp');
-var toSignpBtn = document.getElementById('already-signup-emp');
+var toSignpForm = document.getElementById('employee-signup-emp');
 
 //Grabbing Login-form Feilds
 var l_uname = document.getElementById('login-emp-uname');
@@ -52,7 +52,6 @@ function onLogin(event) {
             }
         }
         xmlObj.setRequestHeader("content-Type", "application/json");
-        token = ""
         xmlObj.send(jsonString);
     }
     event.preventDefault();
@@ -63,6 +62,82 @@ function notEmpty() {
     return true;
 }
 
-
-
 // Signup Area
+//Event Listeners
+
+var signup_btn = document.getElementById('signup-submit-emp');
+var signup_uname = document.getElementById('signup-emp-uname');
+var signup_pwd = document.getElementById('signup-emp-pwd');
+var signup_pwd_confirm = document.getElementById('signup-emp-pwd-confirm');
+
+signup_btn.addEventListener('click', onSignup);
+function onSignup(e) {
+    if (isEmptySignup() != true) {
+        let msgP = document.getElementById('errorMsg-emp');
+        msgP.innerText = 'Empty Field/Fields - Fill and Click Signup';
+        let msgBlock = document.getElementById('message-block-emp');
+        msgBlock.style.display = 'block';
+        setTimeout(function () {
+            msgBlock.style.display = 'none';
+        }, 3000);
+    }
+    else {
+        if (signup_pwd.value != signup_pwd_confirm.value) {
+            let msgP = document.getElementById('errorMsg-emp');
+            msgP.innerText = 'Those passwords didn\'t match. Try again';
+            let msgBlock = document.getElementById('message-block-emp');
+            msgBlock.style.display = 'block';
+            setTimeout(function () {
+                msgBlock.style.display = 'none';
+            }, 3000);
+        }
+        else {
+            let data = {
+                "username": `${signup_uname.value}`,
+                "password": `${signup_pwd}`
+            }
+            let jsonString = JSON.stringify(data);
+            let signUpxmlObj = new XMLHttpRequest();
+            signUpxmlObj.open('post', '/incEmpSignup', true);
+            signUpxmlObj.onload = function () {
+                if (this.status === 200) {
+                    if (this.responseText == 'INVALID') {
+                        let msgP = document.getElementById('errorMsg-emp');
+                        msgP.innerText = 'Error! Contact Admin';
+                        let msgBlock = document.getElementById('message-block-emp');
+                        msgBlock.style.display = 'block';
+                        setTimeout(function () {
+                            msgBlock.style.display = 'none';
+                        }, 3000);
+
+                    }
+                    else {
+                        let msgP = document.getElementById('successMsg-emp');
+                        msgP.innerText = 'Account has been created! You Can signup Now';
+                        let msgBlock = document.getElementById('message-block-success-emp');
+                        msgBlock.style.display = 'block';
+                        setTimeout(function () {
+                            msgBlock.style.display = 'none';
+                            location.reload();
+                        }, 3000);
+
+                    }
+                }
+            }
+            signUpxmlObj.setRequestHeader("content-Type", "application/json");
+
+            signUpxmlObj.send(jsonString);
+        }
+
+
+
+    }
+
+    e.preventDefault();
+}
+function isEmptySignup() {
+    if (signup_uname.value == "" || signup_pwd.value == '' || signup_pwd_confirm.value == '') {
+        return false
+    }
+    return true
+}

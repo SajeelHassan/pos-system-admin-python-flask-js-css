@@ -459,9 +459,9 @@ function saveNPrint(e) {
                 let ordId = JSON.parse(this.responseText);
                 console.log('ordID Parsed: ', ordId);
                 // console.log(this.responseText);
-                let msgP = document.getElementById('errorMsg-selling');
-                msgP.innerText = 'Success! Order Completed';
-                let msgBlock = document.getElementById('message-block-selling');
+                let msgP = document.getElementById('successMsg-emp');
+                msgP.innerText = 'Order Completed! Creating Receipt.....';
+                let msgBlock = document.getElementById('message-block-success-emp');
                 msgBlock.style.display = 'block';
                 setTimeout(function () {
                     msgBlock.style.display = 'none';
