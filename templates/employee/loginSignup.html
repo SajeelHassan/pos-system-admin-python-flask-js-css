@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../static/styles/shared.css">
+        <title>Employee Login / Signup</title>
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div id="message-block-emp" class='error-notify-block'>
+                <div id="error-container-emp" class='error-info-container'>
+                    <p id='errorMsg-emp' class='error-info'></p>
+                </div>
+            </div>
+            <div class="login-form-container" id='login-form-emp'>
+                <h2>Login</h2>
+                <p>Doesn't have an account yet? <span><a>Signup</a></span></p> <br>
+                <form class="login-form">
+                    <label for="uname">Username</label><br>
+                    <input type="text" name='username' placeholder='your selling username' id='login-emp-uname'> <br>
+                    <br>
+                    <label for="pwd">Password</label> <br>
+                    <input type="password" name='pwd' placeholder='Your Password' id='login-emp-pwd'><br><br><br>
+                    <button type="submit" id='login-submit-emp'>Login</button><br><br>
+                </form>
+            </div>
+            <div class="signup-form-container" id='signup-form-emp'>
+                <h2>Signup</h2>
+                <p>Already have an Employee account? <span><a>Login</a></span></p> <br>
+                <form class="signup-form">
+                    <label for="signup-uname">Username</label><br>
+                    <input type="text" name='signup-uname' placeholder='provided by Admin' id='signup-emp-uname'>
+                    <br><br>
+                    <label for="signup-pwd">Password</label> <br>
+                    <input type="password" name='signup-pwd' placeholder='Password' id='signup-emp-pwd'><br><br>
+                    <label for="signup-pwd-confirm">Confirm Password</label> <br>
+                    <input type="password" name='signup-pwd-confirm' placeholder='Confirm Password'
+                        id='signup-emp-pwd-confirm'><br><br>
+                    <button type="submit" id='signup-submit-emp'>Signup</button><br><br>
+                </form>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='scripts/shared.js') }}"> </script>
+        <script src="{{ url_for('static', filename='scripts/emploginSignup.js') }}"> </script>
+    </body>
+
+</html>

@@ -33,7 +33,7 @@ function onLogin(event) {
         xmlObj.open('post', '/incEmpLogin', true);
         xmlObj.onreadystatechange = function () {
             if (this.readyState == 4 && this.status === 200) {
-                if (this.responseText != 'VALID') {
+                if (this.responseText == 'INVALID') {
                     l_uname.value = '';
                     l_pwd.value = '';
                     let msgP = document.getElementById('errorMsg-emp');
@@ -45,8 +45,9 @@ function onLogin(event) {
                     }, 3000);
                 }
                 else {
-                    id = 90;
-                    window.location.href = `/sales/${id}/sell`;
+                    id = JSON.parse(this.responseText);
+                    // id = 90;
+                    window.location.href = `/sell/${id}`;
                 }
             }
         }
@@ -61,3 +62,7 @@ function notEmpty() {
         return false;
     return true;
 }
+
+
+
+// Signup Area

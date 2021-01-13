@@ -2,9 +2,7 @@ from flask import Flask, request, render_template, session, jsonify, redirect, u
 from dbfns import DBFns
 
 app = Flask(__name__)
-app.secret_key = 's@#*je09el%^&'
-
-# s
+app.secret_key = 's@#*je/%//0$$/l%^&'
 
 
 @app.route('/incCustomers')
@@ -19,6 +17,20 @@ def incEmployees():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     allEmployees = obj.getAllEmployees()
     return jsonify(allEmployees)
+
+
+@app.route('/incRecentReceipts')
+def incRecentReceipts():
+    empid = session["loggedInEmpId"]
+    response = 'ERROR'
+    try:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        response = obj.getLastReceiptsEmp(empid)
+        response = jsonify(response)
+    except Exception as e:
+        print(str(e))
+
+    return response
 
 
 @app.route('/incInventory')
@@ -155,44 +167,81 @@ def adminSettings():
 # Selling Routes and Things
 
 
-@app.route('/selling')
-def selling():
-    return render_template('./employee/login.html')
+@app.route('/sell')
+def sellLoginSignup():
+    if "loggedInEmpId" in session:
+        return redirect(url_for('empidDashboard', lempid=session['loggedInEmpId']))
+    return render_template('./employee/loginSignup.html')
 
 
-@app.route('/selling/')
-@app.route('/selling/<subselling>')
-def subselling(subselling='hello'):
-    return render_template('./employee/login.html', sellingvar=subselling)
-
-
-@app.route('/sales/<lempid>/sell')
+@app.route('/sell/<lempid>')
 def empidDashboard(lempid):
-    return render_template('./employee/selling.html')
+    if "loggedInEmpId" in session:
+        sessionEmpid = session["loggedInEmpId"]
+        lempid = sessionEmpid
+        return render_template('./employee/selling.html', id=sessionEmpid)
+    else:
+        return redirect(url_for("sellLoginSignup"))
 
 
 # inc Employee routes
 
+
 @app.route('/incEmpLogin', methods=['GET', 'POST'])
 def incEmpLogin():
-    loginInfo = request.get_json(silent=True)
-    return 'VALID'
+    if request.method == "POST":
+        loginInfo = request.get_json(silent=True)
+        response = False
+        try:
+            obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+            empID = obj.getEmpId(loginInfo['username'])
+            # print('logged in id: ', empID)
+            if empID:
+                if obj.emploginVerify(loginInfo['username'], loginInfo['password']):
+                    # print('getEmpIDforSession ', empID)
+                    session["loggedInEmpId"] = empID
+                    print('logged in id: ', empID)
+                    print('logged in Session id: ', empID)
+                    response = True
+        except Exception:
+            response = False
+        finally:
+            if response:
+                return jsonify(empID)
+            else:
+                return 'INVALID'
+    else:
+        return redirect(url_for("sellLoginSignup"))
+
+
+@app.route('/sell/logout')
+def logoutEmp():
+    if "loggedInEmpId" in session:
+        session.pop("loggedInEmpId", None)
+
+    return redirect(url_for("sellLoginSignup"))
 
 
 @app.route('/incAvailableInventory')
 def incAvailableInventory():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    myavailableInventory = obj.getsellingProducts()
-    # print(myavailableInventory)
-    return jsonify(myavailableInventory)
+    if "loggedInEmpId" in session:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        myavailableInventory = obj.getsellingProducts()
+        # print(myavailableInventory)
+        return jsonify(myavailableInventory)
+    else:
+        return redirect(url_for("sellLoginSignup"))
 
 
 @app.route('/incAvailableCustomer')
 def incAvailableCustomer():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    myavailableCustomers = obj.getAllCustomers()
-    # print(myavailableInventory)
-    return jsonify(myavailableCustomers)
+    if "loggedInEmpId" in session:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        myavailableCustomers = obj.getAllCustomers()
+        # print(myavailableInventory)
+        return jsonify(myavailableCustomers)
+    else:
+        return redirect(url_for("sellLoginSignup"))
 
 
 # inc Selling Routes
@@ -200,29 +249,40 @@ def incAvailableCustomer():
 
 @app.route('/incSavereceiptdata', methods=['GET', 'POST'])
 def incSavereceiptdata():
-    data = request.get_json(silent=True)
-    cust_id = data['cust_id']
-    emp_id = 3  # From session Session
-    total_prod = len(data['orderProducts'])
-    total_rcpt_price = data['total']
-    pay_status = data['status']
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    if obj.saveReceipt(cust_id, emp_id, total_prod, total_rcpt_price, pay_status):
-        rcpId = obj.getlastReceiptIdEmp(3)
-        for prod in data['orderProducts']:
-            obj.addProdToReceipt(
-                rcpId, prod['current_prod_id'], prod['prod_qty'], prod['prod_price'])
-        return 'VALID'
-    #     if obj.addReceiptProducts(data['orderProducts']):
-    #         return 'VALID'
-    #     else:
-    #         obj.deleteReceipt()
-    return 'INVALID'
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        cust_id = data['cust_id']
+        emp_id = session["loggedInEmpId"]  # From session Session
+        total_prod = len(data['orderProducts'])
+        discount = data['discount']
+        total_rcpt_price = data['total']
+        pay_status = data['status']
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        print(cust_id)
+        if obj.saveReceipt(cust_id, emp_id, total_prod, discount, total_rcpt_price, pay_status):
+            rcpId = obj.getlastReceiptIdEmp(emp_id)
+            for prod in data['orderProducts']:
+                obj.addProdToReceipt(
+                    rcpId, prod['current_prod_id'], prod['prod_title'], prod['prod_price'], prod['prod_qty'], prod['prod_priceXqty'])
+            return jsonify(rcpId)
+        return 'INVALID'
+    else:
+        return redirect(url_for("sellLoginSignup"))
 
 
-@app.route('/printReceipt')
-def printReceipt():
-    return 'Receipt with Print Button will be here'
+@app.route('/printReceipt/<int:ordid>')
+def printReceipt(ordid):
+    if "loggedInEmpId" in session:
+        empid = session["loggedInEmpId"]  # from session of employee
+        print(empid)
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        if obj.isReceiptallowedEmp(ordid, empid):
+            data = obj.getTheReceipt(ordid)
+            if data:
+                return render_template('finalReceipt.html', data=data)
+        return render_template('finalReceipt.html', message='Only Admin can View that Receipt')
+    else:
+        return redirect(url_for("sellLoginSignup"))
 
 
 if __name__ == "__main__":

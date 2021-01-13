@@ -26,6 +26,65 @@ getCustomerXML.onload = function () {
 }
 getCustomerXML.send();
 
+var recentReceipts;
+var recentReceiptsXML = new XMLHttpRequest();
+recentReceiptsXML.open('get', '/incRecentReceipts', true);
+recentReceiptsXML.onload = function () {
+    if (this.status === 200) {
+        recentReceipts = JSON.parse(this.responseText);
+        // xmlObj.abort();
+        console.trace(recentReceipts);
+        createRecentReceipts(recentReceipts);
+    }
+}
+recentReceiptsXML.send();
+var nothingRecent = document.getElementById('nothingrecent');
+function createRecentReceipts(foundArray) {
+    if (foundArray.length >= 1) {
+        nothingRecent.style.display = 'none';
+        let resultTabElement = document.createElement('table');
+        resultTabElement.id = 'recentTable';
+        document.getElementById('last-receipts-by-emp').appendChild(resultTabElement);
+        let row;
+        let recentTable = document.getElementById('recentTable');
+        //Inserting New Row
+        for (let i = 0; i < foundArray.length; i++) {
+            row = recentTable.insertRow();
+            for (let j = 0; j < 3; j++)
+                row.insertCell();
+
+        }
+
+        //creating table head 
+        let tableheadrecent = recentTable.createTHead();
+        row = tableheadrecent.insertRow();
+        //Change this section
+        for (let i = 0; i < 3; i++)
+            row.append(document.createElement('th'));
+        tableheadrecent.rows[0].cells[0].innerText = "Id";
+        tableheadrecent.rows[0].cells[1].innerText = "Status";
+        tableheadrecent.rows[0].cells[2].innerText = "Action";
+
+        let data = [];
+        // populating the table
+        for (let i = 0; i < foundArray.length; i++) {
+            //Change this section
+
+            data = [foundArray[i][0], foundArray[i][8], `<button id = 'view-${foundArray[i][0]}' onclick = 'viewRecentReceipt(event)' >View</button>`];
+            for (let j = 0; j < 3; j++)
+                recentTable.rows[i + 1].cells[j].innerHTML = data[j];
+            data = [];
+        }
+    }
+}
+
+function viewRecentReceipt(event) {
+    let recentId = event.target.id;
+    recentId = recentId.substring(5);
+    recentId = Number(recentId);
+    window.open(`/printReceipt/${recentId}`, '_Blank');
+    event.preventDefault();
+}
 function loadCustomers() {
     let customerSelect = document.getElementById('select-existing-customers');
     let newoption;
@@ -42,8 +101,8 @@ var selected_cust_id = 0;
 selectCustomer.addEventListener('change', customerSelected);
 function customerSelected(e) {
     let order_cust_id = (e.target.options[e.target.selectedIndex].id).substring(11);
-    console.log('customerSelected(e)=>> ', e.target);
-    console.log('customerSelected(e)=>> ', order_cust_id);
+    // console.log('customerSelected(e)=>> ', e.target);
+    // console.log('customerSelected(e)=>> ', order_cust_id);
     order_cust_id = Number(order_cust_id);
     selected_cust_id = order_cust_id;
     e.preventDefault();
@@ -384,7 +443,7 @@ function saveNPrint(e) {
     };
     saveNPrintXML.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText != 'VALID') {
+            if (this.responseText == 'INVALID') {
                 let msgP = document.getElementById('errorMsg-selling');
                 msgP.innerText = 'Error! Server Problem';
                 let msgBlock = document.getElementById('message-block-selling');
@@ -396,13 +455,17 @@ function saveNPrint(e) {
             else {
                 saveNprntbtn.disabled = true;
                 saveNprntbtn.removeEventListener('click', saveNPrint);
+                console.log('ordID got: ', this.responseText);
+                let ordId = JSON.parse(this.responseText);
+                console.log('ordID Parsed: ', ordId);
+                // console.log(this.responseText);
                 let msgP = document.getElementById('errorMsg-selling');
                 msgP.innerText = 'Success! Order Completed';
                 let msgBlock = document.getElementById('message-block-selling');
                 msgBlock.style.display = 'block';
                 setTimeout(function () {
                     msgBlock.style.display = 'none';
-                    window.open('/printReceipt', '_Blank');
+                    window.open(`/printReceipt/${ordId}`, '_Blank');
                     location.reload();
                 }, 3000);
             }

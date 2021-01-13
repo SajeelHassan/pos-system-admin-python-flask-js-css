@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+            integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="../static/styles/shared.css"> -->
+        <link rel="stylesheet" href="../static/styles/finalreceipt.css">
+        <title>Receipt</title>
+    </head>
+
+    <body>
+        {% if data %}
+        <div class="main-page">
+            <div class="header">
+                <div class="shop-title">
+                    <h1>Ahmed Traders</h1>
+                    <p class='description'>Satellite Town Block A Satellite Town, Naya Shehar<br>Jhang<br>Punjab 38000
+                    </p>
+                </div>
+                <div class="order-id">
+                    <h1>Order Id # {{data[0][0]}}</h1>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-data">
+                    <table>
+                        <tr>
+                            <th>Customer-Id: </th>
+                            <td>{{data[0][2]}}</td>
+                        </tr>
+                        <tr>
+                            <th>Sold by: </th>
+                            <td>{{data[0][3]}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date Time: </th>
+                            <td>{{data[0][1]}}</td>
+                        </tr>
+                        <tr>
+                            <th>Status: </th>
+                            {% if data[0][7] == 'Paid' %}
+                            <td class='status paid'>{{data[0][7]}}</td>
+                            {% else %}
+                            <td class='status unpaid'>{{data[0][7]}}</td>
+                            {% endif %}
+
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="prnt-btn-div"><button id='prnt-btn'><i class="fas fa-print"></i> Print
+                        Receipt</button> </div>
+            </div>
+
+            <div class="product-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for product in data[1] %}
+                            <td class='t-left w-70'>{{product[1]}}</td>
+                            <td>{{product[2]}}</td>
+                            <td>{{product[3]}}</td>
+                            <td>{{product[4]}}</td>
+                        </tr>
+                        {% endfor %}
+                        <table>
+                            <tr>
+                                <th class='w-70 t-right'>Sub Total:</th>
+                                <td class='w-30'>{{data[0][6]+data[0][5]}}</td>
+                            </tr>
+                            <tr>
+                                <th class='w-70 t-right'>Discount:</th>
+                                <td>{{data[0][5]}}</td>
+                            </tr>
+                            <tr>
+                                <th class='w-70 t-right'>Total:</th>
+                                <td>{{data[0][6]}}</td>
+                            </tr>
+                        </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="thankyou-message">
+                <h3>Shukriya!</h3>
+            </div>
+        </div>
+        {% else %}
+        <h1>{{message}}</h1>
+        {% endif %}
+
+
+    </body>
+    <script>
+        document.getElementById('prnt-btn').addEventListener('click', printReceipt);
+        function printReceipt() {
+            document.getElementById('prnt-btn').style.display = 'none';
+            window.print();
+            document.getElementById('prnt-btn').style.display = 'block';
+            window.close();
+        };
+    </script>
+
+</html>

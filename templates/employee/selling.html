@@ -12,7 +12,8 @@
     <body>
         <div class="container">
             <div class="navbar">
-                <a href="dropdown-logout-emp" class="account-emp">Ali Asad</a>
+                <a href="logout" class="account-emp"><button id='emp-logout'
+                        onclick="logoutEmp(event)">Logout</button></a>
             </div>
         </div>
         <div id="message-block-selling" class='error-notify-block'>
@@ -22,10 +23,12 @@
         </div>
         <div class="section-main-title">My Shop</div>
         <div class="main">
-            <div class="last-transactions-container">
+            <div class="last-receipts-container">
                 <div class="section-title">Recent Orders/Receipts</div>
-                <div class="last-transactions">
-
+                <div id='last-receipts-by-emp'>
+                    <div id="nothingrecent">
+                        <h2>Nothing to see here --- yet</h2>
+                    </div>
                 </div>
             </div>
             <div class="search-area-emp" id='search-available-products'>

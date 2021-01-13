@@ -1,0 +1,116 @@
+ @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+*{
+  font-family: 'Source Sans Pro','Segoe UI',sans-serif;
+    box-sizing: border-box;
+    margin:0;
+}
+body{
+    margin:0;
+}
+.description{
+    font-size: 10px;
+}
+.main-page{
+    width:1000px;
+    margin:  auto;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+.info-card{
+    margin:30px;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    
+}
+.info-card th{
+    
+    font-size: 15px;
+    /* text-align: left; */
+    background-color: #F5F6FA;
+    color: #000000;
+    font-weight:500;
+}
+.info-card td{
+    border-bottom: 1px solid rgb(0, 0, 0);
+    
+    text-align: center;
+}
+.status{
+    color:white;
+}
+.paid{
+    background-color: rgb(42, 136, 42);
+}
+.unpaid{
+    background-color: rgb(165, 20, 20);
+}
+
+.prnt-btn-div button{
+    background-color: #A3A0FB;
+    border:none;
+    color:white;
+    border-radius: 4px;
+    width:155px;
+    height: 50px;
+    box-shadow: 0px 4px 7px 0px rgba(173, 171, 173, 0.57);
+    font-size: large;
+    font-weight: bold;
+
+}
+.prnt-btn-div button:hover {
+    cursor: pointer;
+    background-color: #807cf5;
+    box-shadow: 0px 8px 14px 0px rgba(173, 171, 173, 0.57);
+}
+.product-details table {
+    margin-top: 15px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .product-details  td,.product-details th{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  .product-details th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 20px;
+    /* text-align: left; */
+    background-color: #F5F6FA;
+    color: #A3A6B4;
+    font-weight: bold;
+  }
+.flex-right{
+    display: flex;
+    align-content: right !important;
+}
+.t-left{
+    text-align: left ! important;
+}
+.t-right{
+    text-align: right ! important;
+}
+.w-70{
+    width: 70% !important;
+}
+.w-10{
+    width: 10% !important;
+}
+.w-5{
+    width: 5% !important;
+}
+.w-30{
+    width: 30% !important;
+}
+
+.thankyou-message{
+    width:50%;
+    margin:0 auto;
+    padding: 20px;
+    text-align: center;
+    color: #A3A6B4;
+}
