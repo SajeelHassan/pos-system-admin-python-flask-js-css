@@ -6,6 +6,118 @@ app.secret_key = 's@#*je/%//0$$/l%^&'
 bcrypt = Bcrypt(app)
 
 
+@ app.route('/')
+@ app.route('/login')
+def index():
+    return redirect(url_for('sellLoginSignup'))
+
+
+@ app.route('/dashboard')
+def home():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/dashboard.html')
+
+
+@ app.route('/inventory')
+def showInventory():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/inventory.html')
+
+
+@ app.route('/receipts')
+def showReceipts():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/receipts.html')
+
+
+@ app.route('/customers')
+def showCustomers():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/customers.html')
+
+
+@ app.route('/reports')
+def showReports():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/reports.html')
+
+
+@ app.route('/employees')
+def showEmployees():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/employees.html')
+
+
+@ app.route('/support')
+def menuSupport():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/support.html')
+
+
+@ app.route('/settings')
+def adminSettings():
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    return render_template('./admin/settings.html')
+
+    # admin routes
+
+
+@app.route('/viewReceipt/<int:ordid>')
+def viewReceipt(ordid):
+    if "adminLoggedIn" not in session:
+        return redirect(url_for('adminlogin'))
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    data = obj.getTheReceipt(ordid)
+    if data:
+        return render_template('finalReceipt.html', data=data)
+    return render_template('finalReceipt.html', message='NO Order Exists')
+
+    # if "loggedInEmpId" in session:
+    #    try:
+    #        empid = session["loggedInEmpId"]  # from session of employee
+    #        print(empid)
+    #        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    #        data = obj.getTheReceipt(ordid)
+    #        if data:
+    #             return render_template('finalReceipt.html', data=data)
+    #         return render_template('finalReceipt.html', message='NO Order Exists')
+    # else:
+    #     return redirect(url_for("sellLoginSignup"))
+
+
+@app.route('/admin')
+def adminlogin():
+    if "adminLoggedIn" in session:
+        return redirect(url_for('home'))
+    if "loggedInEmpId" in session:
+        return redirect(url_for('sellLoginSignup'))
+    return render_template('./admin/login.html')
+
+    # inc admin routes
+
+
+@app.route('/incAdminLogin', methods=['GET', 'POST'])
+def adminloginverify():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        if obj.adminLogin(data['username'], data['password']):
+            session['adminLoggedIn'] = True
+            return 'VALID'
+        else:
+            return 'INVALID'
+    else:
+        return redirect(url_for("adminlogin"))
+
+
 @app.route('/incReceipts')
 def incReceipts():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
@@ -27,20 +139,6 @@ def incEmployees():
     return jsonify(allEmployees)
 
 
-@app.route('/incRecentReceipts')
-def incRecentReceipts():
-    empid = session["loggedInEmpId"]
-    response = 'ERROR'
-    try:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-        response = obj.getLastReceiptsEmp(empid)
-        response = jsonify(response)
-    except Exception as e:
-        print(str(e))
-
-    return response
-
-
 @app.route('/incInventory')
 def incInventory():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
@@ -50,6 +148,8 @@ def incInventory():
 
 @app.route('/incAddproduct', methods=['POST'])
 def incAddproduct():
+    if request.method != "POST":
+        return redirect(url_for("adminlogin"))
     response = request.get_json(silent=True)
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     message = 'Database/Server Error!'
@@ -69,6 +169,8 @@ def incAddproduct():
 
 @app.route('/incGetproduct', methods=['POST'])
 def incGetproduct():
+    if request.method != "POST":
+        return redirect(url_for("adminlogin"))
     data = request.get_json(silent=True)
     print((data['prod_id'])[5:])
     data['prod_id'] = (data['prod_id'])[5:]
@@ -79,6 +181,8 @@ def incGetproduct():
 
 @app.route('/incUpdateproduct', methods=['POST'])
 def incUpdateproduct():
+    if request.method != "POST":
+        return redirect(url_for("adminlogin"))
     response = request.get_json(silent=True)
     message = 'Database/Server Error!'
     try:
@@ -96,6 +200,8 @@ def incUpdateproduct():
 
 @app.route('/incDeleteproduct', methods=['POST'])
 def incDeleteproduct():
+    if request.method != "POST":
+        return redirect(url_for("adminlogin"))
     response = request.get_json(silent=True)
     message = 'Database/Server Error!'
     try:
@@ -113,6 +219,8 @@ def incDeleteproduct():
 
 @app.route('/incGetDelproduct', methods=['POST'])
 def incGetDelproduct():
+    if request.method != "POST":
+        return redirect(url_for("adminlogin"))
     data = request.get_json(silent=True)
     print((data['prod_id'])[5:])
     data['prod_id'] = (data['prod_id'])[5:]
@@ -126,60 +234,17 @@ def incGetDelproduct():
     finally:
         return jsonify(reqProd)
 
-
-@ app.route('/')
-@ app.route('/login')
-def form():
-    return render_template('./admin/login.html')
-
-
-@ app.route('/dashboard')
-def home():
-    return render_template('./admin/dashboard.html')
-
-
-@ app.route('/inventory')
-def showInventory():
-    return render_template('./admin/inventory.html')
-
-
-@ app.route('/receipts')
-def showReceipts():
-    return render_template('./admin/receipts.html')
-
-
-@ app.route('/customers')
-def showCustomers():
-    return render_template('./admin/customers.html')
-
-
-@ app.route('/reports')
-def showReports():
-    return render_template('./admin/reports.html')
-
-
-@ app.route('/employees')
-def showEmployees():
-    return render_template('./admin/employees.html')
-
-
-@ app.route('/support')
-def menuSupport():
-    return render_template('./admin/support.html')
-
-
-@ app.route('/settings')
-def adminSettings():
-    return render_template('./admin/settings.html')
-
-# Selling Routes and Things
+        # Selling Routes
 
 
 @app.route('/sell')
 def sellLoginSignup():
     if "loggedInEmpId" in session:
         return redirect(url_for('empidDashboard', lempid=session['loggedInEmpId']))
-    return render_template('./employee/loginSignup.html')
+    elif "adminLoggedIn" in session:
+        return redirect(url_for('adminlogin'))
+    else:
+        return render_template('./employee/loginSignup.html')
 
 
 @app.route('/sell/<lempid>')
@@ -192,7 +257,44 @@ def empidDashboard(lempid):
         return redirect(url_for("sellLoginSignup"))
 
 
-# inc Employee routes
+@app.route('/printReceipt/<int:ordid>')
+def printReceipt(ordid):
+    if "loggedInEmpId" in session:
+        empid = session["loggedInEmpId"]  # from session of employee
+        print(empid)
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        if obj.isReceiptallowedEmp(ordid, empid):
+            data = obj.getTheReceipt(ordid)
+            if data:
+                return render_template('finalReceipt.html', data=data)
+        return render_template('finalReceipt.html', message='Only Admin can View that Receipt')
+    else:
+        return redirect(url_for("sellLoginSignup"))
+
+
+@app.route('/sell/logout')
+def logoutEmp():
+    if "loggedInEmpId" in session:
+        session.pop("loggedInEmpId", None)
+
+    return redirect(url_for("sellLoginSignup"))
+
+# inc Selling Routes
+
+
+@app.route('/incRecentReceipts')
+def incRecentReceipts():
+    empid = session["loggedInEmpId"]
+    response = 'ERROR'
+    try:
+        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        response = obj.getLastReceiptsEmp(empid)
+        response = jsonify(response)
+    except Exception as e:
+        print(str(e))
+
+    return response
+
 
 @app.route('/incEmpSignup', methods=["GET", "POST"])
 def incEmpSignup():
@@ -257,14 +359,6 @@ def incEmpLogin():
         return redirect(url_for("sellLoginSignup"))
 
 
-@app.route('/sell/logout')
-def logoutEmp():
-    if "loggedInEmpId" in session:
-        session.pop("loggedInEmpId", None)
-
-    return redirect(url_for("sellLoginSignup"))
-
-
 @app.route('/incAvailableInventory')
 def incAvailableInventory():
     if "loggedInEmpId" in session:
@@ -285,9 +379,6 @@ def incAvailableCustomer():
         return jsonify(myavailableCustomers)
     else:
         return redirect(url_for("sellLoginSignup"))
-
-
-# inc Selling Routes
 
 
 @app.route('/incSavereceiptdata', methods=['GET', 'POST'])
@@ -313,63 +404,9 @@ def incSavereceiptdata():
         return redirect(url_for("sellLoginSignup"))
 
 
-@app.route('/viewReceipt/<int:ordid>')
-def viewReceipt(ordid):
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    data = obj.getTheReceipt(ordid)
-    if data:
-        return render_template('finalReceipt.html', data=data)
-    return render_template('finalReceipt.html', message='NO Order Exists')
-
-    # if "loggedInEmpId" in session:
-    #    try:
-    #        empid = session["loggedInEmpId"]  # from session of employee
-    #        print(empid)
-    #        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    #        data = obj.getTheReceipt(ordid)
-    #        if data:
-    #             return render_template('finalReceipt.html', data=data)
-    #         return render_template('finalReceipt.html', message='NO Order Exists')
-    # else:
-    #     return redirect(url_for("sellLoginSignup"))
-
-
-@app.route('/printReceipt/<int:ordid>')
-def printReceipt(ordid):
-    if "loggedInEmpId" in session:
-        empid = session["loggedInEmpId"]  # from session of employee
-        print(empid)
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-        if obj.isReceiptallowedEmp(ordid, empid):
-            data = obj.getTheReceipt(ordid)
-            if data:
-                return render_template('finalReceipt.html', data=data)
-        return render_template('finalReceipt.html', message='Only Admin can View that Receipt')
-    else:
-        return redirect(url_for("sellLoginSignup"))
-
-# admin
-
-
-@app.route('/admin')
-def adminlogin():
-    if "adminLoggedIn" in session:
-        return redirect(url_for('home'))
-    return render_template('./admin/login.html')
-
-
-@app.route('/incAdminLogin', methods=['GET', 'POST'])
-def adminloginverify():
-    if request.method == "POST":
-        data = request.get_json(silent=True)
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-        if obj.adminLogin(data['username'], data['password']):
-            session['adminLoggedIn'] = True
-            return 'VALID'
-        else:
-            return 'INVALID'
-    else:
-        return redirect(url_for("adminlogin"))
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 
 if __name__ == "__main__":

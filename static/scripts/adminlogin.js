@@ -44,7 +44,7 @@ function onLogin(event) {
                     }, 3000);
                 }
                 else {
-                    window.open('/dashboard');
+                    location.href = "/dashboard";
                 }
             }
         }

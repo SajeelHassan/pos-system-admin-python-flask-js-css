@@ -836,7 +836,7 @@ class DBFns:
             args = (username, password)
             mydbCursor.execute(sql, args)
             myresult = mydbCursor.fetchone()
-            print('emploginVerify', myresult)
+            print('adminLogin', myresult)
             if myresult != None:
                 if myresult[0] == username and myresult[1] == password:
                     status = True
@@ -864,7 +864,8 @@ if __name__ == "__main__":
     # result = obj.emploginVerify('rohan1999', 'rohan00')
     # print(result)
     # result = obj.getEmpId('rohan1999')
-    print(result)
+    # result = obj.adminLogin('ahmed7351', 's@ajeel')
+    # print(result)
     # result = obj.addProduct('finalizinfggg', '098098',
     #                         222, 333, 900, 300, 'new status')
     # result = obj.addProduct('finalizinfggg', '098098',
