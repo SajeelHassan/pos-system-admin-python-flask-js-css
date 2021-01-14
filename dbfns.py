@@ -856,8 +856,9 @@ if __name__ == "__main__":
     #     'sajeel', 'hassan', 'sajeel01', 'hsajeel786@gmail.com', '03491774641')
     # result = obj.updateEmployee(
     #     'Bint e', 'Abdullah', 'bitf18m033@pucit.edu.pk', '0309--90-090', 6)
-    # result = obj.addCustomer(
-    #     'Jameel', 'Khan', 'hsajeel786@gmail.com', '03491774641')
+    result = obj.addCustomer(
+        'Khaleel', 'Jibran', 'khaleel90@gmail.com', '03099999765')
+    print(result)
     # result = obj.isReceiptallowedEmp(2, 3)
     # result = obj.getFinalReceipt(7)
     # result = obj.getTheReceipt(1)

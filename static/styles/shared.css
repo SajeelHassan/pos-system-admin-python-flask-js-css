@@ -203,7 +203,7 @@ body{
 }
 /* table  */
 
-/* 
+
 table {
   margin-top: 15px;
   border-collapse: collapse;
@@ -225,7 +225,7 @@ th{
 /* tr:nth-child(even){background-color: #f2f2f2;} */
 /* tr{
   border-bottom:2px solid grey;
-} */
+}
 .scrollableDiv{
   max-height:400px; 
   overflow-y:auto;
