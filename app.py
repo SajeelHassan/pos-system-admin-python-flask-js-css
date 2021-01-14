@@ -90,6 +90,13 @@ def adminlogin():
     # inc admin routes
 
 
+@app.route('/admin/logout')
+def adminLogout():
+    if "adminLoggedIn" in session:
+        session.pop("adminLoggedIn", None)
+    return redirect(url_for("adminlogin"))
+
+
 @app.route('/incAdminLogin', methods=['GET', 'POST'])
 def adminloginverify():
     if request.method == "POST":
@@ -173,7 +180,6 @@ def incUpdateproduct():
     message = 'Database/Server Error!'
     try:
         obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-        # response['id'] = (response['id'])[5:]
         if obj.updateProduct(response['title'], response['sku'], response['cost'],
                              response['price'], response['stock'], response['low'], response['id']):
             message = 'true'

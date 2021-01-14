@@ -34,8 +34,8 @@ function createDataTable(arraysOfArrays) {
 
     let tableElement = document.createElement('table');
     tableElement.id = 'inventoryTable';
-    tableElement.classList = 'scrollit';
-    document.getElementById('main-article').appendChild(tableElement);
+    // tableElement.classList = 'scrollableDiv';
+    document.getElementById('displayInventoryTable-div').appendChild(tableElement);
     var row;
     newTable = document.getElementById('inventoryTable');
     //Inserting New Row

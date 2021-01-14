@@ -4,7 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+            integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/styles/shared.css">
+        <link rel="stylesheet" href="../../static/styles/sidebar.css">
         <link rel="stylesheet" href="../../static/styles/receipt.css">
         <title>Admin - Receipts</title>
     </head>
@@ -22,14 +25,24 @@
                     <h2>My Shop</h2>
                 </div>
                 <div class="navigation">
-                    <ul id=sidebar>
-                        <li id='sidebar-dashboard'><a href='/dashboard'>Dashboard</a></li>
-                        <li id='sidebar-inventory'><a href='./inventory'>Inventory</a></li>
-                        <li id='sidebar-receipts'><a href='/receipts'>Receipts</a></li>
-                        <li id='sidebar-customers'><a href='/customers'>Customers</a></li>
-                        <li id='sidebar-reports'><a href='/reports'>Reports</a></li>
-                        <li id='sidebar-employees'><a href='/employees'>Employees</a></li>
-                        <li id='sidebar-settings'><a href='/settings'>Settings</a></li>
+                    <ul>
+                        <li><a href="/dashboard" class="side-bar-icon"> <span class="fas fa-chart-bar"></span> &nbsp
+                                &nbsp Dashboard</a></li>
+                        <li><a href="/inventory" class="side-bar-icon"> <span class="fas fa-dolly-flatbed"></span> &nbsp
+                                &nbsp Inventory</a></li>
+                        <li><a href="/receipts" class="side-bar-icon"> <span class="fas fa-receipt"></span> &nbsp &nbsp
+                                Receipts</a></li>
+                        <li><a href="/customers" class="side-bar-icon"> <span class="far fa-user"></span> &nbsp &nbsp
+                                Customers</a></li>
+                        <li><a href="/reports" class="side-bar-icon"> <span class="fas fa-chart-line"></span> &nbsp
+                                &nbsp Reports</a></li>
+                        <li><a href="/employees" class="side-bar-icon"> <span class="fas fa-user-friends"></span> &nbsp
+                                &nbsp Employees</a></li>
+                        <li><a href="/support" class="side-bar-icon"> <span class="fa fa-life-ring"></span> &nbsp &nbsp
+                                Support</a></li>
+                        <li><a href="/settings" class="side-bar-icon"> <span class="fas fa-cog"></span> &nbsp &nbsp
+                                Settings</a></li>
+
                     </ul>
                 </div>
             </div>
