@@ -196,8 +196,9 @@ var currentOrderSingleProd = {
     prod_qty: 1,
     prod_priceXqty: 200
 };
-
+var nothingCart = document.getElementById('nothing-cart');
 function addToOrder(event) {
+    // nothingCart.style.display = 'none';
     let cart_prod_id = event.target.id;
     cart_prod_id = cart_prod_id.substring(4);
     cart_prod_id = Number(cart_prod_id);
@@ -264,6 +265,7 @@ var disocuntInput = document.getElementById('current-order-add-discount');
 function createCartTable(currentOrderProds) {
     if (currentOrderProds.length >= 1) {
         // nothing.style.display = 'none';
+        nothingCart.style.display = 'none';
         saveNprntbtn.disabled = false;
         saveNprntbtn.addEventListener('click', saveNPrint);
         disocuntInput.disabled = false;
@@ -315,6 +317,7 @@ function removeCartTable() {
         document.getElementById('current-order-box-table').remove();
         clearTotals();
         saveNprntbtn.disabled = true;
+        nothingCart.style.display = 'block';
         saveNprntbtn.removeEventListener('click', saveNPrint);
         disocuntInput.disabled = true;
         disocuntInput.removeEventListener('input', updateTotalBill);
@@ -419,9 +422,9 @@ function currentProdQty(event) {
 function paidORunpaid(event) {
     var x = document.getElementById("status-text");
     if (x.innerText === "Unpaid") {
-        x.innerHTML = "<h3 class='paid-status-text' >Paid</h3>";
+        x.innerHTML = "<h2 >Paid</h2>";
     } else {
-        x.innerHTML = "<h3 class='paid-status-text' >Unpaid</h3>";
+        x.innerHTML = "<h2 >Unpaid</h2>";
     }
     event.preventDefault();
 }

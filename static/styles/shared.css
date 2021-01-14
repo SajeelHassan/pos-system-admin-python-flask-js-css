@@ -46,44 +46,6 @@ body{
     width:100%;
 }
 
-table {
-  margin-top: 15px;
-  border-collapse: collapse;
-  width: 100%;
-}
-td,th{
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-th{
-  padding-top: 12px;
-  padding-bottom: 12px;
-  font-size: 20px;
-  text-align: left;
-  background-color: #F5F6FA;
-  color: #A3A6B4;
-  font-weight: bold;
-}
-/* tr:nth-child(even){background-color: #f2f2f2;} */
-/* tr{
-  border-bottom:2px solid grey;
-} */
-.scrollableDiv{
-  height:400px; 
-  overflow-y:auto;
-   overflow-x:visible;
-}
-
-.scrollableDiv600{
-  height: 600px;
-}
-
-.h-page{
-  height: 640px;
-}
-.scrollableDiv thead th{
-  position: sticky; top: 0 ;
-}
 
 .section-controls{
     margin-top:10px;
@@ -239,13 +201,57 @@ th{
   background-color: hotpink;
   border: none;
 }
+/* table  */
 
+/* 
+table {
+  margin-top: 15px;
+  border-collapse: collapse;
+  width: 100%;
+}
+td,th{
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  text-align: left;
+  background-color: #F5F6FA;
+  color: #A3A6B4;
+  font-weight: bold;
+}
+/* tr:nth-child(even){background-color: #f2f2f2;} */
+/* tr{
+  border-bottom:2px solid grey;
+} */
+.scrollableDiv{
+  max-height:400px; 
+  overflow-y:auto;
+   overflow-x:visible;
+}
+
+.scrollableDiv600{
+  max-height: 600px;
+} 
+
+.h-page{
+  height: 640px;
+}
+.scrollableDiv thead th{
+  position: sticky; top: 0 ;
+}
 
 /* Important */
 
 .d-flex{
   display: flex;
   justify-content: center;
+}
+.d-flex-sp{
+  display: flex;
+  justify-content: space-between;
 }
 .btn{
   border:none;

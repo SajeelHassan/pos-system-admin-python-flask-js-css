@@ -1,17 +1,108 @@
 .main{
     width: 1500px;
-    display:flex;
+
     margin:0 auto;
 }
+
 .section-title{
     font-size: 25px;
     font-weight: bold;
 }
-.section-main-title{
-    font-size: 28px;
+.navbar-bkg{
+    background-color: rgba(34, 30, 30, 0.068);
 }
+.navbar-selling{
+    background-color: gray;
+    width: 1500px;
+    /* display: flex; */
+    
+    justify-content: center;
+    margin:0 auto;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right:20px;
+    background-color: white;
+    width: 80px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropbtn{
+      width: 80px;
+      background-color: white;
+      color:#4D4F5C;
+  }
+  .dropdown-content a {
+    float: none;
+    color: #4D4F5C;
+    padding: 5px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+.dropdown:hover .dropdown-content {
+    display: block;
+  }
+  .dropdown-content a:hover{
+      background-color:#FAFAFA ;
+  }
+
+.section-main-title{
+    font-size:30px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.account-options{
+    position: absolute;
+    right:300px;
+}
+/* tables  */
+
+  
+table {
+    margin-top: 15px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td,th{
+    /* border: 1px solid #ddd; */
+    padding: 4px;
+    text-align: center;
+  }
+  th{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #A3A6B4;
+    color: #A3A6B4;
+    color: #F5F6FA;
+    font-weight: bold;
+  }
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: rgb(221, 221, 221);}
+  .scrollableDiv{
+    max-height:400px; 
+    overflow-y:auto;
+     overflow-x:visible;
+  }
+  .scrollableDiv600{
+    height: 600px;
+  }
+  
+  .h-page{
+    height: 640px;
+  }
+  .scrollableDiv thead th{
+    position: sticky; top: 0 ;
+  }
+        /* tables  END*/
 .last-transactions-container{
     width:300px;
+
 }
 .search-area-emp{
     width:800px;
@@ -21,40 +112,223 @@
     font-size: large;
 }
 .search-area-emp input{
-    width:75%;
+    width:85%;
     height:40px;
     font-size: large;
+    border:none;
+    outline: none;
+}
+.search-bar-selling{
+    /* background-color: brown; */
+    /* border:1px solid black;
+     */
+     border:none;
+     outline: none;
+     border-radius: 3px;
+     box-shadow: 0px 2px 3px 1px rgba(173, 171, 173, 0.57);
+}
+.search-bar-selling i{
+    size:2px;
+    margin:0px 4px;
+    color:#BCBCCB;
+}
+.search-bar-selling input::placeholder{
+    color:#4D4F5C;
+    opacity: 65%;
+    font-size: small;
+    
 }
 .current-order-box{
     width:400px;
     margin-left: 20px;
 }
 
-table{
-    width:100%;
-}
-thead th{
-    position: sticky;
-}
-tbody {
-    height:550px;   
-   
-}
-.calculationDivs{
-    display: inline-flex;
-    flex-direction: column;
-
-}
-.subtotal-div .add-discount-div .total-div .status-of-payment-div{
-    display: flex;
-}
 .current-prod-qty{
     width:50px;
 }
-.nothing{
-    display: none;
+.nothing-search-item{
+    /* display: none; */
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    top:170px;
+    left:25%;
+}
+.nothing-cart-item{
+   /* position: absolute; */
+   height:300px;
+   position: relative;
+   top:100px;
+   text-align: center;
+   
 }
 .last-receipts-container table{
     width:100%;
     
 }
+.sopoelect {
+    
+    height:30px;
+    outline: none;
+ }
+ 
+ .select-input{
+    
+        font-size: 16px;
+        color: #444;
+        padding: 5px;
+        box-sizing: border-box;
+        /* border: 1px solid rgba(0, 0, 0, 0.459); */
+        border: none;
+        box-shadow: 0px 2px 4px 0px rgba(173, 171, 173, 0.57); ;
+        border-radius: 5px;
+        width:200px;
+        background-color: #fff;
+        outline: none;
+ }
+ /* f150 */
+ .select-wrap{
+     background-color: white;
+     box-shadow: 0px 7px 4px 0px rgba(173, 171, 173, 0.57); 
+     border-radius: 10px;
+ }
+ .select-customer-div{
+     
+     /* background-color: cadetblue; */
+     display: inline-block;
+     margin:0 auto;
+     padding:10px;
+ }
+
+ .add-discount-div input {
+     width:80px;
+     text-align: right;
+     position: relative;
+     top:-5px;
+ }
+ .total-div{
+     /* background-color: darkgray;s */
+ }
+ .status-of-payment-div{
+     /* background-color: darkgreen; */
+ }
+ .calculationDivs{
+     /* background-color: coral; */
+     height:200px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     color:#43425D;
+     position: relative;
+     bottom:20px;
+ }
+
+  .calculationDivs > div{
+     margin-top: 15px;
+ }
+ .save-btn{
+     background-color: #3B86FF;
+     width: 100%;
+     font-weight: bold;
+     font-size: larger;
+     position: relative;
+     bottom:10px;
+ }
+ .order-status-btn{
+     width:150px;
+     height:40px;
+     background-color: green;
+ }
+ .save-btn:hover{
+    background-color: #155dd1;
+ }
+/* .paid-status-text{
+     display: inline-block;
+     height: 40px;
+     width:100px;
+     margin:0;
+     background-color: white;
+     border:1px solid black;
+     position: relative;
+     left:-20px;
+     /* bottom:5px; 
+ }*/
+ .paid-status-text h2{
+    text-align: center;
+    position: relative;
+    top:8px;
+ } 
+ .to-right{
+    position: relative;
+    left:-20px;
+    top:5px;
+ }
+ .section-wraper{
+     margin-top: 20px;
+ }
+#recentTable{
+    /* border-collapse:separate; */
+    padding:20px;
+}
+#recentTable th{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: left;
+    background-color: #3B86FF;
+    color: white;
+}
+/* #recentTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#recentTable tr:hover {background-color: rgba(221, 221, 221, 0.185);} */
+/* .last-receipts-container{
+    background-color: green;
+    border-radius: 20px;
+} */
+/* #last-receipts-by-emp{
+    background-color: yellow;
+    border-radius: 20px;
+} */
+.section-title-bkg{
+    color:#A3A6B4;
+    background-color: #A3A0FB;
+    background-color: #F5F6FA;
+    height:130px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    text-align: center;
+    position: relative;
+    top:80px;
+    z-index: -9;
+    
+}
+.section-title-bkg > h1{
+    position: relative;
+    top:9px;
+}
+.section-wraper{
+    padding:25px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 14px 9px 0px rgba(173, 171, 173, 0.57); 
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+
+  
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.157);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(105, 105, 105);
+  }
+  
+
+
+  

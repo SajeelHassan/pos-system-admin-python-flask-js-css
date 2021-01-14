@@ -69,23 +69,23 @@
                         <tr>
                             {% for product in data[1] %}
                             <td class='t-left w-70'>{{product[1]}}</td>
-                            <td>{{product[2]}}</td>
+                            <td>{{product[2]}} Rs.</td>
                             <td>{{product[3]}}</td>
-                            <td>{{product[4]}}</td>
+                            <td>{{product[4]}} Rs.</td>
                         </tr>
                         {% endfor %}
                         <table>
                             <tr>
                                 <th class='w-70 t-right'>Sub Total:</th>
-                                <td class='w-30'>{{data[0][6]+data[0][5]}}</td>
+                                <td class='w-30'>{{data[0][6]+data[0][5]}} Rs.</td>
                             </tr>
                             <tr>
                                 <th class='w-70 t-right'>Discount:</th>
-                                <td>{{data[0][5]}}</td>
+                                <td>{{data[0][5]}} Rs.</td>
                             </tr>
                             <tr>
                                 <th class='w-70 t-right'>Total:</th>
-                                <td>{{data[0][6]}}</td>
+                                <td>{{data[0][6]}} Rupees</td>
                             </tr>
                         </table>
                     </tbody>

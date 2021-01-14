@@ -5,16 +5,27 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+            integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/styles/shared.css">
         <link rel="stylesheet" href="../../static/styles/selling.css">
         <title>Selling Point</title>
     </head>
 
     <body>
-        <div class="container">
-            <div class="navbar">
-                <a href="logout" class="account-emp"><button id='emp-logout'>Logout</button></a>
+        <span class="account-options">
+            <div class="dropdown">
+                <button class="dropbtn b-s-none" id='emp-name'>Asad
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Settings</a>
+                    <a href="logout" id='emp-logout'>Logout</a>
+                </div>
             </div>
+
+        </span>
+        <div class="container">
         </div>
         <div id="message-block-selling" class='error-notify-block'>
             <div id="error-container-selling" class='error-info-container'>
@@ -26,297 +37,95 @@
                 <p id='successMsg-emp' class='success-info'></p>
             </div>
         </div>
-        <div class="section-main-title">My Shop</div>
-        <div class="main">
+        <div class="main d-flex">
             <div class="last-receipts-container">
-                <div class="section-title">Recent Orders/Receipts</div>
-                <div id='last-receipts-by-emp'>
-                    <div id="nothingrecent" class='nothing'>
-                        <h2>Nothing to see here --- yet</h2>
+                <div class="section-title-bkg">
+                    <h1>Recent Orders</h1>
+                </div>
+                <div class="section-wraper">
+
+                    <div id='last-receipts-by-emp'>
+                        <div id="nothingrecent" class='nothing'>
+                            <h2>Nothing to see here --- yet</h2>
+                        </div>
+
                     </div>
-                    <!-- to remove -->
-                    <table id="recentTable">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>27</td>
-                                <td>Unpaid</td>
-                                <td><button id="view-27" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>26</td>
-                                <td>Paid</td>
-                                <td><button id="view-26" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>19</td>
-                                <td>Paid</td>
-                                <td><button id="view-19" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>18</td>
-                                <td>Paid</td>
-                                <td><button id="view-18" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>17</td>
-                                <td>Unpaid</td>
-                                <td><button id="view-17" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>16</td>
-                                <td>Unpaid</td>
-                                <td><button id="view-16" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>15</td>
-                                <td>Unpaid</td>
-                                <td><button id="view-15" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>14</td>
-                                <td>Paid</td>
-                                <td><button id="view-14" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>13</td>
-                                <td>Paid</td>
-                                <td><button id="view-13" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>12</td>
-                                <td>Paid</td>
-                                <td><button id="view-12" onclick="viewRecentReceipt(event)">View</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- to remove end -->
                 </div>
             </div>
             <div class="search-area-emp" id='search-available-products'>
-                <div class="section-title">Search Products</div>
-                <span id='search-sell-inventory-logo' for='search-products'>&#128269</span><input type="text"
-                    name="search-products" id="search-sell-inventory" placeholder='Search for an item'>
-
-                <div id="nothing-search" class='nothing'>
-                    <h1>Nothing to see here --- yet</h1>
-                    <h3>Search for an item</h3>
-                    <h2>Most Sellings Prods will be here</h2>
+                <div class="section-title-bkg">
+                    <h1>Search Products</h1>
                 </div>
-                <div id="theFoundTableDiv" class='scrollableDiv scrollableDiv600'>
-                    <!-- to remove -->
-                    <table id="resultTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Stock Available</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>0</td>
-                                <td>430</td>
-                                <td><button disabled=""> Add to Order</button> </td>
-                            </tr>
-                            <tr>
-                                <td>Dalda Oil 5kg(10 pack)</td>
-                                <td>220</td>
-                                <td>1300</td>
-                                <td><button id="add-85" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pencil GoldFish</td>
-                                <td>178</td>
-                                <td>220</td>
-                                <td><button id="add-84" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Register 300pgs </td>
-                                <td>93</td>
-                                <td>100</td>
-                                <td><button id="add-83" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Escobar - Gold Phone</td>
-                                <td>54</td>
-                                <td>1900</td>
-                                <td><button id="add-82" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Biscuits - 5pkr</td>
-                                <td>156</td>
-                                <td>120</td>
-                                <td><button id="add-81" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>42</td>
-                                <td>900</td>
-                                <td><button id="add-90" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-91" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-92" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-93" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-94" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-95" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-96" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                            <tr>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>43</td>
-                                <td>900</td>
-                                <td><button id="add-97" onclick="addToOrder(event)"> Add to Order</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- to remove end -->
+                <div class="section-wraper">
+
+                    <div class="search-bar-selling">
+                        <span id='search-sell-inventory-logo' for='search-products'> <i
+                                class="fas fa-search"></i></span><input type="text" name="search-products"
+                            id="search-sell-inventory" placeholder='Search for an item'>
+
+                    </div>
+                    <div id="nothing-search" class='nothing nothing-search-item'>
+                        <h1>Nothing to see here --- yet</h1>
+                        <h3>Search for an item</h3>
+
+                    </div>
+                    <div id="theFoundTableDiv" class='scrollableDiv scrollableDiv600'>
+
+                    </div>
                 </div>
 
             </div>
             <div class="current-order-box">
-                <div class="section-title">Current Order</div>
-                <label for="select-customer">Select Customer</label>
-                <select name="select-customer" id="select-existing-customers" class='select-input'>
-                    <option id='order-cust-0000'>None/Walk-in</option>
-                </select>
-
-                <div id="theCartTable" class='scrollableDiv'>
-                    <!-- to remove  -->
-
-                    <table id="current-order-box-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Total</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Dalda Oil 5kg(10 pack)</td>
-                                <td>Rs. 1300</td>
-                                <td><input type="number" value="1" name="qty" id="qty-85" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 1300</td>
-                                <td><button id="cart-85" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Pencil GoldFish</td>
-                                <td>Rs. 220</td>
-                                <td><input type="number" value="1" name="qty" id="qty-84" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 220</td>
-                                <td><button id="cart-84" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Register 300pgs </td>
-                                <td>Rs. 100</td>
-                                <td><input type="number" value="1" name="qty" id="qty-83" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 100</td>
-                                <td><button id="cart-83" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Escobar - Gold Phone</td>
-                                <td>Rs. 1900</td>
-                                <td><input type="number" value="1" name="qty" id="qty-82" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 1900</td>
-                                <td><button id="cart-82" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Biscuits - 5pkr</td>
-                                <td>Rs. 120</td>
-                                <td><input type="number" value="1" name="qty" id="qty-81" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 120</td>
-                                <td><button id="cart-81" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Pepsi 1ltr 6pack</td>
-                                <td>Rs. 900</td>
-                                <td><input type="number" value="1" name="qty" id="qty-90" class="current-prod-qty"
-                                        min="0" oninput="currentProdQty(event)"></td>
-                                <td>Rs. 900</td>
-                                <td><button id="cart-90" onclick="removeCartProd(event)">Remove</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- to remove end -->
+                <div class="section-title-bkg">
+                    <h1>Current Order</h1>
                 </div>
-                <br>
+                <div class="section-wraper">
+                    <div class="select-wrap">
+                        <div class="select-customer-div d-flex-sp">
+                            <label for="select-customer">Select Customer:</label>
+                            <select name="select-customer" id="select-existing-customers" class='select-input'>
+                                <option id='order-cust-0000'>None/Walk-in</option>
+                            </select>
 
-                <div class="calculationDivs">
-                    <div class="subtotal-div">
-                        <p>Subtotal:</p>
-                        <p id='subTotal-text'></p>
-                    </div>
-                    <div class="add-discount-div">
-                        <label for='add-discount'>Add Discount</label>
-                        <input type="number" value='0' name="add-discount" id="current-order-add-discount" min="0"
-                            disabled><span>Rupees </span>
-                    </div>
-                    <div class="total-div">
-                        <h3>Total bill:</h3>
-                        <p id='order-total-text'></p>
-                    </div>
-                    <div class="status-of-payment-div">
-                        <button onclick="paidORunpaid(event)">Order Status</button>
-                        <div id="status-text" style='display:inline-block;'>
-                            <h3 class='paid-status-text'>Unpaid</h3>
                         </div>
                     </div>
+                    <div id="nothing-cart" class='nothing nothing-cart-item'>
+                        <h1>No Items in Order</h1>
+                        <h3>Search and Add to order </h3>
+
+                    </div>
+                    <div id="theCartTable" class='scrollableDiv'>
+
+                    </div>
+                    <br>
+
+                    <div class="calculationDivs">
+                        <div class="subtotal-div d-flex-sp">
+                            <h2>Subtotal:</h2>
+                            <p id='subTotal-text' class='to-right'>0 Rs.</p>
+                        </div>
+                        <div class="add-discount-div d-flex-sp">
+                            <label for='add-discount'>Add Discount</label>
+                            <div class="discount-input to-right">
+                                <input type="number" value='0' name="add-discount" id="current-order-add-discount"
+                                    min="0" disabled><span>Rs. </span>
+                            </div>
+                        </div>
+                        <div class="total-div d-flex-sp">
+                            <h1>Total bill:</h1>
+                            <h2 id='order-total-text' class='to-right'>0 Rupees</h2>
+                        </div>
+                        <div class="status-of-payment-div d-flex-sp">
+                            <button onclick="paidORunpaid(event)" class='btn order-status-btn'>Change Pay
+                                Status</button>
+                            <div id="status-text" class="paid-status-text">
+                                <h2>Unpaid</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button id='save-print-btn' disabled class='btn save-btn'>Save & Print Receipt</button>
                 </div>
-                <br>
-                <button id='save-print-btn' disabled>Save & Print Receipt</button>
             </div>
 
         </div>
