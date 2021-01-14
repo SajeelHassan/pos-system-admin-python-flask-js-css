@@ -1,9 +1,7 @@
 from flask import Flask, request, render_template, session, jsonify, redirect, url_for
 from dbfns import DBFns
-from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 app.secret_key = 's@#*je/%//0$$/l%^&'
-bcrypt = Bcrypt(app)
 
 
 @ app.route('/')
@@ -79,18 +77,6 @@ def viewReceipt(ordid):
     if data:
         return render_template('finalReceipt.html', data=data)
     return render_template('finalReceipt.html', message='NO Order Exists')
-
-    # if "loggedInEmpId" in session:
-    #    try:
-    #        empid = session["loggedInEmpId"]  # from session of employee
-    #        print(empid)
-    #        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
-    #        data = obj.getTheReceipt(ordid)
-    #        if data:
-    #             return render_template('finalReceipt.html', data=data)
-    #         return render_template('finalReceipt.html', message='NO Order Exists')
-    # else:
-    #     return redirect(url_for("sellLoginSignup"))
 
 
 @app.route('/admin')
@@ -292,7 +278,6 @@ def incRecentReceipts():
         response = jsonify(response)
     except Exception as e:
         print(str(e))
-
     return response
 
 
@@ -308,8 +293,6 @@ def incEmpSignup():
                 print(empId)
                 print(type(empId))
                 if empId:
-                    # hashed_pwd = bcrypt.generate_password_hash(
-                    #     signupInfo['password']).decode('utf-8')
                     if obj.signupEmployee(empId, signupInfo['username'], signupInfo['password']):
                         response = True
         except Exception as e:
@@ -331,22 +314,13 @@ def incEmpLogin():
         try:
             obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
             empID = obj.getEmpId(loginInfo['username'])
-            # print('logged in id: ', empID)
             if empID:
                 if obj.emploginVerify(loginInfo['username'], loginInfo['password']):
-                    # checkingPwd = obj.getEmpPassword(loginInfo['username'])
-                    # print(loginInfo['password'])
-                    # print(checkingPwd)
-                    # if bcrypt.check_password_hash(checkingPwd, loginInfo['password']):
                     session["loggedInEmpId"] = empID
                     print('logged in id: ', empID)
                     print('logged in Session id: ', empID)
                     response = True
-                    # else:
-                    #     print(bcrypt.generate_password_hash(
-                    #         '11').decode('utf-8'))
-                    #     print(checkingPwd)
-                    #     print('not matched pwd')
+
         except Exception as e:
             print(str(e))
             response = False
