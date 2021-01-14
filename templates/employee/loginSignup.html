@@ -5,50 +5,82 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../static/styles/shared.css">
+        <link rel="stylesheet" href="../../static/styles/loginSignup.css">
         <title>Employee Login / Signup</title>
 
     </head>
 
     <body>
         <div class="container">
-            <div id="message-block-emp" class='error-notify-block'>
+            <div id="message-block-emp" class='error-notify-block b-s-none'>
                 <div id="error-container-emp" class='error-info-container'>
                     <p id='errorMsg-emp' class='error-info'></p>
                 </div>
             </div>
-            <div id="message-block-success-emp" class='success-notify-block'>
+            <div id="message-block-success-emp" class='success-notify-block right-display'>
                 <div id="success-container-emp" class='success-info-container'>
                     <p id='successMsg-emp' class='success-info'></p>
                 </div>
             </div>
-            <div class="login-form-container" id='login-form-emp'>
-                <h2>Login</h2>
-                <p>Doesn't have an account yet? <span><a>Signup</a></span></p> <br>
-                <form class="login-form">
-                    <label for="uname">Username</label><br>
-                    <input type="text" name='username' placeholder='your selling username' id='login-emp-uname'> <br>
-                    <br>
-                    <label for="pwd">Password</label> <br>
-                    <input type="password" name='pwd' placeholder='Your Password' id='login-emp-pwd'><br><br><br>
-                    <button type="submit" id='login-submit-emp'>Login</button><br><br>
-                </form>
-            </div>
-            <div class="signup-form-container" id='signup-form-emp'>
-                <h2>Signup</h2>
-                <p>Already have an Employee account? <span><a>Login</a></span></p> <br>
-                <form class="signup-form">
-                    <label for="signup-uname">Username</label><br>
-                    <input type="text" name='signup-uname' placeholder='provided by Admin' id='signup-emp-uname'>
-                    <br><br>
-                    <label for="signup-pwd">Password</label> <br>
-                    <input type="password" name='signup-pwd' placeholder='Password' id='signup-emp-pwd'><br><br>
-                    <label for="signup-pwd-confirm">Confirm Password</label> <br>
-                    <input type="password" name='signup-pwd-confirm' placeholder='Confirm Password'
-                        id='signup-emp-pwd-confirm'><br><br>
-                    <button type="submit" id='signup-submit-emp'>Signup</button><br><br>
-                </form>
+            <div class="main-content d-flex">
+                <div class="sideimage"></div>
+                <div class="forms-container ">
+                    <div class="login-form-container form-container" id='login-form-emp'>
+                        <h1>WHOLESALE MS</h1>
+                        <p>Welcome back! Please login to your account.</p>
+                        <form class="login-form">
+                            <input type="text" name='username' placeholder='Username' id='login-emp-uname'
+                                class='f-input'>
+                            <input type="password" name='pwd' placeholder='Password' id='login-emp-pwd' class='f-input'>
+                            <div class="features">
+                                <div class="rememberMe ">
+                                    <input type="checkbox" name="rem-me" id="rem-me">
+                                    <p>Remember me</p>
+                                </div>
+                                <p id='f-password'><a>Forgot Password?</a></p>
+                            </div>
+                            <button type="submit" id='login-submit-emp' class='login-btn btn center '>Login</button>
+                        </form>
+                        <div class="login-signup-a" onclick="swapForm(event)">
+                            <a id='swapSignup'>New Employee? Signup</a>
+                        </div>
+                    </div>
+                    <div class="signup-form-container form-container" id='signup-form-emp'>
+                        <h1>WHOLESALE MS</h1>
+                        <p>Please complete to create your account</p>
+                        <form class="signup-form">
+                            <input type="text" name='signup-uname' placeholder='Username' id='signup-emp-uname'
+                                class='f-input'>
+
+                            <input type="password" name='signup-pwd' placeholder='Password' id='signup-emp-pwd'
+                                class='f-input'>
+                            <input type="password" name='signup-pwd-confirm' placeholder='Confirm Password'
+                                id='signup-emp-pwd-confirm' class='f-input'>
+                            <button type="submit" id='signup-submit-emp' class='btn signup-btn'>Signup</button><br><br>
+                        </form>
+                        <div class="login-signup-a" onclick="swapForm(event)">
+                            <a id='swapSigin'>Already have an account? Signin</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+        <script>
+            function swapForm(event) {
+                if (event.target.id == 'swapSignup') {
+                    document.getElementById('login-form-emp').style.display = 'none';
+                    document.getElementById('signup-form-emp').style.display = 'block';
+                }
+                else {
+                    document.getElementById('signup-form-emp').style.display = 'none';
+                    document.getElementById('login-form-emp').style.display = 'block';
+
+                }
+
+                event.preventDefault()
+            }
+        </script>
         <script src="{{ url_for('static', filename='scripts/shared.js') }}"> </script>
         <script src="{{ url_for('static', filename='scripts/emploginSignup.js') }}"> </script>
     </body>

@@ -1,0 +1,109 @@
+
+.main-content{
+    width:100%;
+}
+.sideimage{
+    background-image: url('../images/formimage.png');
+    background-repeat: no-repeat;
+    background-position:center;
+    width:700px;
+    height:100vh;
+}
+
+
+.forms-container{
+    width:700px;
+    height:100vh;  
+}
+.signup-form-container{
+    display: none;
+}
+.form-container{
+    /* background-color: brown; */
+    width:50%;
+    height: auto;
+    margin:30% auto 0 auto;
+
+}
+.form-container h1{
+    letter-spacing: 2px;
+}
+.form-container h1,p{
+    text-align: center;
+    color: #4D4F5C;
+}
+.form-container p{
+    font-weight: 500;
+    font-size: 16px;
+    opacity: 50%;
+    margin-top: 5px;
+
+}
+.form-container form{
+    width: 100%;
+    margin-top: 10px;
+}
+.f-input{
+    width: 100%;
+    padding-bottom: 5px;
+    border: none;
+    border-bottom: 2.7px solid #E9E9F0;
+    margin:25px 0 10px 0px; ;
+    outline: none;
+}
+.f-input::placeholder{
+    color: black;
+    font-size:small;
+}
+
+.features{
+   display: inline-block 
+}
+.checkbox input{
+    width:10px;
+    height: 10px;
+    margin:0px !important;
+}
+.rememberMe{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 20px;
+    left: 5px;
+    
+}
+.rememberMe p{
+    font-size: smaller;
+    position: relative;
+    bottom: 6px;
+    left:6px
+}
+.features {
+    display: flex;
+    justify-content: space-between;
+}
+#f-password  {
+    font-size: smaller;
+    position: relative;
+    top:13px;
+    cursor: pointer;
+}
+.login-btn , .signup-btn{
+    background-color: #43425D;
+    height: 40px;
+    width: 140px;
+    position: relative;
+    top:40px;
+    left:30%;
+}
+.login-signup-a{
+    position: relative;
+    top:70px;
+    text-align: center;
+}
+.login-signup-a a{
+    text-decoration: underline;
+    font-size: small;
+    opacity: 60%;
+    cursor: pointer;
+}

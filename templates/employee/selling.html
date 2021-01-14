@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,9 +31,72 @@
             <div class="last-receipts-container">
                 <div class="section-title">Recent Orders/Receipts</div>
                 <div id='last-receipts-by-emp'>
-                    <div id="nothingrecent">
+                    <div id="nothingrecent" class='nothing'>
                         <h2>Nothing to see here --- yet</h2>
                     </div>
+                    <!-- to remove -->
+                    <table id="recentTable">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>27</td>
+                                <td>Unpaid</td>
+                                <td><button id="view-27" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>Paid</td>
+                                <td><button id="view-26" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>Paid</td>
+                                <td><button id="view-19" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>Paid</td>
+                                <td><button id="view-18" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>Unpaid</td>
+                                <td><button id="view-17" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>Unpaid</td>
+                                <td><button id="view-16" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Unpaid</td>
+                                <td><button id="view-15" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Paid</td>
+                                <td><button id="view-14" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>Paid</td>
+                                <td><button id="view-13" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Paid</td>
+                                <td><button id="view-12" onclick="viewRecentReceipt(event)">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- to remove end -->
                 </div>
             </div>
             <div class="search-area-emp" id='search-available-products'>
@@ -40,12 +104,110 @@
                 <span id='search-sell-inventory-logo' for='search-products'>&#128269</span><input type="text"
                     name="search-products" id="search-sell-inventory" placeholder='Search for an item'>
 
-                <div id="nothing-search">
+                <div id="nothing-search" class='nothing'>
                     <h1>Nothing to see here --- yet</h1>
                     <h3>Search for an item</h3>
                     <h2>Most Sellings Prods will be here</h2>
                 </div>
                 <div id="theFoundTableDiv" class='scrollableDiv scrollableDiv600'>
+                    <!-- to remove -->
+                    <table id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Stock Available</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>0</td>
+                                <td>430</td>
+                                <td><button disabled=""> Add to Order</button> </td>
+                            </tr>
+                            <tr>
+                                <td>Dalda Oil 5kg(10 pack)</td>
+                                <td>220</td>
+                                <td>1300</td>
+                                <td><button id="add-85" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pencil GoldFish</td>
+                                <td>178</td>
+                                <td>220</td>
+                                <td><button id="add-84" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Register 300pgs </td>
+                                <td>93</td>
+                                <td>100</td>
+                                <td><button id="add-83" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Escobar - Gold Phone</td>
+                                <td>54</td>
+                                <td>1900</td>
+                                <td><button id="add-82" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Biscuits - 5pkr</td>
+                                <td>156</td>
+                                <td>120</td>
+                                <td><button id="add-81" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>42</td>
+                                <td>900</td>
+                                <td><button id="add-90" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-91" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-92" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-93" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-94" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-95" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-96" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                            <tr>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>43</td>
+                                <td>900</td>
+                                <td><button id="add-97" onclick="addToOrder(event)"> Add to Order</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- to remove end -->
                 </div>
 
             </div>
@@ -57,6 +219,78 @@
                 </select>
 
                 <div id="theCartTable" class='scrollableDiv'>
+                    <!-- to remove  -->
+
+                    <table id="current-order-box-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Dalda Oil 5kg(10 pack)</td>
+                                <td>Rs. 1300</td>
+                                <td><input type="number" value="1" name="qty" id="qty-85" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 1300</td>
+                                <td><button id="cart-85" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Pencil GoldFish</td>
+                                <td>Rs. 220</td>
+                                <td><input type="number" value="1" name="qty" id="qty-84" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 220</td>
+                                <td><button id="cart-84" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Register 300pgs </td>
+                                <td>Rs. 100</td>
+                                <td><input type="number" value="1" name="qty" id="qty-83" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 100</td>
+                                <td><button id="cart-83" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Escobar - Gold Phone</td>
+                                <td>Rs. 1900</td>
+                                <td><input type="number" value="1" name="qty" id="qty-82" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 1900</td>
+                                <td><button id="cart-82" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Biscuits - 5pkr</td>
+                                <td>Rs. 120</td>
+                                <td><input type="number" value="1" name="qty" id="qty-81" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 120</td>
+                                <td><button id="cart-81" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Pepsi 1ltr 6pack</td>
+                                <td>Rs. 900</td>
+                                <td><input type="number" value="1" name="qty" id="qty-90" class="current-prod-qty"
+                                        min="0" oninput="currentProdQty(event)"></td>
+                                <td>Rs. 900</td>
+                                <td><button id="cart-90" onclick="removeCartProd(event)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- to remove end -->
                 </div>
                 <br>
 

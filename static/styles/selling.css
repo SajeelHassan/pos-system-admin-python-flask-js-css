@@ -12,11 +12,9 @@
 }
 .last-transactions-container{
     width:300px;
-    background-color: rgba(128, 128, 128, 0.363);
 }
 .search-area-emp{
     width:800px;
-    /* background-color: grey; */
     margin-left: 20px;
 }
 .search-area-emp span{
@@ -31,13 +29,9 @@
     width:400px;
     margin-left: 20px;
 }
-.current-order-table{
-
-    background-color: green;
-}
 
 table{
-    width:95%;
+    width:100%;
 }
 thead th{
     position: sticky;
@@ -56,4 +50,11 @@ tbody {
 }
 .current-prod-qty{
     width:50px;
+}
+.nothing{
+    display: none;
+}
+.last-receipts-container table{
+    width:100%;
+    
 }

@@ -94,7 +94,7 @@ function onSignup(e) {
         else {
             let data = {
                 "username": `${signup_uname.value}`,
-                "password": `${signup_pwd}`
+                "password": `${signup_pwd.value}`
             }
             let jsonString = JSON.stringify(data);
             let signUpxmlObj = new XMLHttpRequest();
@@ -102,18 +102,18 @@ function onSignup(e) {
             signUpxmlObj.onload = function () {
                 if (this.status === 200) {
                     if (this.responseText == 'INVALID') {
-                        let msgP = document.getElementById('errorMsg-emp');
-                        msgP.innerText = 'Error! Contact Admin';
-                        let msgBlock = document.getElementById('message-block-emp');
-                        msgBlock.style.display = 'block';
+                        let msgPp = document.getElementById('errorMsg-emp');
+                        msgPp.innerText = 'Error! Contact Admin';
+                        let msgBlockk = document.getElementById('message-block-emp');
+                        msgBlockk.style.display = 'block';
                         setTimeout(function () {
-                            msgBlock.style.display = 'none';
+                            msgBlockk.style.display = 'none';
                         }, 3000);
 
                     }
                     else {
                         let msgP = document.getElementById('successMsg-emp');
-                        msgP.innerText = 'Account has been created! You Can signup Now';
+                        msgP.innerText = 'Account has been created! You Can signin Now';
                         let msgBlock = document.getElementById('message-block-success-emp');
                         msgBlock.style.display = 'block';
                         setTimeout(function () {
