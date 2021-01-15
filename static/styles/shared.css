@@ -405,6 +405,13 @@ th{
 .btn-customer i{
   font-size: large;
 }
+.btn-employees{
+  background-color: #3B86FF;
+  font-size: larger;
+}
+.btn-employees i{
+  font-size: large;
+}
 .right-display{
   position: absolute;
   left: 975px;

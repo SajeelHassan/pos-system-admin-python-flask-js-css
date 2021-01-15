@@ -13,17 +13,36 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="navbar">
-                <!-- id added for event listeners in js -->
-                <button class="add-product" id='addproduct'>Add Product</button>
-                <a href="#">Account</a>
-            </div>
-            <!-- Sidebar content -->
-            <div class="sidebar">
-                <div class="shopname">
-                    <h2>My Shop</h2>
+        <div class="navbar-bkg"></div>
+        <div class="container navbar d-flex-sp">
+            <li class='shop-name'>
+                <h1>My Shop</h1>
+            </li>
+            <div class="navbar-right-items d-flex-sp">
+                <div class="navbar-btn-div">
+                    <button class="add-product btn btn-add-product btn-navbar" id='addproduct'><i
+                            class="fas fa-plus-circle"></i> Add
+                        Product</button>
                 </div>
+                <div class="dropdown">
+                    <button class="dropbtn b-s-none" id='admin-name'>Admin
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">Settings</a>
+                        <a href="/admin/logout" id='admin-logout'>Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container d-flex-sp">
+
+            <!-- Sidebar content -->
+
+            <div class="sidebar">
+                <!-- <div class="shopname">
+                <h2>My Shop</h2>
+            </div> -->
                 <div class="navigation">
                     <ul>
                         <li><a href="/dashboard" class="side-bar-icon"> <span class="fas fa-chart-bar"></span> &nbsp
@@ -54,13 +73,15 @@
                         <div class="error" id='page-alert-error-receipts'></div>
                     </div>
                     <div class="section-title">
-                        <h2>Receipts</h2>
+                        <h1>Receipts</h1>
                     </div>
-                    <div class="section-controls">
-                        <div class="search-area">
-                            <input type="text" placeholder="Search" id='search-receipts'>
+                    <div class="section-controls d-flex-sp">
+                        <div class="search-bar">
+                            <span id='search-inventory-logo' for='search-products'> <i
+                                    class="fas fa-search"></i></span><input type="text" name="search-products"
+                                id="inventory-search" placeholder='Search'>
+                            <!-- <button class="add-receipts" id='btn-add-receipts'>Add Receipt</button> -->
                         </div>
-                        <!-- <button class="add-receipts" id='btn-add-receipts'>Add Receipt</button> -->
                     </div>
                     <!-- commented -->
 
@@ -68,6 +89,7 @@
 
 
                     <div id="nothing-receipts">
+                        <br>
                         <h1>Nothing to see here --- yet</h1>
                     </div>
                     <div id="receipts-table-div" class='receipts-table scrollableDiv h-page'>

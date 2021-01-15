@@ -4,31 +4,62 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+            integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/styles/shared.css">
         <title>Admin - Employees</title>
     </head>
 
     <body>
-        <div class="container">
-            <div class="navbar">
-                <!-- id added for event listeners in js -->
-                <button class="add-product" id='addproduct'>Add Product</button>
-                <a href="#">Account</a>
-            </div>
-            <!-- Sidebar content -->
-            <div class="sidebar">
-                <div class="shopname">
-                    <h2>My Shop</h2>
+        <div class="navbar-bkg"></div>
+        <div class="container navbar d-flex-sp">
+            <li class='shop-name'>
+                <h1>My Shop</h1>
+            </li>
+            <div class="navbar-right-items d-flex-sp">
+                <div class="navbar-btn-div">
+                    <button class="add-product btn btn-add-product btn-navbar" id='addproduct'><i
+                            class="fas fa-plus-circle"></i> Add
+                        Product</button>
                 </div>
+                <div class="dropdown">
+                    <button class="dropbtn b-s-none" id='admin-name'>Admin
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">Settings</a>
+                        <a href="/admin/logout" id='admin-logout'>Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container d-flex-sp">
+
+            <!-- Sidebar content -->
+
+            <div class="sidebar">
+                <!-- <div class="shopname">
+                <h2>My Shop</h2>
+            </div> -->
                 <div class="navigation">
-                    <ul id=sidebar>
-                        <li id='sidebar-dashboard'><a href='/dashboard'>Dashboard</a></li>
-                        <li id='sidebar-inventory'><a href='./inventory'>Inventory</a></li>
-                        <li id='sidebar-receipts'><a href='/receipts'>Receipts</a></li>
-                        <li id='sidebar-customers'><a href='/customers'>Customers</a></li>
-                        <li id='sidebar-reports'><a href='/reports'>Reports</a></li>
-                        <li id='sidebar-employees'><a href='/employees'>Employees</a></li>
-                        <li id='sidebar-settings'><a href='/settings'>Settings</a></li>
+                    <ul>
+                        <li><a href="/dashboard" class="side-bar-icon"> <span class="fas fa-chart-bar"></span> &nbsp
+                                &nbsp Dashboard</a></li>
+                        <li><a href="/inventory" class="side-bar-icon"> <span class="fas fa-dolly-flatbed"></span> &nbsp
+                                &nbsp Inventory</a></li>
+                        <li><a href="/receipts" class="side-bar-icon"> <span class="fas fa-receipt"></span> &nbsp &nbsp
+                                Receipts</a></li>
+                        <li><a href="/customers" class="side-bar-icon"> <span class="far fa-user"></span> &nbsp &nbsp
+                                Customers</a></li>
+                        <li><a href="/reports" class="side-bar-icon"> <span class="fas fa-chart-line"></span> &nbsp
+                                &nbsp Reports</a></li>
+                        <li><a href="/employees" class="side-bar-icon"> <span class="fas fa-user-friends"></span> &nbsp
+                                &nbsp Employees</a></li>
+                        <li><a href="/support" class="side-bar-icon"> <span class="fa fa-life-ring"></span> &nbsp &nbsp
+                                Support</a></li>
+                        <li><a href="/settings" class="side-bar-icon"> <span class="fas fa-cog"></span> &nbsp &nbsp
+                                Settings</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -40,13 +71,17 @@
                         <div class="error" id='page-alert-error-employees'></div>
                     </div>
                     <div class="section-title">
-                        <h2>Employees</h2>
+                        <h1>Employees</h1>
                     </div>
-                    <div class="section-controls">
-                        <div class="search-area">
-                            <input type="text" placeholder="Search" id='search-employees'>
+                    <div class="section-controls d-flex-sp">
+                        <div class="search-bar">
+                            <span id='search-inventory-logo' for='search-products'> <i
+                                    class="fas fa-search"></i></span><input type="text" name="search-products"
+                                id="inventory-search" placeholder='Search'>
+
                         </div>
-                        <button class="add-employees" id='btn-add-employees'>Add Employee</button>
+                        <button class="add-employees btn btn-employees" id='btn-add-employees'><i
+                                class="fas fa-plus-circle"></i>Add Employee</button>
                     </div>
                     <!-- commented -->
 
