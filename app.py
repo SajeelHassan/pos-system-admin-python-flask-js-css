@@ -3,6 +3,12 @@ from dbfns import DBFns
 app = Flask(__name__)
 app.secret_key = 's@#*je/%//0$$/l%^&'
 
+# MySQL configurations
+app.config['DATABASE_HOST'] = 'localhost'
+app.config['DATABASE_USER'] = 'root'
+app.config['DATABASE_PASSWORD'] = 's@ajeel'
+app.config['DATABASE_DB'] = 'wms'
+
 
 @ app.route('/')
 @ app.route('/login')
@@ -101,7 +107,9 @@ def adminLogout():
 def adminloginverify():
     if request.method == "POST":
         data = request.get_json(silent=True)
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        # obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         if obj.adminLogin(data['username'], data['password']):
             session['adminLoggedIn'] = True
             return 'VALID'

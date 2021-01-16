@@ -420,3 +420,22 @@ th{
 .b-s-none{
   box-shadow:none;
 }
+
+
+
+::-webkit-scrollbar {
+  width: 10px;
+
+
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.157);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(105, 105, 105);
+}

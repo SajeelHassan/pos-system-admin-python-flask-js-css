@@ -35,9 +35,6 @@
             </div>
         </div>
         <div class="container d-flex-sp">
-
-            <!-- Sidebar content -->
-
             <div class="sidebar">
                 <!-- <div class="shopname">
                 <h2>My Shop</h2>
@@ -70,11 +67,21 @@
                         <div class="success" id='page-alert-success'></div>
                         <div class="error" id='page-alert-error'></div>
                     </div>
-                    <div class="section-title">
+                    <div class="section-title d-flex-sp">
                         <h1>Reports</h1>
+                        <div class="section-controls">
+                            <button id="reports-today" class='btn'>Today</button>
+                            <button id="reports-yesterday" class='btn'>Yesterday</button>
+                            <button id="reports-month" class='btn'>Last Month</button>
+                            <input type="date" name="reports-date" id="reports-date">
+                        </div>
                     </div>
                     <div id="nothing">
                         <h1>Nothing to see here --- yet</h1>
+                    </div>
+                    <div id='the-graphs' class="my-graphs"></div>
+                    <div id="products-sold-div" class='products-sold'>
+                        <h2>Products Sold</h2>
                     </div>
 
 

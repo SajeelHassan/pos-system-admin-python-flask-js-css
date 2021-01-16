@@ -1,5 +1,7 @@
 import pymysql
 import datetime
+import smtplib
+from email.message import EmailMessage
 
 
 class DBFns:
@@ -18,7 +20,8 @@ class DBFns:
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
             sql = "INSERT INTO products (title,sku,cost,price,stock,low,curr_status,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-            currstatus = self.setStatus(stock, low)
+            productData = (title, sku, cost, price, stock, low)
+            currstatus = self.setStatus(productData)
             createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, createdOn)
@@ -33,16 +36,19 @@ class DBFns:
             return status
     # update the product
 
-    def setStatus(self, stock, low):
-        stock = int(stock)
-        low = int(low)
+    def setStatus(self, product):
+        stock = int(product[4])
+        low = int(product[5])
         if stock >= low:
             return 'In Stock'
         elif stock == 0:
+            self.sendStockStatus(product, 'Out of Stock')
             return 'Out of Stock'
         elif stock < 15:
+            self.sendStockStatus(product, 'Soon out of Stock')
             return 'Soon out of Stock'
         elif stock < low:
+            self.sendStockStatus(product, 'Low Stock')
             return 'Low Stock'
 
     def updateProduct(self, title, sku, cost, price, stock, low, prodid):
@@ -54,7 +60,8 @@ class DBFns:
                 host=self.host, user=self.user, password=self.password, database=self.database)
             mydbCursor = mydb.cursor()
             sql = "UPDATE products SET title=%s,sku=%s,cost=%s,price=%s,stock=%s,low=%s,curr_status=%s,last_updated=%s WHERE prod_id=%s"
-            currstatus = self.setStatus(stock, low)
+            productData = (title, sku, cost, price, stock, low)
+            currstatus = self.setStatus(productData)
             lUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, lUpdated, prodid)
@@ -848,6 +855,106 @@ class DBFns:
 
             return status
 
+    def sendStockStatus(self, product, status):
+        EMAIL_ADDRESS = "hsajeel786@gmail.com"
+        EMAIL_PASSWORD = "hjsrwkmjdihfpcro"
+        msg = EmailMessage()
+        msg['Subject'] = 'Stock Update'
+        msg['From'] = EMAIL_ADDRESS
+        msg['To'] = 'bitf18m005@pucit.edu.pk'
+        msg.add_alternative(f"""\
+        <!DOCTYPE html>
+<html>
+
+    <body style="width: 600px;margin: 0 auto;" cz-shortcut-listen="true">
+        <div style="width:500px;margin: 30px auto;">
+            <div style="
+    background-color: #43425D;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    ">
+                <h1>{status} Alert</h1>
+            </div>
+            <div style="
+    padding: 5px;
+">
+                <p><span><b>Hi Admin<br><br></b></span>A product is <span style='background-color: black;
+                    color: white;
+                    padding: 5px 5px;'>{status}</span> Product details are shown
+                    below
+                    for
+                    your reference:</span></p>
+            </div>
+            <div style="
+    padding: 4px;
+">
+                <h2>Product Details</h2>
+            </div>
+            <table style="
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        ">
+                <thead style="background-color: #3B86FF;">
+                    <tr>
+                        <th style="
+            border: 1px solid black;
+            padding: 10px;
+        ">Product</th>
+                        <th style="
+            border: 1px solid black;
+            padding: 10px;
+        ">SKU</th>
+                        <th style="
+            border: 1px solid black;
+            padding: 10px;
+        ">Available Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="
+            text-align: left;
+            border: 1px solid black;
+            padding: 10px;
+        ">{product[0]}</td>
+                        <td style="
+            border: 1px solid black;
+            padding: 10px;
+        ">{product[1]}</td>
+                        <td style="
+            border: 1px solid black;
+            padding: 10px;
+        ">{product[4]}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="
+    margin-top: 50px;
+    background: #eeeded;
+">
+                <p style="
+    opacity: 50%;
+    padding: 30px;
+    font-style: italic;
+">Sent by automatic stock status sending function in dbfns.py file</p>
+            </div>
+        </div>
+
+
+
+    </body>
+
+</html>
+        """, subtype='html')
+        try:
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                smtp.send_message(msg)
+        except Exception as e:
+            print(str(e))
+
 
 if __name__ == "__main__":
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
@@ -856,9 +963,12 @@ if __name__ == "__main__":
     #     'sajeel', 'hassan', 'sajeel01', 'hsajeel786@gmail.com', '03491774641')
     # result = obj.updateEmployee(
     #     'Bint e', 'Abdullah', 'bitf18m033@pucit.edu.pk', '0309--90-090', 6)
-    result = obj.addCustomer(
-        'Khaleel', 'Jibran', 'khaleel90@gmail.com', '03099999765')
-    print(result)
+    # result = obj.addCustomer(
+    #     'Khaleel', 'Jibran', 'khaleel90@gmail.com', '03099999765')
+    # status = "Out Of Stock"
+    # obj.sendStockStatus(
+    #     ('My Product', '098Ik', '900', '1900', '0', '30'), status)
+
     # result = obj.isReceiptallowedEmp(2, 3)
     # result = obj.getFinalReceipt(7)
     # result = obj.getTheReceipt(1)
