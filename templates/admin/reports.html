@@ -8,6 +8,8 @@
             integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/styles/shared.css">
         <link rel="stylesheet" href="../../static/styles/sidebar.css">
+        <link rel="stylesheet" href="../../static/styles/reports.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <title>Admin - Reports</title>
     </head>
 
@@ -70,26 +72,39 @@
                     <div class="section-title d-flex-sp">
                         <h1>Reports</h1>
                         <div class="section-controls">
-                            <button id="reports-today" class='btn'>Today</button>
-                            <button id="reports-yesterday" class='btn'>Yesterday</button>
-                            <button id="reports-month" class='btn'>Last Month</button>
-                            <input type="date" name="reports-date" id="reports-date">
+                            <button id="reports-today" class='btn btn-reports'>Today</button>
+                            <button id="reports-yesterday" class='btn btn-reports'>Yesterday</button>
+                            <button id="reports-month" class='btn btn-reports'>Last Month</button>
+                            <button id="reports-all" class='btn btn-reports'>All Time</button>
+                            <!-- <input type="date" name="reports-date" id="reports-date"> -->
                         </div>
                     </div>
-                    <div id="nothing">
-                        <h1>Nothing to see here --- yet</h1>
+                    <div id='the-graphs' class="my-graphs d-flex-sp">
+                        <div id="chart1" class='chart'>
+                            <h3>NUMBER OF SALES <span id='t-n-sales'></span></h3>
+                            <canvas id="chart-count-sales" width="280" height="300"></canvas>
+                        </div>
+                        <div id="chart2" class='chart'>
+                            <h3>Total Sales (Rs.) <span id='t-sales'></span></h3>
+                            <canvas id="chart-sales" width="280" height="300"></canvas>
+                        </div>
+                        <div id="chart3" class='chart'>
+                            <h3>Total Profit</h3>
+                            <canvas id="chart-profit" width="280" height="300"></canvas>
+                        </div>
                     </div>
-                    <div id='the-graphs' class="my-graphs"></div>
                     <div id="products-sold-div" class='products-sold'>
-                        <h2>Products Sold</h2>
+                        <div class="products-sold-title d-flex-sp">
+                            <h2>Products Sold<span id='t-sold'></span></h2>
+                            <button class='btn btn-reports'>Export Data</button>
+                        </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
         </div>
-
+        <script src="{{ url_for('static', filename='scripts/reports.js') }}"> </script>
+        <!-- <script src="{{ url_for('static', filename='scripts/reportcharts.js') }}"> </script> -->
     </body>
 
 </html>

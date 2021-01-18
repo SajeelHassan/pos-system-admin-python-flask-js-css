@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, session, jsonify, redirect, url_for
 from dbfns import DBFns
+import json
 app = Flask(__name__)
 app.secret_key = 's@#*je/%//0$$/l%^&'
 
@@ -101,6 +102,22 @@ def adminLogout():
     if "adminLoggedIn" in session:
         session.pop("adminLoggedIn", None)
     return redirect(url_for("adminlogin"))
+
+
+@app.route('/incProductsSold')
+def productsSold():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    productsSold = obj.getProductsSold()
+    print('type of :  ', type(productsSold))
+    return jsonify(productsSold)
+
+
+@app.route('/incProductsSoldMonth')
+def ProductsSoldMonth():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    monthProductsSold = obj.getMonthProductsSold()
+    print('type of :  ', type(monthProductsSold))
+    return jsonify(monthProductsSold)
 
 
 @app.route('/incAdminLogin', methods=['GET', 'POST'])

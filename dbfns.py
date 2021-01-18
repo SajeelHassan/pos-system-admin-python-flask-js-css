@@ -21,12 +21,14 @@ class DBFns:
             mydbCursor = mydb.cursor()
             sql = "INSERT INTO products (title,sku,cost,price,stock,low,curr_status,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             productData = (title, sku, cost, price, stock, low)
-            currstatus = self.setStatus(productData)
+            currstatus = self.getStatus(stock, low)
+            print(currstatus, 'creating prouduct')
             createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, createdOn)
             mydbCursor.execute(sql, args)
             mydb.commit()
+            self.sendStockStatus(productData, currstatus)
             status = True
         except Exception as e:
             print(str(e))
@@ -36,20 +38,23 @@ class DBFns:
             return status
     # update the product
 
-    def setStatus(self, product):
-        stock = int(product[4])
-        low = int(product[5])
+    def getStatus(self, stock, low):
+        stock = int(stock)
+        low = int(low)
         if stock >= low:
             return 'In Stock'
-        elif stock == 0:
-            self.sendStockStatus(product, 'Out of Stock')
-            return 'Out of Stock'
-        elif stock < 15:
-            self.sendStockStatus(product, 'Soon out of Stock')
-            return 'Soon out of Stock'
-        elif stock < low:
-            self.sendStockStatus(product, 'Low Stock')
-            return 'Low Stock'
+        else:
+            if stock == 0:
+                return 'Out of Stock'
+            else:
+                return 'Low Stock'
+
+    def sendStockMail(self, prod_id, status):
+        if status != 'In Stock':
+            products = self.getProduct(prod_id)
+            productData = (products[1], products[2], products[3],
+                           products[4], products[5], products[6])
+            self.sendStockStatus(productData, status)
 
     def updateProduct(self, title, sku, cost, price, stock, low, prodid):
         prodid = int(prodid)
@@ -61,12 +66,14 @@ class DBFns:
             mydbCursor = mydb.cursor()
             sql = "UPDATE products SET title=%s,sku=%s,cost=%s,price=%s,stock=%s,low=%s,curr_status=%s,last_updated=%s WHERE prod_id=%s"
             productData = (title, sku, cost, price, stock, low)
-            currstatus = self.setStatus(productData)
+            currstatus = self.getStatus(stock, low)
+            print(currstatus, 'updating prouduct')
             lUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args = (title, sku, cost, price, stock,
                     low, currstatus, lUpdated, prodid)
             mydbCursor.execute(sql, args)
             mydb.commit()
+            self.sendStockStatus(productData, currstatus)
             status = True
         except Exception as e:
             print(str(e))
@@ -165,6 +172,35 @@ class DBFns:
                 mydb.close()
             return status
 
+    def setCurrStatus(self, prod_id, stock, low):
+        stock = int(stock)
+        low = int(low)
+        thestatus = ""
+        if stock >= low:
+            thestatus = 'In Stock'
+        else:
+            if stock == 0:
+                thestatus = 'Out of Stock'
+            else:
+                thestatus = 'Low Stock'
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "UPDATE products SET curr_status=%s WHERE prod_id=%s"
+            args = (thestatus,  prod_id)
+            mydbCursor.execute(sql, args)
+            mydb.commit()
+            status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            return status
+
     def addProdToReceipt(self, rcpt_id, prod_id, title, price, qty, total_price):
         mydb = None
         status = False
@@ -184,6 +220,33 @@ class DBFns:
             if mydb != None:
                 mydb.close()
             return status
+
+    def getLow(self, prod_id):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "Select prod_id,low from products WHERE prod_id =%s"
+            args = (prod_id)
+            mydbCursor.execute(sql, args)
+            myresult = mydbCursor.fetchone()
+            # print(myresult)
+            if myresult != None:
+                if myresult[0] == prod_id:
+                    # print(myresult[8].strftime("%c"))
+                    # print(myresult[1])
+                    status = True
+        except Exception as e:
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return myresult[1]
+            else:
+                return status
 
     def getStock(self, prod_id):
         mydb = None
@@ -213,6 +276,7 @@ class DBFns:
                 return status
 
     def updateStock(self, prod_id, qty):
+
         mydb = None
         status = False
         try:
@@ -223,6 +287,18 @@ class DBFns:
             args = (qty, prod_id)
             mydbCursor.execute(sql, args)
             mydb.commit()
+            stock = self.getStock(prod_id)
+
+            low = self.getLow(prod_id)
+            print(stock, low)
+            curr_status = self.getStatus(stock, low)
+            print(curr_status)
+            mydbCursor2 = mydb.cursor()
+            sql = "UPDATE products SET curr_status=%s WHERE prod_id=%s"
+            args2 = (curr_status, prod_id)
+            mydbCursor2.execute(sql, args2)
+            mydb.commit()
+            self.sendStockMail(prod_id, curr_status)
             status = True
         except Exception as e:
             print(str(e))
@@ -856,104 +932,207 @@ class DBFns:
             return status
 
     def sendStockStatus(self, product, status):
-        EMAIL_ADDRESS = "hsajeel786@gmail.com"
-        EMAIL_PASSWORD = "hjsrwkmjdihfpcro"
-        msg = EmailMessage()
-        msg['Subject'] = 'Stock Update'
-        msg['From'] = EMAIL_ADDRESS
-        msg['To'] = 'bitf18m005@pucit.edu.pk'
-        msg.add_alternative(f"""\
-        <!DOCTYPE html>
-<html>
+        if status != 'In Stock':
+            EMAIL_ADDRESS = "hsajeel786@gmail.com"
+            EMAIL_PASSWORD = "hjsrwkmjdihfpcro"
+            msg = EmailMessage()
+            msg['Subject'] = f'Stock Update-{product[0]}'
+            msg['From'] = EMAIL_ADDRESS
+            msg['To'] = 'bitf18m005@pucit.edu.pk'
+            msg.add_alternative(f"""\
+            <!DOCTYPE html>
+    <html>
 
-    <body style="width: 600px;margin: 0 auto;" cz-shortcut-listen="true">
-        <div style="width:500px;margin: 30px auto;">
-            <div style="
-    background-color: #43425D;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    ">
-                <h1>{status} Alert</h1>
-            </div>
-            <div style="
-    padding: 5px;
-">
-                <p><span><b>Hi Admin<br><br></b></span>A product is <span style='background-color: black;
-                    color: white;
-                    padding: 5px 5px;'>{status}</span> Product details are shown
-                    below
-                    for
-                    your reference:</span></p>
-            </div>
-            <div style="
-    padding: 4px;
-">
-                <h2>Product Details</h2>
-            </div>
-            <table style="
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
+        <body style="width: 600px;margin: 0 auto;" cz-shortcut-listen="true">
+            <div style="width:500px;margin: 30px auto;">
+                <div style="
+        background-color: #43425D;
+        color: white;
+        padding: 20px;
+        text-align: center;
         ">
-                <thead style="background-color: #3B86FF;">
-                    <tr>
-                        <th style="
-            border: 1px solid black;
-            padding: 10px;
-        ">Product</th>
-                        <th style="
-            border: 1px solid black;
-            padding: 10px;
-        ">SKU</th>
-                        <th style="
-            border: 1px solid black;
-            padding: 10px;
-        ">Available Stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="
-            text-align: left;
-            border: 1px solid black;
-            padding: 10px;
-        ">{product[0]}</td>
-                        <td style="
-            border: 1px solid black;
-            padding: 10px;
-        ">{product[1]}</td>
-                        <td style="
-            border: 1px solid black;
-            padding: 10px;
-        ">{product[4]}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="
-    margin-top: 50px;
-    background: #eeeded;
-">
-                <p style="
-    opacity: 50%;
-    padding: 30px;
-    font-style: italic;
-">Sent by automatic stock status sending function in dbfns.py file</p>
+                    <h1>{status} Alert</h1>
+                </div>
+                <div style="
+        padding: 5px;
+    ">
+                    <p><span><b>Hi Admin<br><br></b></span>A product is <span style='background-color: black;
+                        color: white;
+                        padding: 5px 5px;'>{status}</span> Product details are shown
+                        below
+                        for
+                        your reference:</span></p>
+                </div>
+                <div style="
+        padding: 4px;
+    ">
+                    <h2>Product Details</h2>
+                </div>
+                <table style="
+                width: 100%;
+                border-collapse: collapse;
+                text-align: center;
+            ">
+                    <thead style="background-color: #3B86FF;">
+                        <tr>
+                            <th style="
+                border: 1px solid black;
+                padding: 10px;
+            ">Product</th>
+                            <th style="
+                border: 1px solid black;
+                padding: 10px;
+            ">SKU</th>
+                            <th style="
+                border: 1px solid black;
+                padding: 10px;
+            ">Available Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="
+                text-align: left;
+                border: 1px solid black;
+                padding: 10px;
+            ">{product[0]}</td>
+                            <td style="
+                border: 1px solid black;
+                padding: 10px;
+            ">{product[1]}</td>
+                            <td style="
+                border: 1px solid black;
+                padding: 10px;
+            ">{product[4]}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="
+        margin-top: 50px;
+        background: #eeeded;
+    ">
+                    <p style="
+        opacity: 50%;
+        padding: 30px;
+        font-style: italic;
+    ">Sent by automatic stock status sending function in dbfns.py file</p>
+                </div>
             </div>
-        </div>
 
 
 
-    </body>
+        </body>
 
-</html>
-        """, subtype='html')
+    </html>
+            """, subtype='html')
+            try:
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                    smtp.send_message(msg)
+                    print('mail sent')
+            except Exception as e:
+                print(str(e))
+
+    def getallProductsSold(self):
+        mydb = None
+        status = False
         try:
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                smtp.send_message(msg)
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            sql = "select products.prod_id,receiptproducts.title, products.cost,products.price,receiptproducts.qty,receiptproducts.total_price,receipt.rcpt_id,receiptproducts.rcpt_id,receipt.date_time from ((products inner join receiptproducts on products.prod_id = receiptproducts.prod_id) inner join receipt on receipt.rcpt_id = receiptproducts.rcpt_id) group by receipt.rcpt_id,receiptproducts.prod_id order by receipt.date_time desc;"
+            mydbCursor.execute(sql)
+            myresult = mydbCursor.fetchall()
+            # print(myresult)
+            if myresult != None:
+                status = True
         except Exception as e:
             print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            if status == True:
+                return list(myresult)
+            else:
+                return status
+
+    def insertProductsSold(self):
+        mydb = None
+        status = False
+        try:
+            mydb = pymysql.connect(
+                host=self.host, user=self.user, password=self.password, database=self.database)
+            mydbCursor = mydb.cursor()
+            allprods = self.getallProductsSold()
+            sq = 'TRUNCATE TABLE  productssold;'
+            mydbCursor.execute(sq)
+            mydb.commit()
+            sql = "INSERT INTO productssold (prod_id, title, cost, price, qty, total_price, r_rcpt_id, date_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+            for prod in allprods:
+                args = (prod[0], prod[1], prod[2], prod[3],
+                        prod[4], prod[5], prod[6], prod[8])
+                mydbCursor.execute(sql, args)
+                mydb.commit()
+            status = True
+        except Exception as e:
+            print('insertProductsSold')
+            print(str(e))
+        finally:
+            if mydb != None:
+                mydb.close()
+            return status
+
+    def getProductsSold(self):
+        if self.insertProductsSold():
+            mydb = None
+            status = False
+            try:
+                mydb = pymysql.connect(
+                    host=self.host, user=self.user, password=self.password, database=self.database)
+                mydbCursor = mydb.cursor()
+                sql = "Select * from productssold"
+                mydbCursor.execute(sql)
+                myresult = mydbCursor.fetchall()
+                if myresult != None:
+                    status = True
+            except Exception as e:
+                print('getProductsSold')
+                print(str(e))
+            finally:
+                if mydb != None:
+                    mydb.close()
+                if status == True:
+                    return myresult
+                else:
+                    return status
+        else:
+            return False
+
+    def getMonthProductsSold(self):
+        if self.insertProductsSold():
+            mydb = None
+            status = False
+            try:
+                mydb = pymysql.connect(
+                    host=self.host, user=self.user, password=self.password, database=self.database)
+                mydbCursor = mydb.cursor()
+                sql = "SELECT prod_id, title, cost, price, qty, total_price, r_rcpt_id,DATE_FORMAT(date_time, '%d/%m/%Y') FROM productssold WHERE   date_time BETWEEN NOW() - INTERVAL 30 DAY AND NOW();"
+                mydbCursor.execute(sql)
+                myresult = mydbCursor.fetchall()
+                if myresult != None:
+                    status = True
+            except Exception as e:
+                print('getProductsSold')
+                print(str(e))
+            finally:
+                if mydb != None:
+                    mydb.close()
+                if status == True:
+                    return myresult
+                else:
+                    return status
+        else:
+            return False
 
 
 if __name__ == "__main__":
@@ -976,7 +1155,6 @@ if __name__ == "__main__":
     # print(result)
     # result = obj.getEmpId('rohan1999')
     # result = obj.adminLogin('ahmed7351', 's@ajeel')
-    # print(result)
     # result = obj.addProduct('finalizinfggg', '098098',
     #                         222, 333, 900, 300, 'new status')
     # result = obj.addProduct('finalizinfggg', '098098',
