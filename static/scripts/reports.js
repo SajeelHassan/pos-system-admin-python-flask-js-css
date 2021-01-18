@@ -10,27 +10,53 @@ var reportsAll = document.getElementById('reports-all');
 
 //GET AJAX REQUEST (ALl ProductsSold data) for ProductsSold
 //Load ProductsSold
-var theProductsSold;
 
+//today Products
+var theProductsSoldToday;
+var xmlObjToday = new XMLHttpRequest();
+xmlObjToday.open('get', '/incProductsSoldToday', true);
+xmlObjToday.send();
+xmlObjToday.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status === 200) {
+        // console.log(this.responseText);
+        theProductsSoldToday = JSON.parse(this.responseText);
+        xmlObjToday.abort();
+        // console.trace(theProductsSoldToday);
+        // console.log();
+        // console.log(theProductsSoldToday[0][3]);
+        if (theProductsSoldToday.length) {
+            today.classList.add('active-btn');
+            createProductsSoldTable(theProductsSoldToday);
+            today.addEventListener('click', todayReports);
+            yesterday.addEventListener('click', yestReports);
+            lastmonth.addEventListener('click', monthReport);
+            reportsAll.addEventListener('click', allReports);
+        }
+
+    }
+}
+//Yest Products
+var theProductsSoldYest;
+var xmlObjYest = new XMLHttpRequest();
+xmlObjYest.open('get', '/incProductsSoldYest', true);
+xmlObjYest.send();
+xmlObjYest.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status === 200) {
+        theProductsSoldYest = JSON.parse(this.responseText);
+        xmlObjYest.abort();
+    }
+}
+
+
+//all products
+var theProductsSold;
 var xmlObj = new XMLHttpRequest();
 xmlObj.open('get', '/incProductsSold', true);
 xmlObj.send();
 xmlObj.onreadystatechange = function () {
     if (this.readyState == 4 && this.status === 200) {
-        // console.log(this.responseText);
         theProductsSold = JSON.parse(this.responseText);
         xmlObj.abort();
-        // console.trace(theProductsSold);
-        // console.log();
-        // console.log(theProductsSold[0][3]);
-        if (theProductsSold.length) {
-            let todayProds = getTodayProds(theProductsSold);
-            // console.log(todayProds);
-            createProductsSoldTable(todayProds);
-            today.addEventListener('click', todayReports);
-            yesterday.addEventListener('click', yestReports);
-            reportsAll.addEventListener('click', allReports);
-        }
 
     }
 }
@@ -43,12 +69,6 @@ xmlObj2.onreadystatechange = function () {
         // console.log(this.responseText);
         monthProductsSold = JSON.parse(this.responseText);
         xmlObj2.abort();
-        // console.trace(theProductsSold);
-        // console.log();
-        // console.log(theProductsSold[0][3]);
-        if (monthProductsSold.length) {
-            lastmonth.addEventListener('click', monthReport);
-        }
 
     }
 }
@@ -123,32 +143,24 @@ function deleteProductsSoldTable() {
         removeClass();
     }
 }
+
 function removeClass() {
     today.classList.remove('active-btn');
     yesterday.classList.remove('active-btn');
     lastmonth.classList.remove('active-btn');
     reportsAll.classList.remove('active-btn');
 }
-function isToday(date) {
-    const today = new Date()
-    return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear() && date.getDate() !== today.getDate() - 1;
-}
-function isYesterday(date) {
-    const today = new Date()
-    return date.getDate() === today.getDate() - 1 && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
-}
-
 
 function todayReports(e) {
     deleteProductsSoldTable();
-    let todayProds = getTodayProds(theProductsSold);
-    createProductsSoldTable(todayProds);
+    today.classList.add('active-btn');
+    createProductsSoldTable(theProductsSoldToday);
     e.preventDefault();
 }
 function yestReports(e) {
     deleteProductsSoldTable();
-    let yestProds = getYestProds(theProductsSold);
-    createProductsSoldTable(yestProds);
+    yesterday.classList.add('active-btn');
+    createProductsSoldTable(theProductsSoldYest);
     e.preventDefault();
 }
 function monthReport(e) {
@@ -157,39 +169,12 @@ function monthReport(e) {
     createProductsSoldTable(monthProductsSold);
     e.preventDefault();
 }
-function allReports() {
+function allReports(e) {
     deleteProductsSoldTable();
     reportsAll.classList.add('active-btn');
     createProductsSoldTable(theProductsSold);
     e.preventDefault();
 }
-function getTodayProds(theProductSold) {
-    var todayProducts = [];
-    theProductSold.forEach(soldProd => {
-        let gD = new Date(soldProd[7]);
-        if (isToday(gD)) {
-            todayProducts.push(soldProd);
-        }
-
-    });
-    today.classList.add('active-btn');
-    return todayProducts;
-}
-function getYestProds(theProductSold) {
-    let yestProducts = [];
-    theProductSold.forEach(soldProd => {
-        let gD = new Date(soldProd[7]);
-        if (isYesterday(gD)) {
-            yestProducts.push(soldProd);
-        }
-
-    });
-    yesterday.classList.add('active-btn');
-    return yestProducts;
-}
-
-
-
 //charts
 
 function updateCharts(thedata) {
@@ -205,16 +190,22 @@ function updateCharts(thedata) {
         sumSales += data.total_price;
         numdata.push(data.qty);
         sumQty += data.qty;
-        profitdata.push((data.price - data.cost) * data.qty)
-
+        let profit = (data.price - data.cost) * data.qty;
+        profitdata.push(profit);
+        sumProfit += profit;
         labels.push(data.title);
-        colors.push('#' + Math.floor(Math.random() * 16777215).toString(15));
+        colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
     });
 
     saleChart(saledata, labels, colors);
     numChart(numdata, labels, colors);
     profitChart(profitdata, labels, colors);
-
+    sumQty = new Intl.NumberFormat('en-IN').format(sumQty);
+    sumSales = new Intl.NumberFormat('en-IN').format(sumSales);
+    sumProfit = new Intl.NumberFormat('en-IN').format(sumProfit);
+    document.getElementById('t-n-sales').innerHTML = `${sumQty}`;
+    document.getElementById('t-sales').innerHTML = `${sumSales} Rs.`;
+    document.getElementById('t-profit').innerHTML = `${sumProfit}Rs.`;
 
 
 }
@@ -238,7 +229,7 @@ function numChart(thedata, labelss, colors) {
         },
         options: {
             title: {
-                text: 'Hello',
+                text: 'Total Products Sold (Qty)',
                 display: true
             },
             scales: {
@@ -268,7 +259,7 @@ function saleChart(thedata, labelss, colors) {
         },
         options: {
             title: {
-                text: 'Hello',
+                text: 'Total Sales (Cost + Profit)',
                 display: true
             },
             scales: {
@@ -299,7 +290,7 @@ function profitChart(thedata, labelss, colors) {
         },
         options: {
             title: {
-                text: 'Hello',
+                text: 'Total Profit',
                 display: true
             },
             scales: {

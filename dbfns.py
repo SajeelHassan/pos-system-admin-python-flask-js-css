@@ -1122,7 +1122,57 @@ class DBFns:
                 if myresult != None:
                     status = True
             except Exception as e:
-                print('getProductsSold')
+                print(str(e))
+            finally:
+                if mydb != None:
+                    mydb.close()
+                if status == True:
+                    return myresult
+                else:
+                    return status
+        else:
+            return False
+
+    def getYestProductsSold(self):
+        if self.insertProductsSold():
+            mydb = None
+            status = False
+            try:
+                mydb = pymysql.connect(
+                    host=self.host, user=self.user, password=self.password, database=self.database)
+                mydbCursor = mydb.cursor()
+                sql = "SELECT * FROM productssold WHERE   date(date_time) = DATE(NOW() - INTERVAL 1 DAY);"
+                mydbCursor.execute(sql)
+                myresult = mydbCursor.fetchall()
+                if myresult != None:
+                    status = True
+            except Exception as e:
+                print(str(e))
+            finally:
+                if mydb != None:
+                    mydb.close()
+                if status == True:
+                    return myresult
+                else:
+                    return status
+        else:
+            return False
+
+    def getTodayProductsSold(self):
+        print('getTodayProductsSold')
+        if self.insertProductsSold():
+            mydb = None
+            status = False
+            try:
+                mydb = pymysql.connect(
+                    host=self.host, user=self.user, password=self.password, database=self.database)
+                mydbCursor = mydb.cursor()
+                sql = "SELECT * FROM productssold WHERE date(date_time) = DATE(NOW());"
+                mydbCursor.execute(sql)
+                myresult = mydbCursor.fetchall()
+                if myresult != None:
+                    status = True
+            except Exception as e:
                 print(str(e))
             finally:
                 if mydb != None:

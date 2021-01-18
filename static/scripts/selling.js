@@ -468,8 +468,11 @@ function saveNPrint(e) {
                 msgBlock.style.display = 'block';
                 setTimeout(function () {
                     msgBlock.style.display = 'none';
+
                     window.open(`/printReceipt/${ordId}`, '_Blank');
-                    location.reload();
+                    setTimeout(function () { location.reload(); }, 2000);
+
+
                 }, 3000);
             }
         }

@@ -39,6 +39,9 @@ body{
   font-size: 21px;
   /* font-weight: 600; */
 }
+.sidebar100vhPlus{
+  height:1200px;
+}
 .sidebar ul a{
   display: block;
   height: 100%;
@@ -363,13 +366,15 @@ th{
 .scrollableDiv600{
   max-height: 600px;
 } 
-
+.scrollableDiv600H{
+  height: 600px;
+} 
 
 .h-page{
   height: 640px;
 }
 .scrollableDiv thead th{
-  position: sticky; top: 0 ;
+  position: sticky; top: -12px ;
 }
 
 /* Important */
@@ -438,4 +443,9 @@ th{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(105, 105, 105);
+}
+.tableDivBkg{
+  margin-top:20px;
+  background-color: white;
+  padding:10px;
 }

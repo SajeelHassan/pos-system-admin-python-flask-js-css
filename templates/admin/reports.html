@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="container d-flex-sp">
-            <div class="sidebar">
+            <div class="sidebar sidebar100vhPlus">
                 <!-- <div class="shopname">
                 <h2>My Shop</h2>
             </div> -->
@@ -79,25 +79,35 @@
                             <!-- <input type="date" name="reports-date" id="reports-date"> -->
                         </div>
                     </div>
-                    <div id='the-graphs' class="my-graphs d-flex-sp">
+                    <div id='the-graphs' class="my-graphs d-flex">
                         <div id="chart1" class='chart'>
-                            <h3>NUMBER OF SALES <span id='t-n-sales'></span></h3>
+                            <div class="d-flex-sp">
+                                <h3>No. of Sales</h3>
+                                <h3><span id='t-n-sales'></span></h3>
+                            </div>
                             <canvas id="chart-count-sales" width="280" height="300"></canvas>
                         </div>
                         <div id="chart2" class='chart'>
-                            <h3>Total Sales (Rs.) <span id='t-sales'></span></h3>
+                            <div class="d-flex-sp">
+                                <h3>Total Sales</h3>
+                                <h3><span id='t-sales'></span></h3>
+                            </div>
                             <canvas id="chart-sales" width="280" height="300"></canvas>
                         </div>
                         <div id="chart3" class='chart'>
-                            <h3>Total Profit</h3>
+                            <div class="d-flex-sp">
+                                <h3>Total Profit</h3>
+                                <h3><span id='t-profit'></span></h3>
+                            </div>
                             <canvas id="chart-profit" width="280" height="300"></canvas>
                         </div>
                     </div>
-                    <div id="products-sold-div" class='products-sold'>
-                        <div class="products-sold-title d-flex-sp">
-                            <h2>Products Sold<span id='t-sold'></span></h2>
-                            <button class='btn btn-reports'>Export Data</button>
-                        </div>
+
+                    <div class="products-sold-title d-flex-sp">
+                        <h2>Products Sold </h2>
+                        <button class='btn btn-reports'>Export Data</button>
+                    </div>
+                    <div id="products-sold-div" class='products-sold scrollableDiv scrollableDiv600 tableDivBkg'>
                     </div>
                 </div>
             </div>

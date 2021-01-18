@@ -116,8 +116,21 @@ def productsSold():
 def ProductsSoldMonth():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
     monthProductsSold = obj.getMonthProductsSold()
-    print('type of :  ', type(monthProductsSold))
     return jsonify(monthProductsSold)
+
+
+@app.route('/incProductsSoldYest')
+def ProductsSoldYest():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    yestProductsSold = obj.getYestProductsSold()
+    return jsonify(yestProductsSold)
+
+
+@app.route('/incProductsSoldToday')
+def ProductsSoldToday():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    todayProductsSold = obj.getTodayProductsSold()
+    return jsonify(todayProductsSold)
 
 
 @app.route('/incAdminLogin', methods=['GET', 'POST'])
