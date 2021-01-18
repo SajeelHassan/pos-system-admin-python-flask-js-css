@@ -175,9 +175,41 @@ function allReports(e) {
     createProductsSoldTable(theProductsSold);
     e.preventDefault();
 }
+function removeCharts() {
+    if (document.getElementById('chart1')) {
+        document.getElementById('chart1').remove();
+        document.getElementById('chart2').remove();
+        document.getElementById('chart3').remove();
+    }
+}
 //charts
-
+function createCharts() {
+    removeCharts();
+    let creatingcharts = `<div id="chart1" class='chart'>
+<div class="d-flex-sp">
+    <h3>No. of Sales</h3>
+    <h3><span id='t-n-sales'></span></h3>
+</div>
+<canvas id="chart-count-sales" width="280" height="300"></canvas>
+</div>
+<div id="chart2" class='chart'>
+<div class="d-flex-sp">
+    <h3>Total Sales</h3>
+    <h3><span id='t-sales'></span></h3>
+</div>
+<canvas id="chart-sales" width="280" height="300"></canvas>
+</div>
+<div id="chart3" class='chart'>
+<div class="d-flex-sp">
+    <h3>Total Profit</h3>
+    <h3><span id='t-profit'></span></h3>
+</div>
+<canvas id="chart-profit" width="280" height="300"></canvas>
+</div>`;
+    document.getElementById('the-graphs').innerHTML = creatingcharts;
+}
 function updateCharts(thedata) {
+    createCharts();
     console.log(thedata);
     let saledata = [],
         numdata = [],
@@ -205,7 +237,7 @@ function updateCharts(thedata) {
     sumProfit = new Intl.NumberFormat('en-IN').format(sumProfit);
     document.getElementById('t-n-sales').innerHTML = `${sumQty}`;
     document.getElementById('t-sales').innerHTML = `${sumSales} Rs.`;
-    document.getElementById('t-profit').innerHTML = `${sumProfit}Rs.`;
+    document.getElementById('t-profit').innerHTML = `${sumProfit} Rs.`;
 
 
 }
@@ -307,4 +339,6 @@ function profitChart(thedata, labelss, colors) {
     });
 }
 
+
+// remove charts
 
