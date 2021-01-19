@@ -8,6 +8,7 @@
             integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/styles/shared.css">
         <link rel="stylesheet" href="../../static/styles/sidebar.css">
+        <link rel="stylesheet" href="../../static/styles/dashboard.css">
         <title>Admin - Dashboard</title>
     </head>
 
@@ -38,7 +39,7 @@
 
             <!-- Sidebar content -->
 
-            <div class="sidebar">
+            <div class="sidebar sidebar100vhPlus">
                 <!-- <div class="shopname">
                 <h2>My Shop</h2>
             </div> -->
@@ -71,16 +72,39 @@
                         <div class="error" id='page-alert-error'></div>
                     </div>
                     <div class="section-title">
-                        <h1>Dashboard</h1>
+                        <h1>Overview</h1>
                     </div>
-                    <div id="nothing">
-                        <h1>Nothing to see here --- yet</h1>
+                    <div class="stats d-flex-sp">
+                        <div class="t--sales" id='dash-sales'>
+                            <div class='d-flex-sp'><i class="fas fa-cart-arrow-down"></i> <span id='s-sales'></span>
+                            </div>
+                            <p>Total Sales</p>
+
+                        </div>
+                        <div class="t--profit" id='dash-profit'>
+                            <div class='d-flex-sp'><i class="fas fa-money-bill-alt"></i> <span id='s-profit'></span>
+
+                            </div>
+                            <p>Total Profit</p>
+                        </div>
+                        <div class="t--sold" id='dash-sold'>
+                            <div class='d-flex-sp'><i class="fas fa-paper-plane"></i> <span id='s-sold'></span>
+
+                            </div>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+                    <div class='top-selling-title'>
+                        <h2>Top Selling Products</h2>
+                    </div>
+                    <div id="top-sold-div" class='top-products-sold scrollableDiv scrollableDiv600 tableDivBkg'>
                     </div>
 
                 </div>
             </div>
         </div>
         </div>
+        <script src="{{ url_for('static', filename='scripts/dashboard.js') }}"> </script>
 
     </body>
 

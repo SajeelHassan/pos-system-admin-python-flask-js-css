@@ -126,6 +126,13 @@ def ProductsSoldYest():
     return jsonify(yestProductsSold)
 
 
+@app.route('/inctopProductsSold')
+def topProductsSold():
+    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    topProductsSold = obj.getTopProductsSold()
+    return jsonify(topProductsSold)
+
+
 @app.route('/incProductsSoldToday')
 def ProductsSoldToday():
     obj = DBFns('localhost', 'root', 's@ajeel', 'wms')

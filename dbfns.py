@@ -1090,7 +1090,7 @@ class DBFns:
                 mydb = pymysql.connect(
                     host=self.host, user=self.user, password=self.password, database=self.database)
                 mydbCursor = mydb.cursor()
-                sql = "Select * from productssold"
+                sql = "SELECT DISTINCT prod_id, title, cost, price, qty, total_price,  r_rcpt_id, date_time FROM productssold"
                 mydbCursor.execute(sql)
                 myresult = mydbCursor.fetchall()
                 if myresult != None:
@@ -1116,7 +1116,7 @@ class DBFns:
                 mydb = pymysql.connect(
                     host=self.host, user=self.user, password=self.password, database=self.database)
                 mydbCursor = mydb.cursor()
-                sql = "SELECT prod_id, title, cost, price, qty, total_price, r_rcpt_id,DATE_FORMAT(date_time, '%d/%m/%Y') FROM productssold WHERE   date_time BETWEEN NOW() - INTERVAL 30 DAY AND NOW();"
+                sql = "SELECT DISTINCT prod_id, title, cost, price, qty, total_price, r_rcpt_id,DATE_FORMAT(date_time, '%d/%m/%Y') FROM productssold WHERE   date_time BETWEEN NOW() - INTERVAL 30 DAY AND NOW();"
                 mydbCursor.execute(sql)
                 myresult = mydbCursor.fetchall()
                 if myresult != None:
@@ -1141,7 +1141,7 @@ class DBFns:
                 mydb = pymysql.connect(
                     host=self.host, user=self.user, password=self.password, database=self.database)
                 mydbCursor = mydb.cursor()
-                sql = "SELECT * FROM productssold WHERE   date(date_time) = DATE(NOW() - INTERVAL 1 DAY);"
+                sql = "SELECT DISTINCT prod_id, title, cost, price, qty, total_price,  r_rcpt_id, date_time FROM productssold WHERE   date(date_time) = DATE(NOW() - INTERVAL 1 DAY);"
                 mydbCursor.execute(sql)
                 myresult = mydbCursor.fetchall()
                 if myresult != None:
@@ -1167,7 +1167,33 @@ class DBFns:
                 mydb = pymysql.connect(
                     host=self.host, user=self.user, password=self.password, database=self.database)
                 mydbCursor = mydb.cursor()
-                sql = "SELECT * FROM productssold WHERE date(date_time) = DATE(NOW());"
+                sql = "SELECT DISTINCT prod_id, title, cost, price, qty, total_price,  r_rcpt_id, date_time FROM productssold WHERE date(date_time) = DATE(NOW());"
+                mydbCursor.execute(sql)
+                myresult = mydbCursor.fetchall()
+                if myresult != None:
+                    status = True
+            except Exception as e:
+                print(str(e))
+            finally:
+                if mydb != None:
+                    mydb.close()
+                if status == True:
+                    return myresult
+                else:
+                    return status
+        else:
+            return False
+
+    def getTopProductsSold(self):
+        print('getTodayProductsSold')
+        if self.insertProductsSold():
+            mydb = None
+            status = False
+            try:
+                mydb = pymysql.connect(
+                    host=self.host, user=self.user, password=self.password, database=self.database)
+                mydbCursor = mydb.cursor()
+                sql = "SELECT DISTINCT prod_id, title, cost, price, qty, total_price,  r_rcpt_id, date_time FROM productssold ;"
                 mydbCursor.execute(sql)
                 myresult = mydbCursor.fetchall()
                 if myresult != None:

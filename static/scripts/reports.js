@@ -3,7 +3,10 @@ var today = document.getElementById('reports-today');
 var yesterday = document.getElementById('reports-yesterday');
 var lastmonth = document.getElementById('reports-month');
 var reportsAll = document.getElementById('reports-all');
-
+today.addEventListener('click', todayReports);
+yesterday.addEventListener('click', yestReports);
+lastmonth.addEventListener('click', monthReport);
+reportsAll.addEventListener('click', allReports);
 // Event listeners
 
 // month.addEventListener('click', monthReports());
@@ -27,10 +30,7 @@ xmlObjToday.onreadystatechange = function () {
         if (theProductsSoldToday.length) {
             today.classList.add('active-btn');
             createProductsSoldTable(theProductsSoldToday);
-            today.addEventListener('click', todayReports);
-            yesterday.addEventListener('click', yestReports);
-            lastmonth.addEventListener('click', monthReport);
-            reportsAll.addEventListener('click', allReports);
+
         }
 
     }
@@ -250,12 +250,7 @@ function numChart(thedata, labelss, colors) {
         data: {
             labels: labelss,
             datasets: [{
-                barPercentage: 0.0,
-                // barThickness: 6,
-                maxBarThickness: 3,
-                minBarLength: 2,
                 data: thedata,
-                // labels: labelss,
                 backgroundColor: colors
             }]
         },
@@ -338,7 +333,4 @@ function profitChart(thedata, labelss, colors) {
         }
     });
 }
-
-
-// remove charts
 
