@@ -79,7 +79,8 @@ def adminSettings():
 def viewReceipt(ordid):
     if "adminLoggedIn" not in session:
         return redirect(url_for('adminlogin'))
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     data = obj.getTheReceipt(ordid)
     if data:
         return render_template('finalReceipt.html', data=data)
@@ -106,7 +107,8 @@ def adminLogout():
 
 @app.route('/incProductsSold')
 def productsSold():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     productsSold = obj.getProductsSold()
     print('type of :  ', type(productsSold))
     return jsonify(productsSold)
@@ -114,28 +116,32 @@ def productsSold():
 
 @app.route('/incProductsSoldMonth')
 def ProductsSoldMonth():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     monthProductsSold = obj.getMonthProductsSold()
     return jsonify(monthProductsSold)
 
 
 @app.route('/incProductsSoldYest')
 def ProductsSoldYest():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     yestProductsSold = obj.getYestProductsSold()
     return jsonify(yestProductsSold)
 
 
 @app.route('/inctopProductsSold')
 def topProductsSold():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     topProductsSold = obj.getTopProductsSold()
     return jsonify(topProductsSold)
 
 
 @app.route('/incProductsSoldToday')
 def ProductsSoldToday():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     todayProductsSold = obj.getTodayProductsSold()
     return jsonify(todayProductsSold)
 
@@ -144,7 +150,7 @@ def ProductsSoldToday():
 def adminloginverify():
     if request.method == "POST":
         data = request.get_json(silent=True)
-        # obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        # obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'], app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
                     app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         if obj.adminLogin(data['username'], data['password']):
@@ -158,28 +164,32 @@ def adminloginverify():
 
 @app.route('/incReceipts')
 def incReceipts():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     allReceipts = obj.getAllReceipts()
     return jsonify(allReceipts)
 
 
 @app.route('/incCustomers')
 def incCustomers():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     allCustomers = obj.getAllCustomers()
     return jsonify(allCustomers)
 
 
 @app.route('/incEmployees')
 def incEmployees():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     allEmployees = obj.getAllEmployees()
     return jsonify(allEmployees)
 
 
 @app.route('/incInventory')
 def incInventory():
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     myinventory = obj.getAllProducts()
     return jsonify(myinventory)
 
@@ -189,7 +199,8 @@ def incAddproduct():
     if request.method != "POST":
         return redirect(url_for("adminlogin"))
     response = request.get_json(silent=True)
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     message = 'Database/Server Error!'
     try:
         if obj.isSkuExists(response['sku']) != True:
@@ -212,7 +223,8 @@ def incGetproduct():
     data = request.get_json(silent=True)
     print((data['prod_id'])[5:])
     data['prod_id'] = (data['prod_id'])[5:]
-    obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+    obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
     reqProd = obj.getProduct(data['prod_id'])
     return jsonify(reqProd)
 
@@ -224,7 +236,8 @@ def incUpdateproduct():
     response = request.get_json(silent=True)
     message = 'Database/Server Error!'
     try:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         if obj.updateProduct(response['title'], response['sku'], response['cost'],
                              response['price'], response['stock'], response['low'], response['id']):
             message = 'true'
@@ -242,7 +255,8 @@ def incDeleteproduct():
     response = request.get_json(silent=True)
     message = 'Database/Server Error!'
     try:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         # response['id'] = (response['id'])[5:]
         print('incDeleteproduct', response)
         if obj.deleteProduct(response['id']):
@@ -263,7 +277,8 @@ def incGetDelproduct():
     data['prod_id'] = (data['prod_id'])[5:]
     reqProd = []
     try:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         reqProd = obj.getProduct(data['prod_id'])
     except Exception as e:
         print(str(e))
@@ -299,7 +314,8 @@ def printReceipt(ordid):
     if "loggedInEmpId" in session:
         empid = session["loggedInEmpId"]  # from session of employee
         print(empid)
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         if obj.isReceiptallowedEmp(ordid, empid):
             data = obj.getTheReceipt(ordid)
             if data:
@@ -324,7 +340,8 @@ def incRecentReceipts():
     empid = session["loggedInEmpId"]
     response = 'ERROR'
     try:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         response = obj.getLastReceiptsEmp(empid)
         response = jsonify(response)
     except Exception as e:
@@ -338,7 +355,8 @@ def incEmpSignup():
         signupInfo = request.get_json(silent=True)
         response = False
         try:
-            obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+            obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                        app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
             if obj.isUnameRegistered(signupInfo['username']):
                 empId = obj.getEmpId(signupInfo['username'])
                 print(empId)
@@ -363,7 +381,8 @@ def incEmpLogin():
         loginInfo = request.get_json(silent=True)
         response = False
         try:
-            obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+            obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                        app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
             empID = obj.getEmpId(loginInfo['username'])
             if empID:
                 if obj.emploginVerify(loginInfo['username'], loginInfo['password']):
@@ -387,7 +406,8 @@ def incEmpLogin():
 @app.route('/incAvailableInventory')
 def incAvailableInventory():
     if "loggedInEmpId" in session:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         myavailableInventory = obj.getsellingProducts()
         # print(myavailableInventory)
         return jsonify(myavailableInventory)
@@ -398,7 +418,8 @@ def incAvailableInventory():
 @app.route('/incAvailableCustomer')
 def incAvailableCustomer():
     if "loggedInEmpId" in session:
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         myavailableCustomers = obj.getAllCustomers()
         # print(myavailableInventory)
         return jsonify(myavailableCustomers)
@@ -416,7 +437,8 @@ def incSavereceiptdata():
         discount = data['discount']
         total_rcpt_price = data['total']
         pay_status = data['status']
-        obj = DBFns('localhost', 'root', 's@ajeel', 'wms')
+        obj = DBFns(app.config['DATABASE_HOST'], app.config['DATABASE_USER'],
+                    app.config['DATABASE_PASSWORD'], app.config['DATABASE_DB'])
         print(cust_id)
         if obj.saveReceipt(cust_id, emp_id, total_prod, discount, total_rcpt_price, pay_status):
             rcpId = obj.getlastReceiptIdEmp(emp_id)
